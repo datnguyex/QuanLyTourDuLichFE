@@ -2,7 +2,10 @@
     <div>
       <h1>SendCode Form</h1>
      <form @submit.prevent="handleSubmit">
-       <input @input="logUsername" type="text" v-model="code" :placeholder="errorCode">
+        <div class="parent">
+          <input @input="logUsername" type="text" v-model="code" :placeholder="errorCode">
+          <label class="placeholder">{{ errorCode }}</label>
+        </div>
        <button type="submit">Submitzzzz</button>
      </form>
     </div>
@@ -59,4 +62,6 @@
      }
    }
    </script>
-   
+  <style lang="scss" scoped>
+  @import './SendConfirmation.module.scss'; 
+  </style> 

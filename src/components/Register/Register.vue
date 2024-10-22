@@ -3,22 +3,26 @@
     <!-- Check if switch is empty or falsy -->
     <h1 v-if="swicth == ''">Register Form</h1>
     <form v-if="swicth == ''" @submit.prevent="handleSubmit">
-      <label class="placeholder">{{ errorUsername }}</label>
+     <div class="wrap-parent">
+      <div class="parent">
       <input 
         class="input"
         @input="logUsername" 
         type="text" 
         v-model="username" 
       />
+      <label class="placeholder">{{ errorUsername }}</label>
+     </div>
+     <div class="parent">
       <input 
         type="password" 
         v-model="password" 
-        :placeholder="errorPassword" 
+        class="input"
       />
-      <div>{{ username }}</div>
-      <button type="submit">Submit</button>
-
-      <div>
+      <label class="placeholder">{{ errorPassword }}</label>
+     </div>
+     </div>
+        <div>
         <input v-model="role" type="radio" value="1" id="admin" />
         <label for="admin">Admin</label>
 
@@ -29,7 +33,9 @@
         <label for="user">User</label>
       </div>
 
-      <div>{{ errorRole }}</div>
+      <div class="placeholder">{{ errorRole }}</div>
+      <div>{{ username }}</div>
+      <button type="submit">Submit</button>
     </form>
   
     <SendConfirmation :username="username" :setSwicth="setSwicth"  v-if="swicth == 'send code'"></SendConfirmation>
@@ -39,7 +45,7 @@
 </template>
 
 
-<script>
+<script>3
 
 import axios from 'axios';
 import SendConfirmation from '../SendConfirmation/SendConfirmation.vue';

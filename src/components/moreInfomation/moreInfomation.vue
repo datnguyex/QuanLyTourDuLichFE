@@ -2,10 +2,20 @@
     <div>
       <h1>More infomation Form</h1>
      <form @submit.prevent="handleSubmit">
-       <input @input="logUsername" type="text" v-model="day" :placeholder="errorDay">
-       <input @input="logUsername" type="text" v-model="month" :placeholder="errorMonth">
-       <input @input="logUsername" type="text" v-model="year" :placeholder="errorYear">
-
+     <div class="wrap-parent">
+      <div class="parent">
+        <input @input="logUsername" type="text" v-model="day" :placeholder="errorDay">
+        <label class="placeholder">{{ errorDay }}</label>
+      </div>
+      <div class="parent">
+        <input @input="logUsername" type="text" v-model="month" :placeholder="errorMonth">
+        <label class="placeholder">{{ errorMonth }}</label>
+      </div>
+      <div class='parent'>
+        <input @input="logUsername" type="text" v-model="year" :placeholder="errorYear">
+        <label class="placeholder">{{ errorYear }}</label>
+      </div>
+     </div>
        <select v-model="gender" name="" id="">
             <option value="male">Male</option>
             <option value="female">Female</option>
@@ -95,8 +105,6 @@
               this.errorMonth = errors.month ? errors.month[0] : "";
               this.errorYear = errors.year ? errors.year[0] : "";
               this.errorGender = errors.gender ? errors.gender[0] : "";
-
-              this.day = '';
           } 
           
         }
