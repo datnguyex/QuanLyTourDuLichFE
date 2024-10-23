@@ -94,8 +94,12 @@
             role: this.role,
           });
           console.log('Registration successful:', response.data);
-          this.setSwicth = response.data.swicth;
-          console.log('setSwicth:', this.setSwicth);
+          if(response.data.message == 'created account') {
+            alert('created account');
+            window.location.href = '/login';
+          }
+          // this.setSwicth = response.data.swicth;
+          // console.log('setSwicth:', this.setSwicth);
        
         } catch (error) { 
               console.error('Registration failed:', error.response.data);
@@ -116,7 +120,10 @@
             password: this.password,
             role: this.role,
           });
-          console.log('Registration successful:', response.data);
+          if(response.data.message == 'created account') {
+            alert('created account');
+            window.location.href = '/login';
+          }
           this.setSwicth = response.data.swicth;
           console.log('setSwicth:', this.setSwicth);
        
@@ -127,6 +134,7 @@
         }
      },
    }
-   
-  
    </script>
+     <style lang="scss" scoped>
+     @import './MoreInfomation.module.scss'; 
+     </style> 
