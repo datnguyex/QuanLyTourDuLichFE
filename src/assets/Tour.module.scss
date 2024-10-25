@@ -1,0 +1,87 @@
+.container {
+  width: 80%;
+  margin: 50px auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.form_tour {
+  width: 100%;
+}
+
+.form-group {
+  width: 100%;
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.form-group input,
+.form-group textarea,
+.form-group select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.form-group textarea {
+  height: 150px;
+}
+.form-group img {
+  display: block;
+  width: 150px;
+  height: 150px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.form-group .add-image {
+  display: block;
+  color: #007bff;
+  cursor: pointer;
+}
+.form-group .add-schedule {
+  display: block;
+  text-align: center;
+  color: #007bff;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.form-group .schedule,
+.time_tour {
+  display: flex;
+  gap: 10px;
+
+  .time_end,
+  .time_start,
+  .price,
+  .status {
+    width: 100%;
+  }
+}
+
+// .form-group .time_tour {
+//   display: flex;
+//   gap: 10px;
+// }
+.form-actions {
+  text-align: center;
+  margin-top: 20px;
+}
+.form-actions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 0 10px;
+}
+.form-actions .save {
+  background-color: #007bff;
+  color: #fff;
+}
+.form-actions .cancel {
+  background-color: #ccc;
+  color: #000;
+}

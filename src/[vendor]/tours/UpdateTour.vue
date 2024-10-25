@@ -1,9 +1,9 @@
 <template>
-  <h1>Login Form</h1>
+  <h1>Minh hiep update</h1>
 </template>
 
 <script>
 export default {
-  name: "UserLogin",
+  name: "UpdateTour",
 };
 </script>

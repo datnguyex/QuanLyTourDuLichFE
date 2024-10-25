@@ -1,20 +1,11 @@
 <template>
-  <div id="app">
-    <router-link to="/">Home</router-link>
-    <router-link to="/register">Register</router-link> 
-    <router-link to="/login">Login</router-link> 
-    <router-view />
-  </div>
+  <router-view />
 </template>
 <script>
-
-
 export default {
-  name: 'App',
-  components: {
-  
-  }
-}
+  name: "App",
+  components: {},
+};
 </script>
 
 <style>
@@ -22,7 +13,6 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
   margin-top: 60px;
 }
