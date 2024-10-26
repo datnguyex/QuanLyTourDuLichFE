@@ -85,3 +85,15 @@
   background-color: #ccc;
   color: #000;
 }
+
+.image_tours {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  .image_tours-item {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}
