@@ -34,7 +34,7 @@
       </div>
 
       <div class="placeholder">{{ errorRole }}</div>
-      <div>{{ username }}</div>
+     
       <button type="submit">Submit</button>
     </form>
   
@@ -92,11 +92,9 @@ export default {
         console.log('Registration successful:', response.data);
         this.swicth = response.data.swicth; 
       } catch (error) {
-    
         console.error('Registration failed:', error.response.data);
-                if (error.response && error.response.data) {
+            if (error.response && error.response.data) {
             const errors = error.response.data.errors || {};
-
             this.errorUsername = errors.username ? errors.username[0] : "";
             this.errorPassword = errors.password ? errors.password[0] : "";
             this.errorRole = errors.role ? errors.role[0] : "";
