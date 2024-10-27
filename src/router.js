@@ -8,14 +8,25 @@ import Storage from './Page/Storage/Storage.vue';
 
 const routes = [
   {
-    path: '/',
-    component: DefaultLayout,
+    path: '/', 
+    component: HeaderOnly,
     children: [
       {
         path: '/',
         name: 'Home',
         component: Home,
+      },  
+      {
+        path: 'detail',
+        name: 'Detail',
+        component: Detail,
       },
+    ],
+  },
+  {
+    path: '/',
+    component: DefaultLayout,
+    children: [
       {
         path: 'profile',
         name: 'Profile',
@@ -26,17 +37,6 @@ const routes = [
         path: 'storage',
         name: 'Storage',
         component: Storage,
-      },
-    ],
-  },
-  {
-    path: '/', 
-    component: HeaderOnly,
-    children: [
-      {
-        path: 'detail',
-        name: 'Detail',
-        component: Detail,
       },
     ],
   },

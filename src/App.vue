@@ -47,7 +47,7 @@ export default {
         });
         valueCurrentUser.value = response.data.data;
         } else {
-          return;
+          valueCurrentUser.value = null;
         }
       
       } catch (error) {
