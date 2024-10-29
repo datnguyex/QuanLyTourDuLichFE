@@ -19,6 +19,7 @@
                   {{ tour.description }}
                 </b-card-text>
                 <b-button @click="handleAddTourToFavorite(tour.id)" variant="primary">Add to Favorite</b-button>
+                <b-button @click="detailTour(tour.id)" variant="primary">Detail Tour</b-button>
                 <!-- <b-button @click="logValue" variant="primary">log</b-button> -->
               </b-card>
             </div>
@@ -33,13 +34,15 @@
   import axios from 'axios';
   import { onMounted, ref } from 'vue';
   import { inject } from 'vue';
-
+  import { useRouter } from 'vue-router'; 
   export default {
     name: 'HomeComponent',
     setup() {
+      const router = useRouter();
       const valueCurrentUser = inject('valueCurrentUser');
       const newesTour = ref([]);
        const displayErrors = ref(null);
+    
       const getNewesTour = async () => {
         try {
           const response = await axios.get('http://localhost:8000/api/displayNewstTour');
@@ -52,21 +55,29 @@
         }
       };
       const handleAddTourToFavorite = async (tour_id) => {
+       
+        let userID = null; 
+        if (valueCurrentUser.value && valueCurrentUser.value.id) {
+            userID = valueCurrentUser.value.id;
+        }
     try {
         const response = await axios.post('http://localhost:8000/api/addTourToFavorite', {
-            'user_id': valueCurrentUser.value.id,
+            'user_id': userID,
             'tour_id': tour_id,
         });
       alert(response.data.message);
     } catch (error) {
         if (error.response) {
             console.error('Failed to retrieve tours:', error.response.data);
-            alert(error.response.data.message)
+            alert(error.response.data.error)
         } else {
             console.error('Error:', error.message);
         }
     }
 };
+  const detailTour = (id) => {
+      router.push({ name: 'Detail', params: { id } });
+    };
   const logValue = () => {
     console.log('valueCurrentUser',valueCurrentUser);
   }
@@ -74,7 +85,7 @@
         getNewesTour();
       });
   
-      return { newesTour,displayErrors,handleAddTourToFavorite,logValue };
+      return { newesTour,displayErrors,handleAddTourToFavorite,logValue,detailTour};
     }
   }
   </script>

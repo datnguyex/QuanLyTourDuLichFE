@@ -5,6 +5,7 @@ import Detail from './Page/Detail/Detail.vue';
 import Home from './Page/Home/Home.vue';
 import Profile from './Page/Profile/Profile.vue';
 import Storage from './Page/Storage/Storage.vue';
+import Booking from './Page/Booking/Booking.vue';
 
 const routes = [
   {
@@ -17,9 +18,14 @@ const routes = [
         component: Home,
       },  
       {
-        path: 'detail',
+        path: '/detail/:id',
         name: 'Detail',
         component: Detail,
+      },
+      {
+        path: '/booking/:id',
+        name: 'Booking',
+        component: Booking,
       },
     ],
   },
