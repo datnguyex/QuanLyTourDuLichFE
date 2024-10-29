@@ -29,7 +29,7 @@ const routes = [
     component: CreateTour,
   },
   {
-    path: "/:vendor/tours/edit",
+    path: "/:vendor/tours/edit/:id",
     name: "UpdateTour",
     component: UpdateTour,
   },

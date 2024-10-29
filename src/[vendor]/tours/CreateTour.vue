@@ -515,7 +515,7 @@ export default {
                     if (this.start == null || this.end == null) {
                         this.errorDateTimeSchedule[index] = 'Vui lòng chọn ngày bắt đầu và ngày kết thúc chuyến đi!';
                     } else {
-                        this.errorDateTimeSchedule[index] = `Thời gian lịch trình ${index + 1} không nằm trong khoảng từ ${this.start_date} đến ${this.end_date}`;
+                        this.errorDateTimeSchedule[index] = `Thời gian lịch trình ${index + 1} phải nằm trong khoảng từ ${this.start_date} đến ${this.end_date}`;
                     }
                     isValidTimeSchedule = false;
                 }
@@ -527,11 +527,6 @@ export default {
 
         async handleSubmit() {
             //Check Validate of image
-            if (this.schedules.length > 0) {
-                this.schedules.forEach(item => {
-                    console.log("Lịch trình", item.name_schedule);
-                })
-            }
             const checkVar = this.checkValidate();
             if (!checkVar) return;
 
