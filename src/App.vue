@@ -4,7 +4,7 @@
       <router-view />
     </main>
     
-    <Login v-if="displayLogin" :setCurrentUser="setCurrentUser"></Login>
+    <Login v-if="displayLogin" :handleDisplayLogin="handleDisplayLogin" :setCurrentUser="setCurrentUser"></Login>
   </div>
 </template>
 
@@ -12,6 +12,7 @@
 import { ref, provide, onMounted } from 'vue';
 import Login from './components/Login/Login.vue';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 export default {
   components: {
@@ -38,7 +39,7 @@ export default {
 
     const handleDataCurrentUser = async () => {
       try {
-        const token = localStorage.getItem('tokenLogin');
+        const token = Cookies.get('tokenLogin'); 
         if(token) {
         const response = await axios.get('http://localhost:8000/api/inforCurrentUser', {
           headers: {
@@ -71,6 +72,7 @@ export default {
       setCurrentUser,
       logData,
       displayLogin,
+      handleDisplayLogin,
     };
   }
 };
