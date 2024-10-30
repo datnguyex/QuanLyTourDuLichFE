@@ -289,7 +289,7 @@ export default {
             selectedFiles: [],
             imagePreviews: [],
             schedules: [{ name_schedule: "", time_schedule: "" }],
-            imageDefault: "http://127.0.0.1:8000/storage/images/default.png"
+            imageDefault: "http://127.0.0.1:8000/images/default.png"
         };
     },
 

@@ -181,7 +181,7 @@ export default {
         // selectedFiles.value = moment(tourData.value.tour.end_date).toDate();
         const arrayImage = tourData.value.tour.images;
         arrayImage.forEach((item) => {
-          imagePreviews.value.push(`http://127.0.0.1:8000/storage/${item.image_url}`);
+          imagePreviews.value.push(`http://127.0.0.1:8000/images/${item.image_url}`);
           image.value = item.image_url;
         });
 
@@ -227,7 +227,7 @@ export default {
       errorImage: "",
       errorNameSchedule: [],
       errorDateTimeSchedule: [],
-      imageDefault: "http://127.0.0.1:8000/storage/images/default.png"
+      imageDefault: "http://127.0.0.1:8000/images/default.png"
     };
   },
 
@@ -605,12 +605,17 @@ export default {
         formData.append(`images[]`, file);
       });
 
-      console.log(this.start_date);
+      //Mạo danh 
+      formData.append("_method", 'PUT')
 
       try {
-        const response = await axios.put(
+        const response = await axios.post(
           `http://127.0.0.1:8000/api/tours/${this.tourId}`, // Update endpoint
-          { formData }
+          formData, {
+          header: {
+            "Content-type": "multipart/form-data",
+          }
+        }
         );
         console.log("Update successful:", response.data);
         // Handle successful update (e.g., reset form, show message)
