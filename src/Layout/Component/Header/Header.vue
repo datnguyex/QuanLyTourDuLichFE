@@ -4,6 +4,9 @@
     <div v-if="valueCurrentUser == null">
       <button @click="setLogin">Login</button>
     </div>
+    <div  v-if="valueCurrentUser == null">
+      <button @click="setRegister">Sign up</button>
+    </div>
     <div v-if="valueCurrentUser != null">
       <button @click="setLogout">Logout</button>
     </div>
@@ -20,6 +23,7 @@ export default {
     const valueCurrentUser = inject('valueCurrentUser');
     const setCurrentUser = inject('setCurrentUser');
     const handleDisplayLogin = inject('handleDisplayLogin');
+    const handleDisplayRegister = inject('handleDisplayRegister');
 
     const showCurrentUser = () => {
       console.log('Current User Value:', valueCurrentUser.value);
@@ -28,18 +32,22 @@ export default {
     const setLogin = () => {
       handleDisplayLogin(true);
     };
+    const setRegister = () => {
+      handleDisplayRegister(true); 
+    };
 
     const setLogout = () => {
-      localStorage.removeItem('tokenLogin');
+      document.cookie = "tokenLogin=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
       handleDisplayLogin(false);
       setCurrentUser(null);
-    };
+    };  
 
     return {
       valueCurrentUser,
       setLogin,
       setLogout,
       showCurrentUser,
+      setRegister,
     };
   },
 };
