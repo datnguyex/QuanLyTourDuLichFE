@@ -1,67 +1,79 @@
 <template>
-    <div>
-      <h1>SendCode Form</h1>
-     <form @submit.prevent="handleSubmit">
-        <div class="parent">
-          <input @input="logUsername" type="text" v-model="code" :placeholder="errorCode">
-          <label class="placeholder">{{ errorCode }}</label>
+  <form @submit.prevent="handleSubmit">
+    <div :class="$style.wrapper">
+      <div :class="$style.parent">
+        <Icons @click="handleDisplayRegister(false)" :class="$style.iconClose" :iconName="'iconX'" />
+        <h1 :class="$style.title">Enter Verification Code</h1>
+        <div :class="$style.subtitle">
+          Please enter the verification code that we sent to 
+          <h3 :class="$style.username">{{ username }}</h3>
         </div>
-       <button type="submit">Submitzzzz</button>
-     </form>
+        <h4 :class="$style.titleVerify">Verification code</h4>
+        <div :class="$style.parentInput">
+          <input v-model="code" :class="$style.inputEmail" type="text" placeholder="Example: 10242" />
+        </div>
+        <label v-if="errorCode" :class="$style.errorInput">{{ errorCode }}</label>
+        <button :class="$style.btnVerify">Verify</button>
+      </div>
     </div>
-   </template>
-   
-   
-   <script>
-   import axios from 'axios';
-   
-   export default {
-     name: 'SendConfirmation',
-     
-     props: {
-       setSwicth: {
-         type: Function,
-         required: true,
-       },
-       username: {
-         type: String, 
-         required: true, 
-       },
-     },
-   
-     data() {
-       return {
-         code: '',
-         errorCode: '',
-       };
-     },  
-   
-     methods: {
-       logUsername() {
-         console.log('code:', this.code);
-         console.log('username:', this.username);
-       },
-   
-       async handleSubmit() {
-         try {
-           const response = await axios.post('http://localhost:8000/api/sendCode', {
-             username: this.username,
-             confirmCode: this.code,
-           });
-           console.log('Registration successful:', response.data);
-           this.setSwicth(response.data.swicth); 
-         } catch (error) { 
-           console.error('Registration failed:', error.response.data);
-           if (error.response && error.response.data) {
-             const errors = error.response.data.errors || {};
-             this.errorCode = errors.confirmCode ? errors.confirmCode[0] : "";
-           } 
-          
-         }
-       }
-     }
-   }
-   </script>
-  <style lang="scss" scoped>
+  </form>
+</template>
+
+<script>
+import { ref } from 'vue';
+import axios from 'axios';
+import Icons from '../Icons/Icons.vue';
+
+export default {
+  name: 'SendConfirmation',
+  components: {
+    Icons,
+  },
+  props: {
+    setSwicth: {
+      type: Function,
+      required: true,
+    },
+    username: {
+      type: String,
+      required: true,
+    },
+    handleDisplayRegister: {
+      type: Function,
+      required: true,
+    },
+  },
+  
+  setup(props) {
+    const code = ref('');
+    const errorCode = ref('');
+
+    const handleSubmit = async () => {
+      try {
+        const response = await axios.post('http://localhost:8000/api/sendCode', {
+          username: props.username,
+          confirmCode: code.value,
+        });
+        console.log('Registration successful:', response.data);
+        props.setSwicth(response.data.swicth);
+      } catch (error) {
+        console.error('Registration failed:', error.response.data);
+        if (error.response && error.response.data) {
+          const errors = error.response.data.errors || {};
+          errorCode.value = errors.confirmCode ? errors.confirmCode[0] : '';
+        }
+      }
+    };
+
+    return {
+      code,
+      errorCode,
+      handleSubmit,
+    };
+  },
+};
+</script>
+
+<style lang="scss" module>
   @import './SendConfirmation.module.scss'; 
-  </style> 
+</style>
