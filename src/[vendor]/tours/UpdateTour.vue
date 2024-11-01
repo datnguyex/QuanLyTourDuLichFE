@@ -112,6 +112,7 @@
               </button>
             </div>
           </div>
+          <div v-if="errorSchedules" class="error">{{ errorSchedules }}</div>
           <button class="btn_addSchedule" @click.prevent="addSchedule">
             Thêm lịch trình +
           </button>
@@ -129,9 +130,24 @@
     </div>
     <div class="footer_create-tour">
       <button @click.prevent="handleSubmit" class="save">Lưu</button>
-      <button class="cancel">Đóng</button>
+      <button class="cancel" @click.prevent="close">Đóng</button>
     </div>
   </div>
+  <v-container>
+    <v-btn @click="showModal">Xác nhận</v-btn>
+
+    <v-dialog v-model="modalVisible" max-width="290">
+      <v-card>
+        <v-card-title>Xác nhận hành động</v-card-title>
+        <v-card-text>Bạn có chắc chắn muốn thực hiện hành động này?</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn @click="modalVisible = false">Hủy</v-btn>
+          <v-btn color="primary" @click="confirmAction">Xác nhận</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-container>
 </template>
 
 <script>
@@ -140,7 +156,8 @@ import { ref, onMounted } from "vue";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import moment from "moment";
-import { useRoute } from 'vue-router';
+import { useRoute } from "vue-router";
+
 export default {
   name: "UpdateTour",
   components: {
@@ -166,9 +183,12 @@ export default {
     const image = ref("");
     const start_date = ref("");
     const end_date = ref("");
+
     onMounted(async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/tours/${tourId.value}`);
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/tours/${tourId.value}`
+        );
         tourData.value = response.data;
         name.value = tourData.value.tour.name;
         description.value = tourData.value.tour.description;
@@ -181,18 +201,35 @@ export default {
         // selectedFiles.value = moment(tourData.value.tour.end_date).toDate();
         const arrayImage = tourData.value.tour.images;
         arrayImage.forEach((item) => {
-          imagePreviews.value.push(`http://127.0.0.1:8000/images/${item.image_url}`);
+          imagePreviews.value.push(
+            `http://127.0.0.1:8000/images/${item.image_url}`
+          );
           image.value = item.image_url;
         });
 
         const arraySchedule = tourData.value.tour.schedules;
         arraySchedule.forEach((item) => {
-          schedules.value.push({ name_schedule: item.name, time_schedule: item.time });
+          schedules.value.push({
+            name_schedule: item.name,
+            time_schedule: item.time,
+          });
         });
+        // localStorage.setItem('tourId', tourId.value);
       } catch (error) {
-        console.error('Failed to fetch tour data:', error);
+        console.log(error);
+        if (error.response && error.response.status === 400) {
+          document.querySelector('.container').innerHTML = `
+            <div class="error-message">
+              <h2>Tour Not Found</h2>
+              <p>We apologize, but the tour you are looking for does not exist.</p>
+              <button class="btn btn-primary" onclick="window.location.href='/minh-hiep/tours'">View All Tours</button>
+            </div>
+          `;
+          return;
+        }
       }
     });
+
 
     return {
       tourId,
@@ -225,9 +262,11 @@ export default {
       errorLocation: "",
       errorAvailability: "",
       errorImage: "",
+      errorSchedules: "",
       errorNameSchedule: [],
       errorDateTimeSchedule: [],
-      imageDefault: "http://127.0.0.1:8000/images/default.png"
+      imageDefault: "http://127.0.0.1:8000/images/default.png",
+      modalVisible: false,
     };
   },
 
@@ -311,7 +350,14 @@ export default {
     location: {
       handler(val) {
         this.location = val;
-        this.validateField("Location", "Địa chỉ", this.location, 20, 100, this.regex);
+        this.validateField(
+          "Location",
+          "Địa chỉ",
+          this.location,
+          20,
+          100,
+          this.regex
+        );
       },
       deep: true,
     },
@@ -334,9 +380,10 @@ export default {
       handler(val) {
         val.forEach((schedule, index) => {
           this.schedules[index].name_schedule = schedule.name_schedule;
-          this.schedules[index].time_schedule = moment(schedule.time_schedule).format("YYYY/MM/DD HH:mm");
+          this.schedules[index].time_schedule = moment(
+            schedule.time_schedule
+          ).format("YYYY/MM/DD HH:mm");
           this.validateSchedules();
-
         });
       },
       deep: true, // Bắt buộc theo dõi các thay đổi bên trong mảng
@@ -344,6 +391,14 @@ export default {
   },
 
   methods: {
+    showModal() {
+      this.modalVisible = true;
+    },
+    confirmAction() {
+      // Xử lý hành động xác nhận ở đây
+      this.modalVisible = false;
+      console.log('Hành động đã được xác nhận');
+    },
     validateField(
       fieldNameError,
       fieldName,
@@ -355,7 +410,9 @@ export default {
       if (!fieldValue || fieldValue.trim() === "") {
         // Kiểm tra nếu error là mảng
         if (Array.isArray(this[`error${fieldNameError}`])) {
-          this[`error${fieldNameError}`].push(`${fieldName} không được để trống`);
+          this[`error${fieldNameError}`].push(
+            `${fieldName} không được để trống`
+          );
         } else {
           this[`error${fieldNameError}`] = `${fieldName} không được để trống`;
         }
@@ -365,9 +422,13 @@ export default {
       if (fieldValue.length < minLength || fieldValue.length > maxLength) {
         // Kiểm tra nếu error là mảng
         if (Array.isArray(this[`error${fieldNameError}`])) {
-          this[`error${fieldNameError}`].push(`${fieldName} phải có ít nhất ${minLength} ký tự hoặc ít hơn ${maxLength} ký tự`);
+          this[`error${fieldNameError}`].push(
+            `${fieldName} phải có ít nhất ${minLength} ký tự hoặc ít hơn ${maxLength} ký tự`
+          );
         } else {
-          this[`error${fieldNameError}`] = `${fieldName} phải có ít nhất ${minLength} ký tự hoặc ít hơn ${maxLength} ký tự`;
+          this[
+            `error${fieldNameError}`
+          ] = `${fieldName} phải có ít nhất ${minLength} ký tự hoặc ít hơn ${maxLength} ký tự`;
         }
         return false;
       }
@@ -390,9 +451,9 @@ export default {
       }
       if (regexPattern && !regexPattern.test(fieldValue)) {
         if (Array.isArray(this[`error${fieldNameError}`])) {
-          this[
-            `error${fieldNameError}`
-          ].push(`${fieldName} không được chứa ký tự đặc biệt`);
+          this[`error${fieldNameError}`].push(
+            `${fieldName} không được chứa ký tự đặc biệt`
+          );
         } else {
           this[
             `error${fieldNameError}`
@@ -416,9 +477,8 @@ export default {
       const files = event.target.files;
       if (files && files.length > 5) {
         this.errorImage = "Vui lòng chọn nhiều nhất 5 hình ảnh.";
-        return
-      }
-      else if (files && files.length > 0) {
+        return;
+      } else if (files && files.length > 0) {
         this.errorImage = null; // Reset lỗi nếu có
         this.selectedFiles = Array.from(files);
         this.imagePreviews = this.selectedFiles.map((file) =>
@@ -426,7 +486,7 @@ export default {
         );
       } else {
         this.errorImage = "Vui lòng chọn ít nhất một tệp hình ảnh.";
-        return
+        return;
       }
     },
 
@@ -510,34 +570,91 @@ export default {
 
     checkValidate(regex) {
       // Check Validate of image
-      if (this.selectedFiles != []) {
-        this.image = this.selectedFiles.map((file) => file.name).join(", ");
-      }
+      // if (this.selectedFiles != []) {
+      //   this.image = this.selectedFiles.map((file) => file.name).join(", ");
+      // }
+
+      console.log(this.image);
       // Check error of variable
       // Validate fields
-      const isValidName = this.validateField("Name", "Tên tour", this.name, 20, 100, regex);
-      const isValidLocation = this.validateField("Location", "Địa chỉ", this.location, 20, 100, regex);
-      const isValidDescription = this.validateField("Description", "Mô tả", this.description, 10, 500, null);
-      const isValidDuration = this.validateField("Duration", "Thời gian dự kiến", this.duration, 1, 3, /^[0-9]+$/, (value) => {
-        return value <= 0 ? "Thời gian phải là số dương lớn hơn 0" : "";
-      });
-      const isValidPrice = this.validateField("Price", "Giá", this.price, 1, 10, /^[0-9]+$/, (value) => {
-        return value <= 0 ? "Giá phải là số dương lớn hơn 0" : "";
-      });
-      const isValidImage = this.validateField("Image", "Hình ảnh", this.image, 1, 500, /\.(jpg|svg|png)$/i);
+      const isValidName = this.validateField(
+        "Name",
+        "Tên tour",
+        this.name,
+        20,
+        100,
+        regex
+      );
+      const isValidLocation = this.validateField(
+        "Location",
+        "Địa chỉ",
+        this.location,
+        20,
+        100,
+        regex
+      );
+      const isValidDescription = this.validateField(
+        "Description",
+        "Mô tả",
+        this.description,
+        10,
+        500,
+        null
+      );
+      const isValidDuration = this.validateField(
+        "Duration",
+        "Thời gian dự kiến",
+        this.duration,
+        1,
+        3,
+        /^[0-9]+$/,
+        (value) => {
+          return value <= 0 ? "Thời gian phải là số dương lớn hơn 0" : "";
+        }
+      );
+      const isValidPrice = this.validateField(
+        "Price",
+        "Giá",
+        this.price,
+        1,
+        10,
+        /^[0-9]+$/,
+        (value) => {
+          return value <= 0 ? "Giá phải là số dương lớn hơn 0" : "";
+        }
+      );
+      const isValidImage = this.validateField(
+        "Image",
+        "Hình ảnh",
+        this.image,
+        1,
+        500,
+        /\.(jpg|svg|png)$/i
+      );
 
       //Check Validate of Date
       const validDate = this.checkDate();
       // Check if any validation failed
-      if (!isValidName || !isValidLocation || !isValidDescription || !isValidDuration || !isValidPrice || !isValidImage || !validDate) {
+      if (
+        !isValidName ||
+        !isValidLocation ||
+        !isValidDescription ||
+        !isValidDuration ||
+        !isValidPrice ||
+        !isValidImage ||
+        !validDate
+      ) {
         return false; // Validation failed
       }
 
       return true; // Validation succeeded
-
     },
 
     validateSchedules() {
+      if (this.schedules.length === 0) {
+        this.errorSchedules = "Vui lòng thêm lịch trình";
+        return false;
+      }
       let isValidNameSchedule = true;
       let isValidTimeSchedule = true;
       this.errorNameSchedule = [];
@@ -548,25 +665,37 @@ export default {
       }
 
       this.schedules.forEach((schedule, index) => {
-        const isValid = this.validateField("NameSchedule", "Tên lịch trình", schedule.name_schedule, 10, 100, this.regex);
-        this.errorNameSchedule[index] = isValid ? "" : `Tên lịch trình ${index + 1} không hợp lệ`;
+        const isValid = this.validateField(
+          "NameSchedule",
+          "Tên lịch trình",
+          schedule.name_schedule,
+          10,
+          100,
+          this.regex
+        );
+        this.errorNameSchedule[index] = isValid
+          ? ""
+          : `Tên lịch trình ${index + 1} không hợp lệ`;
         isValidNameSchedule = isValidNameSchedule && isValid;
         const currentDate = schedule.time_schedule;
         if (index < this.schedules.length - 1) {
           const nextDate = this.schedules[index + 1].time_schedule;
           if (nextDate < currentDate) {
-            this.errorDateTimeSchedule[index] = `Thời gian lịch trình ${index + 1} không được bé hơn lịch trình ${index + 2}`;
+            this.errorDateTimeSchedule[index] = `Thời gian lịch trình ${index + 1
+              } không được bé hơn lịch trình ${index + 2}`;
             isValidTimeSchedule = false;
           }
         }
         // Validate with start_date and end_date
-        const startDate = moment(this.start).format('YYYY/MM/DD HH:mm');
-        const endDate = moment(this.end).format('YYYY/MM/DD HH:mm');
+        const startDate = moment(this.start).format("YYYY/MM/DD HH:mm");
+        const endDate = moment(this.end).format("YYYY/MM/DD HH:mm");
         if (currentDate < startDate || currentDate > endDate) {
           if (this.start == null || this.end == null) {
-            this.errorDateTimeSchedule[index] = 'Vui lòng chọn ngày bắt đầu và ngày kết thúc chuyến đi!';
+            this.errorDateTimeSchedule[index] =
+              "Vui lòng chọn ngày bắt đầu và ngày kết thúc chuyến đi!";
           } else {
-            this.errorDateTimeSchedule[index] = `Thời gian lịch trình ${index + 1} phải nằm trong khoảng từ ${this.start_date} đến ${this.end_date}`;
+            this.errorDateTimeSchedule[index] = `Thời gian lịch trình ${index + 1
+              } phải nằm trong khoảng từ ${this.start_date} đến ${this.end_date}`;
           }
           isValidTimeSchedule = false;
         }
@@ -574,6 +703,13 @@ export default {
       // this.errorNameSchedule = [];
       // this.errorDateTimeSchedule = [];
       return isValidNameSchedule && isValidTimeSchedule;
+    },
+
+    close() {
+      this.$router.push({
+        path: '/minh-hiep/tours',
+        query: { message: 'errorEdit' }
+      });
     },
 
     async handleSubmit() {
@@ -605,27 +741,31 @@ export default {
         formData.append(`images[]`, file);
       });
 
-      //Mạo danh 
-      formData.append("_method", 'PUT')
+      //Mạo danh
+      formData.append("_method", "PUT");
 
       try {
         const response = await axios.post(
           `http://127.0.0.1:8000/api/tours/${this.tourId}`, // Update endpoint
-          formData, {
-          header: {
-            "Content-type": "multipart/form-data",
+          formData,
+          {
+            headers: {
+              "Content-type": "multipart/form-data",
+            },
           }
-        }
         );
-        console.log("Update successful:", response.data);
-        // Handle successful update (e.g., reset form, show message)
+        console.log(response);
+        // window.location.href = "http://localhost:3000/minh-hiep/tours";
+        this.$router.push({
+          path: '/minh-hiep/tours',
+          query: { message: 'successEdit' }
+        });
       } catch (error) {
         console.error("Update failed:", error.response.data);
       }
-    }
+    },
   },
-}
-
+};
 </script>
 <style lang="scss" scoped>
 @use "../../assets/Global.module.scss";

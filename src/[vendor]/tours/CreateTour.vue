@@ -107,6 +107,7 @@
                                     class="fas fa-trash"></i></button>
                         </div>
                     </div>
+                    <div v-if="errorSchedules" class="error">{{ errorSchedules }}</div>
                     <button class="btn_addSchedule" @click.prevent="addSchedule">Thêm lịch trình +</button>
                 </div>
 
@@ -122,7 +123,7 @@
         </div>
         <div class="footer_create-tour">
             <button @click.prevent="handleSubmit" class="save">Lưu</button>
-            <button class="cancel">Đóng</button>
+            <button class="cancel" @click.prevent="close">Đóng</button>
         </div>
     </div>
 </template>
@@ -284,6 +285,7 @@ export default {
             errorLocation: "",
             errorAvailability: "",
             errorImage: "",
+            errorSchedules: "",
             errorNameSchedule: [],
             errorDateTimeSchedule: [],
             selectedFiles: [],
@@ -486,11 +488,17 @@ export default {
         },
 
         validateSchedules() {
+            //Check Validate of schedules
+            if (this.schedules.length === 0) {
+                this.errorSchedules = "Vui lòng thêm lịch trình";
+                return false;
+            } else {
+                this.errorSchedules = ""
+            }
             let isValidNameSchedule = true;
             let isValidTimeSchedule = true;
             this.errorNameSchedule = [];
             this.errorDateTimeSchedule = [];
-
             if (this.schedules.length === 0) {
                 return false;
             }
@@ -510,7 +518,6 @@ export default {
                 // Validate with start_date and end_date
                 const startDate = moment(this.start).format('YYYY/MM/DD HH:mm');
                 const endDate = moment(this.end).format('YYYY/MM/DD HH:mm');
-                console.log(this.start);
                 if (currentDate < startDate || currentDate > endDate) {
                     if (this.start == null || this.end == null) {
                         this.errorDateTimeSchedule[index] = 'Vui lòng chọn ngày bắt đầu và ngày kết thúc chuyến đi!';
@@ -524,12 +531,17 @@ export default {
             // this.errorDateTimeSchedule = [];
             return isValidNameSchedule && isValidTimeSchedule;
         },
-
+        close() {
+            this.$router.push({
+                path: '/minh-hiep/tours',
+                query: { message: 'errorCreate' }
+            });
+        }
+        ,
         async handleSubmit() {
             //Check Validate of image
             const checkVar = this.checkValidate();
             if (!checkVar) return;
-
             // Validate schedules before submission
             const isValidSchedules = this.validateSchedules();
             if (!isValidSchedules) {
@@ -564,13 +576,15 @@ export default {
                         },
                     }
                 );
-                console.log("Registration successful:", response.data);
-
                 this.swicth = response.data.swicth;
 
                 if (response.ok) {
                     this.selectedFiles = [];
                     this.imagePreviews = [];
+                    this.$router.push({
+                        path: '/minh-hiep/tours',
+                        query: { message: 'successCreate' }
+                    });
                 }
             } catch (error) {
                 console.error("Registration failed:", error.response.data);
