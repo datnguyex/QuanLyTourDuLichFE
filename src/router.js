@@ -17,6 +17,7 @@ import Home from "./Page/Home/Home.vue";
 import Profile from "./Page/Profile/Profile.vue";
 import Storage from "./Page/Storage/Storage.vue";
 import Booking from "./Page/Booking/Booking.vue";
+import Payment from "./[user]/Payment.vue";
 
 const routes = [
   {
@@ -92,6 +93,11 @@ const routes = [
         component: DetailTour,
       },
     ],
+  },
+  {
+    path: "/:user/payment",
+    name: "Payment",
+    component: Payment,
   },
 ];
 

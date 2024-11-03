@@ -129,25 +129,28 @@
       </form>
     </div>
     <div class="footer_create-tour">
-      <button @click.prevent="handleSubmit" class="save">Lưu</button>
+      <button @click.prevent="showModal" class="save">Lưu</button> <!-- Updated to show modal -->
       <button class="cancel" @click.prevent="close">Đóng</button>
     </div>
-  </div>
-  <v-container>
-    <v-btn @click="showModal">Xác nhận</v-btn>
+    <!-- Modal for confirmation -->
+    <div v-if="isModalVisible" @click="closeModal" class="modal fade show" style="display: block; z-index: 1050;">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content p-3">
+          <div class="modal-header">
+            <h5 class="modal-title">Xóa Tour</h5>
+          </div>
+          <div class="modal-body">
+            <p>Bạn có chắc chắn muốn xóa tour này không?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="closeModal">Đóng</button>
+            <button type="button" class="btn btn-success" @click="confirmSave">Lưu</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <v-dialog v-model="modalVisible" max-width="290">
-      <v-card>
-        <v-card-title>Xác nhận hành động</v-card-title>
-        <v-card-text>Bạn có chắc chắn muốn thực hiện hành động này?</v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn @click="modalVisible = false">Hủy</v-btn>
-          <v-btn color="primary" @click="confirmAction">Xác nhận</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </v-container>
+  </div>
 </template>
 
 <script>
@@ -157,6 +160,10 @@ import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import moment from "moment";
 import { useRoute } from "vue-router";
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 export default {
   name: "UpdateTour",
@@ -230,7 +237,6 @@ export default {
       }
     });
 
-
     return {
       tourId,
       tourData,
@@ -266,7 +272,8 @@ export default {
       errorNameSchedule: [],
       errorDateTimeSchedule: [],
       imageDefault: "http://127.0.0.1:8000/images/default.png",
-      modalVisible: false,
+      isModalVisible: false,
+      verify: false,
     };
   },
 
@@ -391,13 +398,21 @@ export default {
   },
 
   methods: {
-    showModal() {
-      this.modalVisible = true;
+
+    notifyError(message) {
+      toast.error(`${message} thất bại !`, {
+        autoClose: 1500,
+      }); // ToastOptions
     },
-    confirmAction() {
-      // Xử lý hành động xác nhận ở đây
-      this.modalVisible = false;
-      console.log('Hành động đã được xác nhận');
+    showModal() {
+      this.isModalVisible = true; // Show the modal
+    },
+    confirmSave() {
+      this.isModalVisible = false;
+      this.handleSubmit();
+    },
+    closeModal() {
+      this.isModalVisible = false;
     },
     validateField(
       fieldNameError,
@@ -477,6 +492,9 @@ export default {
       const files = event.target.files;
       if (files && files.length > 5) {
         this.errorImage = "Vui lòng chọn nhiều nhất 5 hình ảnh.";
+        return;
+      } if (files && files.length < 3) {
+        this.errorImage = "Vui lòng chọn nhiều ít 3 hình ảnh.";
         return;
       } else if (files && files.length > 0) {
         this.errorImage = null; // Reset lỗi nếu có
@@ -569,13 +587,6 @@ export default {
     },
 
     checkValidate(regex) {
-      // Check Validate of image
-      // if (this.selectedFiles != []) {
-      //   this.image = this.selectedFiles.map((file) => file.name).join(", ");
-      // }
-
-      console.log(this.image);
-      // Check error of variable
       // Validate fields
       const isValidName = this.validateField(
         "Name",
@@ -715,12 +726,15 @@ export default {
     async handleSubmit() {
       //Check Validate of image
       const checkVar = this.checkValidate();
-      if (!checkVar) return;
+      if (!checkVar) {
+        this.notifyError(".Có lỗi xảy ra vui lòng kiểm tra lại dữ liệu");
+        return;
+      }
 
       // Validate schedules before submission
       const isValidSchedules = this.validateSchedules();
       if (!isValidSchedules) {
-        console.log("Có lỗi trong lịch trình, không gửi dữ liệu.");
+        this.notifyError(".Có lỗi xảy ra vui lòng kiểm tra lại dữ liệu");
         return; // Validation failed
       }
 
@@ -754,12 +768,12 @@ export default {
             },
           }
         );
-        console.log(response);
-        // window.location.href = "http://localhost:3000/minh-hiep/tours";
-        this.$router.push({
-          path: '/minh-hiep/tours',
-          query: { message: 'successEdit' }
-        });
+        if (response.status == 200) {
+          this.$router.push({
+            path: '/minh-hiep/tours',
+            query: { message: 'successEdit' }
+          });
+        }
       } catch (error) {
         console.error("Update failed:", error.response.data);
       }
