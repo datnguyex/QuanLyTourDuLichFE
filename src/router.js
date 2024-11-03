@@ -6,6 +6,7 @@ import TourList from "./[vendor]/tours/Tour.vue";
 import CreateTour from "./[vendor]/tours/CreateTour.vue";
 import UpdateTour from "./[vendor]/tours/UpdateTour.vue";
 import DetailTour from "./[vendor]/tours/DetailTour.vue";
+import Payment from "./[user]/Payment.vue";
 
 const routes = [
   {
@@ -37,6 +38,11 @@ const routes = [
     path: "/:vendor/tours/:id",
     name: "DetailTour",
     component: DetailTour,
+  },
+  {
+    path: "/:user/payment",
+    name: "Payment",
+    component: Payment,
   },
 ];
 

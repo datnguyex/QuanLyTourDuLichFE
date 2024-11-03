@@ -17,23 +17,27 @@
           <div class="tour_list">
             <div class="tour_item" v-for="tour in tours" :key="tour.id">
               <div class="left-section">
-                <img alt="Main tour image" height="120" :src="getImageUrl(tour.images[0].image_url)" width="120" />
+                <img alt="Main tour image" height="120" :src="getImageUrl(tour.images[0]?.image_url)" width="120" />
                 <div class="image-grid">
                   <img v-for="image in tour.images.slice(0, 3)" :key="image.id" alt="Tour image" height="40"
-                    :src="getImageUrl(image.image_url)" width="40" class="image-grid-item" />
+                    :src="getImageUrl(image?.image_url)" width="40" class="image-grid-item" />
                   <div class="view-more" v-if="tour.images.length > 3">
                     Xem ảnh
                   </div>
                 </div>
               </div>
 
-
               <div class="middle-section">
                 <h2>{{ tour.name }}</h2>
                 <div class="rating">
-                  <!-- <i v-for="star in Math.floor(tour.rating)" class="fas fa-star"></i>
-                  <i v-if="tour.rating % 1 !== 0" class="fas fa-star-half-alt"></i>
-                  <span>({{ tour.reviews }} Đánh giá)</span> -->
+                  <!-- <i v-for="star in Math.floor(tour.rating)" class="fas fa-star"></i> -->
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <i class="fas fa-star"></i>
+                  <!-- <i v-if="tour.rating % 1 !== 0" class="fas fa-star-half-alt"></i> -->
+                  <i class="fas fa-star-half-alt"></i>
+                  <!-- <span>({{ tour.reviews }} Đánh giá)</span> -->
                 </div>
                 <div class="location">
                   <i class="fas fa-map-marker-alt"></i>
@@ -107,6 +111,26 @@
         </div>
       </div>
     </div>
+
+    <!-- Modal for confirmation -->
+    <div v-if="isModalVisible" @click="closeModal" class="modal fade show" style="display: block; z-index: 1050;">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content p-3">
+          <div class="modal-header">
+            <h5 class="modal-title">Xóa Tour</h5>
+          </div>
+          <div class="modal-body">
+            <p>Bạn có chắc chắn muốn xóa tour này không?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="closeModal">Đóng</button>
+            <button type="button" class="btn btn-danger" @click="confirmDelete">Xóa</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
   </div>
 </template>
 
@@ -125,6 +149,8 @@ export default {
       meta: {},
       links: {},
       sortBy: 'popular', // Giá trị mặc định
+      tourToDelete: null,
+      isModalVisible: false,
     };
   },
   methods: {
@@ -155,14 +181,11 @@ export default {
     getImageUrl(urlImage) {
       return `http://127.0.0.1:8000/images/${urlImage}`
     },
-
     pageCreate() {
       window.location.href = "http://localhost:3000/minh-hiep/tours/create";
     },
 
     pageEdit($id) {
-      // const secretKey = 'your-secret-key'; // Đặt secret key của bạn ở đây
-      // const hashedId = this.hashId($id, secretKey);
       window.location.href = `http://localhost:3000/minh-hiep/tours/edit/${$id}`;
     },
 
@@ -176,7 +199,34 @@ export default {
       toast.error(`${message} thất bại !`, {
         autoClose: 1500,
       }); // ToastOptions
-    }
+    },
+
+    deleteTour(tourId) {
+      this.tourToDelete = tourId;
+      this.isModalVisible = true;
+    },
+
+    closeModal() {
+      this.isModalVisible = false; // Đóng modal
+    },
+
+    confirmDelete() {
+      if (this.tourToDelete) {
+        axios.delete(`http://127.0.0.1:8000/api/tours/${this.tourToDelete}`)
+          .then(() => {
+            this.notifySuccess("Xóa tour thành công");
+            this.fetchTours();
+          })
+          .catch(error => {
+            console.error("Failed to delete tour:", error);
+            this.notifyError("Xóa tour thất bại");
+          })
+          .finally(() => {
+            this.isModalVisible = false; // Hide the modal after operation
+            this.tourToDelete = null; // Reset the tour ID
+          });
+      }
+    },
   },
   mounted() {
     //FetchData Tour

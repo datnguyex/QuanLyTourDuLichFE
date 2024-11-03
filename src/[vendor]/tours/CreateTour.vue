@@ -369,6 +369,9 @@ export default {
             if (files && files.length > 5) {
                 this.errorImage = "Vui lòng chọn nhiều nhất 5 hình ảnh.";
                 return
+            } else if (files && files.length < 3) {
+                this.errorImage = "Vui lòng chọn nhiều ít 3 hình ảnh.";
+                return;
             }
             else if (files && files.length > 0) {
                 this.errorImage = null; // Reset lỗi nếu có

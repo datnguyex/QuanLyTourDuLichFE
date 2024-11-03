@@ -73,3 +73,49 @@ body {
   padding: 5px;
   font-size: 11px;
 }
+
+.modal {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.modal-dialog {
+  position: absolute;
+  top: 0;
+  right: calc(50% - 161px);
+  bottom: 0;
+}
+
+.modal-lg {
+  max-width: 800px; /* Thay đổi kích thước tối đa của modal */
+}
+
+.modal-content {
+  border-radius: 0.5rem; /* Bo góc modal */
+  min-height: 200px;
+  border: none;
+  box-shadow: 0 0 0px rgba(0, 0, 0, 0.5);
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.modal-header {
+  justify-content: center;
+  text-align: center;
+  border: none;
+}
+
+.modal-footer {
+  gap: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  border: none;
+  button {
+    max-width: 100px;
+    min-width: 70px;
+    padding: 5px;
+  }
+}
