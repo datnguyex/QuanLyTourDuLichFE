@@ -5,7 +5,7 @@
         <Icons @click="handleDisplayRegister(false)" :class="$style.iconClose" :iconName="'iconX'" />
         <h1 :class="$style.title">Enter Verification Code</h1>
         <div :class="$style.subtitle">
-          Please enter the verification code that we sent to 
+          Please enter the verification code that we sent to
           <h3 :class="$style.username">{{ username }}</h3>
         </div>
         <h4 :class="$style.titleVerify">Verification code</h4>
@@ -43,7 +43,7 @@ export default {
       required: true,
     },
   },
-  
+
   setup(props) {
     const code = ref('');
     const errorCode = ref('');
@@ -75,5 +75,5 @@ export default {
 </script>
 
 <style lang="scss" module>
-  @import './SendConfirmation.module.scss'; 
+@import './SendConfirmation.module.scss';
 </style>

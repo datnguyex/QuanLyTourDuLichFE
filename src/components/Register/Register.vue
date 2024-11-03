@@ -3,7 +3,7 @@
     <form v-if="swicth == ''" @submit.prevent="handleSubmit">
       <div :class="$style.wrapper">
         <div :class="$style.parent">
-          <Icons @click="handleDisplayRegister(false)" :class="$style.iconClose" :iconName="'iconX'"/>
+          <Icons @click="handleDisplayRegister(false)" :class="$style.iconClose" :iconName="'iconX'" />
           <h1 :class="$style.title">Register</h1>
           <div :class="$style.subtitle">Email/Mobile Number</div>
           <div :class="$style.parentInput">
@@ -38,19 +38,21 @@
           <div :class="$style.social">
             <div :class="$style.facebookBtn">
               Facebook
-              <Icons :class="$style.facebookIcon" :iconName="'iconFacebook'"/>
+              <Icons :class="$style.facebookIcon" :iconName="'iconFacebook'" />
             </div>
             <div :class="$style.facebookBtn">
               Google
-              <Icons :class="$style.facebookIcon" :iconName="'iconGoogle'"/>
+              <Icons :class="$style.facebookIcon" :iconName="'iconGoogle'" />
             </div>
-          </div>  
+          </div>
         </div>
       </div>
     </form>
 
-    <SendConfirmation :handleDisplayRegister="handleDisplayRegister" :username="username" :setSwicth="setSwicth" v-if="swicth == 'send code'"></SendConfirmation>
-    <MoreInfomation :handleDisplayRegister="handleDisplayRegister" :username="username" :role="role" :password="password" v-if="swicth == 'more infomation'"></MoreInfomation>
+    <SendConfirmation :handleDisplayRegister="handleDisplayRegister" :username="username" :setSwicth="setSwicth"
+      v-if="swicth == 'send code'"></SendConfirmation>
+    <MoreInfomation :handleDisplayRegister="handleDisplayRegister" :username="username" :role="role"
+      :password="password" v-if="swicth == 'more infomation'"></MoreInfomation>
   </div>
 </template>
 
@@ -74,7 +76,7 @@ export default {
     }
   },
   name: 'UserRegister',
-  
+
   setup() {
     const username = ref('');
     const password = ref('');
@@ -104,7 +106,7 @@ export default {
           role: role.value,
         });
         console.log('Registration successful:', response.data);
-        swicth.value = response.data.swicth; 
+        swicth.value = response.data.swicth;
       } catch (error) {
         console.error('Registration failed:', error.response.data);
         if (error.response && error.response.data) {
@@ -112,7 +114,7 @@ export default {
           errorUsername.value = errors.username ? errors.username[0] : "";
           errorPassword.value = errors.password ? errors.password[0] : "";
           errorRole.value = errors.role ? errors.role[0] : "";
-        } 
+        }
       }
     };
 
@@ -133,5 +135,5 @@ export default {
 </script>
 
 <style lang="scss" module>
-@import './Register.module.scss'; 
+@import './Register.module.scss';
 </style>

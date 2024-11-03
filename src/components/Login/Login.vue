@@ -24,63 +24,63 @@
   </form> -->
 
   <!-- <button @click="logValue">valueCurrentUser</button> -->
-  <form @submit.prevent="handleSubmit"  >
+  <form @submit.prevent="handleSubmit">
     <div :class="$style.wrapper">
-    <div :class="$style.parent">
-      <Icons @click="handleDisplayLogin(false)" :class="$style.iconClose" :iconName="'iconX'"/>
+      <div :class="$style.parent">
+        <Icons @click="handleDisplayLogin(false)" :class="$style.iconClose" :iconName="'iconX'" />
         <h1 :class="$style.title">Login/Register</h1>
         <div :class="$style.subtitle">Email/Mobile Number</div>
         <div :class="$style.parentInput">
-            <input v-model="username" :class="$style.inputEmail" type="text" placeholder="Example: @gmail.com">
+          <input v-model="username" :class="$style.inputEmail" type="text" placeholder="Example: @gmail.com">
         </div>
         <label v-if="errorUsername" :class="$style.errorInput">{{ errorUsername }}</label>
         <div :class="$style.parentInput">
-            <input  v-model="password" :class="$style.inputEmail" type="password" placeholder="Password">
+          <input v-model="password" :class="$style.inputEmail" type="password" placeholder="Password">
         </div>
         <label v-if="errorPassword" :class="$style.errorInput">{{ errorPassword }}</label>
         <div :class="$style.parentRole">
           <div :class="$style.parentContent">
-            <input :class="$style.contentInput" v-model="role"  value="1" type="radio" id="customer" name="role" >
+            <input :class="$style.contentInput" v-model="role" value="1" type="radio" id="customer" name="role">
             <label :class="$style.contentLabel" for="customer">Customer</label>
           </div>
 
-            <div :class="$style.parentContent">
-              <input :class="$style.contentInput"  v-model="role"  value="2" type="radio" id="suppliers" name="role" >
-              <label  :class="$style.contentLabel" for="suppliers">Suppliers</label>
-            </div>
-
-              <div :class="$style.parentContent">
-                <input :class="$style.contentInput"  v-model="role"  value="3" type="radio" id="admin" name="role">
-                <label  :class="$style.contentLabel" for="admin">Admin</label>
-              </div>
-            
+          <div :class="$style.parentContent">
+            <input :class="$style.contentInput" v-model="role" value="2" type="radio" id="suppliers" name="role">
+            <label :class="$style.contentLabel" for="suppliers">Suppliers</label>
           </div>
-          <div v-if="errorRole" :class="$style.errorRole">{{ errorRole }}</div>
+
+          <div :class="$style.parentContent">
+            <input :class="$style.contentInput" v-model="role" value="3" type="radio" id="admin" name="role">
+            <label :class="$style.contentLabel" for="admin">Admin</label>
+          </div>
+
+        </div>
+        <div v-if="errorRole" :class="$style.errorRole">{{ errorRole }}</div>
 
         <button :class="$style.btnLogin">
-            Log in
+          Log in
         </button>
         <div :class="$style.btnForgot">
-            Forgot Password?
+          Forgot Password?
         </div>
         <div :class="$style.wrapTitleChoose">
-            <div :class="$style.lineLeft"></div>
-            <div :class="$style.lineContent"> Or login/register with</div>
-            <div :class="$style.lineRight"></div>
+          <div :class="$style.lineLeft"></div>
+          <div :class="$style.lineContent"> Or login/register with</div>
+          <div :class="$style.lineRight"></div>
         </div>
         <div :class="$style.social">
-            <div :class="$style.facebookBtn">
-                Facebook
-              <Icons :class="$style.facebookIcon" :iconName="'iconFacebook'"/>
-            </div>
-            <div :class="$style.facebookBtn">
-              Google
-              <Icons :class="$style.facebookIcon" :iconName="'iconGoogle'"/>
-            </div>
-        </div>  
+          <div :class="$style.facebookBtn">
+            Facebook
+            <Icons :class="$style.facebookIcon" :iconName="'iconFacebook'" />
+          </div>
+          <div :class="$style.facebookBtn">
+            Google
+            <Icons :class="$style.facebookIcon" :iconName="'iconGoogle'" />
+          </div>
+        </div>
 
+      </div>
     </div>
-  </div>
   </form>
 </template>
 
@@ -125,16 +125,16 @@ export default {
 
     const handleDataCurrentUser = async () => {
       try {
-        const token = Cookies.get('tokenLogin'); 
-          const response = await axios.get('http://localhost:8000/api/inforCurrentUser', {
+        const token = Cookies.get('tokenLogin');
+        const response = await axios.get('http://localhost:8000/api/inforCurrentUser', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
-      );
+        );
         console.log('User info retrieved successfully:', response.data.data);
         props.setCurrentUser(response.data.data);
-          
+
       } catch (error) {
         console.error('Failed to retrieve user info:', error.response.data);
         alert(error.response.data.message);
@@ -150,7 +150,7 @@ export default {
         });
         console.log('login successful:', response.data);
         if (response.data.message === 'login sussesfully') {
-          Cookies.set('tokenLogin', response.data.token, { expires: 7} );
+          Cookies.set('tokenLogin', response.data.token, { expires: 7 });
           await handleDataCurrentUser();
         }
       } catch (error) {
@@ -181,5 +181,5 @@ export default {
 </script>
 
 <style lang="scss" module>
-@import './Login.module.scss'; 
+@import './Login.module.scss';
 </style>

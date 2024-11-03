@@ -3,11 +3,12 @@
     <main>
       <router-view />
     </main>
-    
+
     <Login v-if="displayLogin" :handleDisplayLogin="handleDisplayLogin" :setCurrentUser="setCurrentUser"></Login>
     <Register v-if="displayRegister" :handleDisplayRegister="handleDisplayRegister"></Register>
     <button @click="logData">logData</button>
   </div>
+  <router-view />
 </template>
 
 <script>
@@ -30,13 +31,13 @@ export default {
 
     const setCurrentUser = (data) => {
       valueCurrentUser.value = data;
-      displayLogin.value = false; 
+      displayLogin.value = false;
     };
 
     const logData = () => {
       console.log('valueCurrentUser', valueCurrentUser.value);
-      console.log('displayLogin', displayLogin.value); 
-      console.log('displayRegister', displayRegister.value); 
+      console.log('displayLogin', displayLogin.value);
+      console.log('displayRegister', displayRegister.value);
     };
 
     const handleDisplayLogin = (item) => {
@@ -48,11 +49,11 @@ export default {
 
     const handleDataCurrentUser = async () => {
       try {
-        const token = Cookies.get('tokenLogin'); 
-        if(token) {
+        const token = Cookies.get('tokenLogin');
+        if (token) {
           const response = await axios.get('http://localhost:8000/api/inforCurrentUser', {
             headers: {
-              'Authorization': `Bearer ${token}` 
+              'Authorization': `Bearer ${token}`
             }
           });
           valueCurrentUser.value = response.data.data;
@@ -66,7 +67,7 @@ export default {
     };
 
     onMounted(() => {
-      handleDataCurrentUser(); 
+      handleDataCurrentUser();
     });
 
     provide('dataValue', dataValue);
@@ -87,4 +88,20 @@ export default {
     };
   }
 };
+name: "App",
+  components: {},
+};
 </script>
+
+<style>
+body {
+  margin: 0;
+}
+
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+}
+</style>
