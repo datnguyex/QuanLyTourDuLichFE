@@ -1,17 +1,154 @@
 <template>
   <div :class="$style.wrapper">
-    <div><h1>Header</h1></div>
-    <div v-if="valueCurrentUser == null">
-      <button @click="setLogin">Login</button>
+    <div class="bg-white">
+      <div class="px-4 pb-3 border-b">
+        <div class="flex items-center justify-between px-4 py-3">
+
+          <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-1">
+              <span class="text-2xl font-bold text-gray-800">travel</span>
+              <i class="fas fa-dove text-blue-500"></i>
+              <span class="text-2xl font-bold text-gray-800">oka</span>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-4">
+            <div class="flex items-center space-x-1">
+              <img alt="Vietnam flag" class="w-5 h-5"
+                src="https://storage.googleapis.com/a1aa/image/Gk1qI5bKGcoNOR3EPAXEGN3mX6XPN09tnbBZ9ytZDbghwa7E.jpg" />
+              <span class="text-gray-800">VI | VND <i class="fas fa-chevron-down"></i></span>
+            </div>
+            <a class="text-gray-800 flex items-center space-x-1" href="#"><i
+                class="fas fa-percent text-green-500"></i><span>Khuyến mãi</span></a>
+            <a class="text-gray-800 flex items-center space-x-1" href="#"><span>Hỗ trợ <i
+                  class="fas fa-chevron-down"></i></span></a>
+            <a class="text-gray-800" href="#">Hợp tác với chúng tôi</a>
+            <a class="text-gray-800" href="#">Đã Lưu</a>
+            <a class="text-gray-800" href="#">Đặt chỗ của tôi</a>
+            <div class="flex items-center space-x-1">
+              <img alt="User avatar" class="w-5 h-5 rounded-full"
+                src="https://storage.googleapis.com/a1aa/image/WZNnADVMnkqlKVQ5vH3H483t1j2I9eIbX5axZ5u0ejqFCrtTA.jpg"
+                v-if="valueCurrentUser" />
+              <span v-if="valueCurrentUser" class="text-blue-500">{{ valueCurrentUser.name }} | </span>
+              <!-- <span v-if="valueCurrentUser" class="text-yellow-500">| {{ valueCurrentUser.points }} Điểm -->
+              <!-- <i class="fas fa-chevron-down"></i></span> -->
+              <button v-if="valueCurrentUser" @click="setLogout" class="text-blue-500">Đăng xuất</button>
+              <button v-else @click="setLogin" class="text-blue-500">Đăng nhập</button>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="flex items-center space-x-4 px-4">
+          <a class="text-gray-600 hover:text-gray-800" href="#">Khách sạn</a>
+          <a class="text-gray-600 hover:text-gray-800" href="#">Vé máy bay</a>
+          <a class="text-gray-600 hover:text-gray-800" href="#">Vé xe khách</a>
+          <a class="text-gray-600 hover:text-gray-800" href="#">Đưa đón sân bay</a>
+          <a class="text-gray-600 hover:text-gray-800" href="#">Cho thuê xe</a>
+          <a class="text-gray-600 hover:text-gray-800" href="#">Hoạt động &amp; Vui chơi</a>
+          <a class="text-gray-600 hover:text-gray-800" href="#">More <i class="fas fa-chevron-down"></i></a>
+        </div>
+      </div>
+
     </div>
-    <div  v-if="valueCurrentUser == null">
-      <button @click="setRegister">Sign up</button>
+
+    <!-- <div>
+      <h1>Header</h1>
+      <div v-if="valueCurrentUser == null">
+        <button @click="setLogin">Login</button>
+      </div>
+      <div v-if="valueCurrentUser == null">
+        <button @click="setRegister">Sign up</button>
+      </div>
+      <div v-if="valueCurrentUser != null">
+        <button @click="setLogout">Logout</button>
+      </div>
+      <button @click="showCurrentUser">click</button>
+    </div> -->
+
+    <div class="relative">
+      <img alt="Cityscape at night with lights" class="w-full h-96 object-cover" height="600"
+        src="../../../../public/images/CeUH4ecYMTmxnUrXSAKjDzGGU69eNgmHqoXfiYd1Wi9Iqt2OB.jpg" width="1920" />
+      <div class="absolute inset-0 bg-black opacity-50">
+      </div>
+      <div class="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4">
+        <h1 class="text-4xl font-bold">
+          Trải nghiệm vui vẻ cho chuyến đi khó quên
+        </h1>
+        <div class="mt-4 flex items-center bg-white text-black rounded-full px-4 py-2">
+          <i class="fas fa-map-marker-alt text-blue-500">
+          </i>
+          <span class="ml-2">
+            Khám phá điểm đến kế tiếp của bạn
+          </span>
+          <i class="fas fa-chevron-down ml-2">
+          </i>
+        </div>
+        <div class="mt-4 flex items-center bg-white rounded-full px-4 py-2 w-1/2">
+          <input class="flex-grow px-4 py-2 rounded-l-full focus:outline-none"
+            placeholder="Tìm kiếm địa điểm hoặc hoạt động" type="text" />
+          <button class="bg-blue-500 text-white px-4 py-2 rounded-r-full">
+            Tìm kiếm
+          </button>
+        </div>
+      </div>
     </div>
-    <div v-if="valueCurrentUser != null">
-      <button @click="setLogout">Logout</button>
+
+    <div class="bg-white shadow-md rounded-t-lg mt-4 px-4 py-2 flex justify-around">
+      <div class="flex flex-col items-center">
+        <i class="fas fa-th-large text-2xl">
+        </i>
+        <span class="mt-1">
+          Tất cả các hoạt động
+        </span>
+      </div>
+      <div class="flex flex-col items-center">
+        <i class="fas fa-cogs text-2xl">
+        </i>
+        <span class="mt-1">
+          Điểm tham quan
+        </span>
+      </div>
+      <div class="flex flex-col items-center">
+        <i class="fas fa-bus text-2xl">
+        </i>
+        <span class="mt-1">
+          Tour
+        </span>
+      </div>
+      <div class="flex flex-col items-center">
+        <i class="fas fa-child text-2xl">
+        </i>
+        <span class="mt-1">
+          Sân chơi
+        </span>
+      </div>
+      <div class="flex flex-col items-center">
+        <i class="fas fa-suitcase text-2xl">
+        </i>
+        <span class="mt-1">
+          Cần thiết cho du lịch
+        </span>
+      </div>
+      <div class="flex flex-col items-center">
+        <i class="fas fa-spa text-2xl">
+        </i>
+        <span class="mt-1">
+          Spa &amp; Thư giãn
+        </span>
+      </div>
+      <div class="flex flex-col items-center">
+        <i class="fas fa-bullseye text-2xl">
+        </i>
+        <span class="mt-1">
+          Trò chơi &amp; Hoạt động
+        </span>
+      </div>
     </div>
-    <button @click="showCurrentUser">click</button>
+
+
   </div>
+
 </template>
 
 <script>
@@ -33,14 +170,14 @@ export default {
       handleDisplayLogin(true);
     };
     const setRegister = () => {
-      handleDisplayRegister(true); 
+      handleDisplayRegister(true);
     };
 
     const setLogout = () => {
       document.cookie = "tokenLogin=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
       handleDisplayLogin(false);
       setCurrentUser(null);
-    };  
+    };
 
     return {
       valueCurrentUser,
@@ -54,5 +191,5 @@ export default {
 </script>
 
 <style lang="scss" module>
-@import './Header.module.scss'; 
+@import './Header.module.scss';
 </style>
