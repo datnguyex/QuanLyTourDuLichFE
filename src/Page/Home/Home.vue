@@ -8,8 +8,8 @@
               <b-card
            
                 :title="tour.name"
-                img-src="https://picsum.photos/600/300/?image=25"
-                img-alt="Image"
+                :img-src="tour.images.length > 0 ? `http://localhost:8000/${tour.images[0].image_url}` : ''" 
+                :img-alt="tour.images.length > 0 ? `http://localhost:8000/${tour.images[0].alt_text}` : ''" 
                 img-top
                 tag="article"
                 style="max-width: 20rem;"
@@ -35,6 +35,7 @@
   import { onMounted, ref } from 'vue';
   import { inject } from 'vue';
   import { useRouter } from 'vue-router'; 
+  import Swal from 'sweetalert2';
   export default {
     name: 'HomeComponent',
     setup() {
@@ -65,10 +66,18 @@
             'user_id': userID,
             'tour_id': tour_id,
         });
-      alert(response.data.message);
+        if(response.data.message == "Tour added to favorites list successfully.") {
+          Swal.fire({
+        title: 'Thành công!',
+        text: 'Đã thêm vào danh sách yêu thích',
+        icon: 'success',
+        confirmButtonText: 'OK'
+      })
+        }
+    
     } catch (error) {
         if (error.response) {
-            console.error('Failed to retrieve tours:', error.response.data);
+            console.error('Failed to retrieve tours:', error.response);
             alert(error.response.data.error)
         } else {
             console.error('Error:', error.message);
