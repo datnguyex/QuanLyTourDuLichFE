@@ -6,7 +6,7 @@
     
     <Login v-if="displayLogin" :handleDisplayLogin="handleDisplayLogin" :setCurrentUser="setCurrentUser"></Login>
     <Register v-if="displayRegister" :handleDisplayRegister="handleDisplayRegister"></Register>
-    <button @click="logData">logData</button>
+    <!-- <button @click="logData">logData</button> -->
   </div>
 </template>
 

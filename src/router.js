@@ -10,7 +10,9 @@ import Home from './Page/Home/Home.vue';
 import Profile from './Page/Profile/Profile.vue';
 import Storage from './Page/Storage/Storage.vue';
 import Booking from './Page/Booking/Booking.vue';
-
+import TourGuide from './components/TourGuide/TourGuide.vue';
+import AddTourGuide from './components/TourGuide/AddTourGuide/AddTourGuide.vue';
+import UpdateTourGuide from './components/TourGuide/AddTourGuide/UpdateTourGuide/UpdateTourGuide.vue';
 const routes = [
   {
     path: '/', 
@@ -31,6 +33,21 @@ const routes = [
         name: 'Booking',
         component: Booking,
       },
+      {
+        path: '/tourguide',
+        name: 'TourGuide',
+        component: TourGuide,
+      },
+      {
+        path: '/addtourguide',
+        name: 'AddTourGuide',
+        component: AddTourGuide,
+      },
+      {
+        path: '/updatetourguide/:id',
+        name: 'UpdateTourGuide',
+        component: UpdateTourGuide,
+      }
     ],
   },
   {

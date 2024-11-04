@@ -42,6 +42,7 @@
 <script>
 import axios from 'axios';
 import Icons from '../Icons/Icons.vue';
+import Swal from 'sweetalert2';
 
 export default {
   components: {
@@ -104,8 +105,13 @@ export default {
         });
 
         if (response.data.message === 'created account') {
-          alert('Account created successfully');
-          window.location.href = '/';
+          await Swal.fire({
+        title: 'Success!',
+        text: 'Account created successfully.',
+        icon: 'success',
+        confirmButtonText: 'Okay'
+      });
+      window.location.href = '/';
         }
       } catch (error) {
         console.error('Registration failed:', error.response.data);
@@ -127,10 +133,15 @@ export default {
         });
 
         if (response.data.message === 'created account') {
-          alert('Account created successfully');
-          window.location.href = '/login';
-        }
-        this.setSwicth(response.data.swicth); // Call the function with the swicth value
+      await Swal.fire({
+        title: 'Success!',
+        text: 'Account created successfully.',
+        icon: 'success',
+        confirmButtonText: 'Okay'
+      });
+      window.location.href = '/';
+    }
+     
       } catch (error) {
         console.error('Registration failed:', error.response.data);
       }
