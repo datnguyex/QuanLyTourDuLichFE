@@ -12,7 +12,7 @@
 </b-container> -->
 <div v-if="errorValue">{{ errorValue}}</div>
     <div v-if="!errorValue" :class="$style.wrapper">
-           <button @click="logValue">Click</button>
+           <!-- <button @click="logValue">Click</button> -->
         <h1 v-if="valueTour" :class="$style.tourName">{{valueTour.name}}</h1>
         <div :class="$style.wrapTag">
             <div :class="$style.tag1">
