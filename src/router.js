@@ -8,6 +8,7 @@ import DetailTour from "./[vendor]/tours/DetailTour.vue";
 // import UserRegister from './components/Register/Register.vue';
 // import UserLogin from './components/Login/Login.vue';
 import Payment from "./[user]/Payment.vue";
+import Success from "./[user]/Success.vue";
 import UserDetails from "./components/UserDetails/UserDetails.vue";
 import UserAdmin from "./components/UserAdmin/UserAdmin.vue";
 import HomePage from "./components/Home/Home.vue";
@@ -110,11 +111,11 @@ const routes = [
     name: "Payment",
     component: Payment,
   },
-  // {
-  //   path: "/:user/payment/success",
-  //   name: "PaymentSuccess",
-  //   component: Success,
-  // },
+  {
+    path: "/:user/payment/success",
+    name: "PaymentSuccess",
+    component: Success,
+  },
   {
     path: "/:vendor/tours/create",
     name: "CreateTour",
