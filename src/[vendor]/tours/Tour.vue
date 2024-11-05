@@ -9,14 +9,16 @@
     <div class="row">
       <div class="col-md-12">
         <div class="groud_action">
-          <button class="btn_addTour" @click="pageCreate">Thêm tour du lịch</button>
+          <button class="btn_addTour" @click="pageCreate">
+            Thêm tour du lịch
+          </button>
         </div>
         <div class="tour_list">
           <div class="tour_item" v-for="tour in tours" :key="tour.id">
             <div class="left-section">
               <img alt="Main tour image" height="120" :src="getImageUrl(tour.images[0]?.image_url)" width="120" />
               <div class="image-grid">
-                <img v-for="image in tour.images?.slice(0, 3)" :key="image.id" alt="Tour image" height="40"
+                <img v-for="image in tour.images.slice(0, 3)" :key="image.id" alt="Tour image" height="40"
                   :src="getImageUrl(image?.image_url)" width="40" class="image-grid-item" />
                 <div class="view-more" v-if="tour.images.length > 3">
                   Xem ảnh
@@ -24,32 +26,36 @@
               </div>
             </div>
 
-
             <div class="middle-section">
               <h2>{{ tour.name }}</h2>
               <div class="rating">
-                <!-- <i v-for="star in Math.floor(tour.rating)" class="fas fa-star"></i>
-                  <i v-if="tour.rating % 1 !== 0" class="fas fa-star-half-alt"></i>
-                  <span>({{ tour.reviews }} Đánh giá)</span> -->
+                <!-- <i v-for="star in Math.floor(tour.rating)" class="fas fa-star"></i> -->
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <i class="fas fa-star"></i>
+                <!-- <i v-if="tour.rating % 1 !== 0" class="fas fa-star-half-alt"></i> -->
+                <i class="fas fa-star-half-alt"></i>
+                <!-- <span>({{ tour.reviews }} Đánh giá)</span> -->
               </div>
               <div class="location">
                 <i class="fas fa-map-marker-alt"></i>
                 {{ tour.location }}
               </div>
-              <div class="features">
-                <div>
-                  <i class="fas fa-bicycle"></i>
-                  Cho thuê xe đạp
-                </div>
-                <div>
-                  <i class="fas fa-car"></i>
-                  Cho thuê xe hơi
-                </div>
-                <div>
-                  <i class="fas fa-plane"></i>
-                  Đưa đón sân bay
-                </div>
-              </div>
+              <!-- <div class="features">
+                  <div v-if="tour.features.bike_rental">
+                    <i class="fas fa-bicycle"></i>
+                    Cho thuê xe đạp
+                  </div>
+                  <div v-if="tour.features.car_rental">
+                    <i class="fas fa-car"></i>
+                    Cho thuê xe hơi
+                  </div>
+                  <div v-if="tour.features.airport_transfer">
+                    <i class="fas fa-plane"></i>
+                    Đưa đón sân bay
+                  </div>
+                </div> -->
               <div class="payment-info">
                 <i class="fas fa-check-circle"></i>
                 Không Thanh Toán Ngay
@@ -78,8 +84,8 @@
               </button>
             </div>
           </div>
-          <nav aria-label="Page navigation example mt-4" v-if="links">
-            <ul class="pagination mt-4">
+          <nav aria-label="Page navigation example" v-if="links">
+            <ul class="pagination">
               <li class="page-item" :class="{ disabled: !links.prev }">
                 <a class="p-1 page-link" href="#" @click.prevent="fetchTours(meta.current_page - 1)"
                   aria-label="Previous" :disabled="!links.prev">
@@ -104,14 +110,37 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal for confirmation -->
+  <div v-if="isModalVisible" @click="closeModal" class="modal fade show" style="display: block; z-index: 1050">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content p-3">
+        <div class="modal-header">
+          <h5 class="modal-title">Xóa Tour</h5>
+        </div>
+        <div class="modal-body">
+          <p>Bạn có chắc chắn muốn xóa tour này không?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" @click="closeModal">
+            Đóng
+          </button>
+          <button type="button" class="btn btn-danger" @click="confirmDelete">
+            Xóa
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
-import axios from 'axios';
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import axios from "axios";
+// import CryptoJS from 'crypto-js';
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 export default {
   name: "TourList",
   data() {
@@ -119,13 +148,17 @@ export default {
       tours: [],
       meta: {},
       links: {},
-      sortBy: 'popular', // Giá trị mặc định
+      sortBy: "popular", // Giá trị mặc định
+      tourToDelete: null,
+      isModalVisible: false,
     };
   },
   methods: {
     async fetchTours(page = 1) {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/tours/list?page=${page}&per_page=3`);
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/tours/list?page=${page}&per_page=3`
+        );
         if (response.data.tours.length === 0) {
           console.log("Không có tour nào để hiển thị.");
           return;
@@ -133,6 +166,7 @@ export default {
         this.tours = response.data.tours;
         this.meta = response.data.meta;
         this.links = response.data.links;
+        console.log(this.tours);
       } catch (error) {
         console.error("Failed to fetch tour data:", error);
       }
@@ -143,21 +177,18 @@ export default {
         const response = await axios.get(`/api/tours/sort?sort=${this.sortBy}`);
         this.tours = response.data;
       } catch (error) {
-        console.error('Có lỗi xảy ra khi lấy danh sách tour:', error);
+        console.error("Có lỗi xảy ra khi lấy danh sách tour:", error);
       }
     },
 
     getImageUrl(urlImage) {
-      return `http://127.0.0.1:8000/images/${urlImage}`
+      return `http://127.0.0.1:8000/images/${urlImage}`;
     },
-
     pageCreate() {
       window.location.href = "http://localhost:3000/minh-hiep/tours/create";
     },
 
     pageEdit($id) {
-      // const secretKey = 'your-secret-key'; // Đặt secret key của bạn ở đây
-      // const hashedId = this.hashId($id, secretKey);
       window.location.href = `http://localhost:3000/minh-hiep/tours/edit/${$id}`;
     },
 
@@ -171,36 +202,64 @@ export default {
       toast.error(`${message} thất bại !`, {
         autoClose: 1500,
       }); // ToastOptions
-    }
-  },
+    },
 
+    deleteTour(tourId) {
+      this.tourToDelete = tourId;
+      this.isModalVisible = true;
+    },
+
+    closeModal() {
+      this.isModalVisible = false; // Đóng modal
+    },
+
+    confirmDelete() {
+      if (this.tourToDelete) {
+        axios
+          .delete(`http://127.0.0.1:8000/api/tours/${this.tourToDelete}`)
+          .then(() => {
+            this.notifySuccess("Xóa tour thành công");
+            this.fetchTours();
+          })
+          .catch((error) => {
+            console.error("Failed to delete tour:", error);
+            this.notifyError("Xóa tour thất bại");
+          })
+          .finally(() => {
+            this.isModalVisible = false; // Hide the modal after operation
+            this.tourToDelete = null; // Reset the tour ID
+          });
+      }
+    },
+  },
   mounted() {
     //FetchData Tour
     this.fetchTours();
     const message = this.$route.query.message;
 
-    //Send Notification 
+    //Send Notification
     switch (message) {
       case "successEdit":
         this.notifySuccess("Sửa");
         break;
       case "errorEdit":
         this.notifyError("Sửa");
-        break
+        break;
       case "successCreate":
         this.notifySuccess("Thêm");
         break;
       case "errorCreate":
         this.notifyError("Thêm");
-        break
+        break;
     }
 
     //Replace url when success action
     setTimeout(() => {
-      this.$router.replace({ query: { ...this.$route.query, message: undefined } });
-    }, 3000)
-  }
-
+      this.$router.replace({
+        query: { ...this.$route.query, message: undefined },
+      });
+    }, 3000);
+  },
 };
 </script>
 
