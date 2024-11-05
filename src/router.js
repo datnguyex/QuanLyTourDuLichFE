@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 // import UserRegister from './components/Register/Register.vue';
 // import UserLogin from './components/Login/Login.vue';
 import UserDetails from './components/UserDetails/UserDetails.vue';
+import UserAdmin from './components/UserAdmin/UserAdmin.vue'
 import HomePage from './components/Home/Home.vue'
 import DefaultLayout from './Layout/DefaultLayout/DefaultLayout.vue';
 import HeaderOnly from './Layout/HeaderOnly/HeaderOnly.vue';
@@ -54,6 +55,11 @@ const routes = [
     path:'/UserDetails',
     name: 'UserDetails',
     component: UserDetails,
+  },
+  {
+    path:'/UserAdmin',
+    name: 'UserAdmin',
+    component: UserAdmin,
   },
   {
     path:'/HomePage',
