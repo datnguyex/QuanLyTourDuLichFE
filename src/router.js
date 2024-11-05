@@ -8,18 +8,21 @@ import UpdateTour from "./[vendor]/tours/UpdateTour.vue";
 import DetailTour from "./[vendor]/tours/DetailTour.vue";
 // import UserRegister from './components/Register/Register.vue';
 // import UserLogin from './components/Login/Login.vue';
+// import Home from "./Page/Home/Home.vue";
+import Payment from "./[user]/Payment.vue";
+import Success from "./[user]/Success.vue";
+
 import UserDetails from "./components/UserDetails/UserDetails.vue";
 import HomePage from "./components/Home/Home.vue";
 import DefaultLayout from "./Layout/DefaultLayout/DefaultLayout.vue";
 import HeaderOnly from "./Layout/HeaderOnly/HeaderOnly.vue";
 import Detail from "./Page/Detail/Detail.vue";
-// import Home from "./Page/Home/Home.vue";
 import Profile from "./Page/Profile/Profile.vue";
 import Storage from "./Page/Storage/Storage.vue";
 import Booking from "./Page/Booking/Booking.vue";
-import Payment from "./[user]/Payment.vue";
-import Success from "./[user]/Success.vue";
-
+import TourGuide from "./components/TourGuide/TourGuide.vue";
+import AddTourGuide from "./components/TourGuide/AddTourGuide/AddTourGuide.vue";
+import UpdateTourGuide from "./components/TourGuide/AddTourGuide/UpdateTourGuide/UpdateTourGuide.vue";
 const routes = [
   {
     path: "/register",
@@ -45,6 +48,21 @@ const routes = [
         path: "/booking/:id",
         name: "Booking",
         component: Booking,
+      },
+      {
+        path: "/tourguide",
+        name: "TourGuide",
+        component: TourGuide,
+      },
+      {
+        path: "/addtourguide",
+        name: "AddTourGuide",
+        component: AddTourGuide,
+      },
+      {
+        path: "/updatetourguide/:id",
+        name: "UpdateTourGuide",
+        component: UpdateTourGuide,
       },
     ],
   },
