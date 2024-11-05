@@ -14,14 +14,12 @@ import HomePage from "./components/Home/Home.vue";
 import DefaultLayout from "./Layout/DefaultLayout/DefaultLayout.vue";
 import HeaderOnly from "./Layout/HeaderOnly/HeaderOnly.vue";
 import Detail from "./Page/Detail/Detail.vue";
-import Home from "./Page/Home/Home.vue";
 import Profile from "./Page/Profile/Profile.vue";
 import Storage from "./Page/Storage/Storage.vue";
 import Booking from "./Page/Booking/Booking.vue";
 import TourGuide from "./components/TourGuide/TourGuide.vue";
 import AddTourGuide from "./components/TourGuide/AddTourGuide/AddTourGuide.vue";
 import UpdateTourGuide from "./components/TourGuide/AddTourGuide/UpdateTourGuide/UpdateTourGuide.vue";
-
 const routes = [
   {
     path: "/register",
@@ -36,7 +34,7 @@ const routes = [
       {
         path: "/",
         name: "Home",
-        component: Home,
+        component: HomePage,
       },
       {
         path: "/detail/:id",
@@ -101,16 +99,6 @@ const routes = [
         component: TourList,
       },
       {
-        path: "/:vendor/tours/create",
-        name: "CreateTour",
-        component: CreateTour,
-      },
-      {
-        path: "/:vendor/tours/edit/:id",
-        name: "UpdateTour",
-        component: UpdateTour,
-      },
-      {
         path: "/:vendor/tours/:id",
         name: "DetailTour",
         component: DetailTour,
@@ -121,6 +109,21 @@ const routes = [
     path: "/:user/payment",
     name: "Payment",
     component: Payment,
+  },
+  {
+    path: "/:user/payment/success",
+    name: "PaymentSuccess",
+    component: Success,
+  },
+  {
+    path: "/:vendor/tours/create",
+    name: "CreateTour",
+    component: CreateTour,
+  },
+  {
+    path: "/:vendor/tours/edit/:id",
+    name: "UpdateTour",
+    component: UpdateTour,
   },
 ];
 
