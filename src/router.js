@@ -20,6 +20,7 @@ import Booking from "./Page/Booking/Booking.vue";
 import TourGuide from "./components/TourGuide/TourGuide.vue";
 import AddTourGuide from "./components/TourGuide/AddTourGuide/AddTourGuide.vue";
 import UpdateTourGuide from "./components/TourGuide/AddTourGuide/UpdateTourGuide/UpdateTourGuide.vue";
+import Success from "./[user]/Success.vue";
 const routes = [
   {
     path: "/register",
