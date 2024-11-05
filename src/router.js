@@ -110,11 +110,11 @@ const routes = [
     name: "Payment",
     component: Payment,
   },
-  {
-    path: "/:user/payment/success",
-    name: "PaymentSuccess",
-    component: Success,
-  },
+  // {
+  //   path: "/:user/payment/success",
+  //   name: "PaymentSuccess",
+  //   component: Success,
+  // },
   {
     path: "/:vendor/tours/create",
     name: "CreateTour",
