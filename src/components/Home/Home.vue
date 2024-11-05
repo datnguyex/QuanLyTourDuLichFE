@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  <div class="bg-white shadow-md rounded-t-lg mt-4 px-4 py-2 flex justify-around">
+  <div class="bg-white shadow-md rounded-t-lg px-4 py-2 flex justify-around">
     <div class="flex flex-col items-center">
       <i class="fas fa-th-large text-2xl">
       </i>
@@ -284,7 +284,7 @@
 
 
     <!-- Vé Vui Chơi & Tour Section -->
-    <div class="p-8" id="app">
+    <div class="p-8">
       <h1 class="text-2xl font-bold mb-4">
         Tour du lịch nước ngoài được lựa chọn nhiều
       </h1>
@@ -297,60 +297,70 @@
         </button>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-5 gap-2">
-        <div class="col-span-1">
+        <div class="col-span-1 bg-white shadow rounded">
           <img alt="Tour Bali" class="w-full h-auto mb-2 rounded-sm" height="200"
             src="https://storage.googleapis.com/a1aa/image/PKiFGSzKci60CtiHbhFhKidqnBRnU71rp0m46fwClHFmO22JA.jpg"
             width="200" />
-          <p class="font-medium">
-            Tour trọn gói Bali (Kintamani, Bali Swing, đền Tanah Lot, cổng...)
-          </p>
-          <p class="text-orange-500">
-            VND 10.990.000
-          </p>
+          <div class="p-2">
+            <p class="font-medium">
+              Tour trọn gói Bali (Kintamani, Bali Swing, đền Tanah Lot, cổng...)
+            </p>
+            <p class="text-orange-500">
+              VND 10.990.000
+            </p>
+          </div>
         </div>
-        <div class="col-span-1">
+        <div class="col-span-1 bg-white shadow rounded">
           <img alt="Tour Thái Lan" class="w-full h-auto mb-2 rounded-sm" height="200"
             src="https://storage.googleapis.com/a1aa/image/VbFU2byuxOZ3LVHZy2sBgTFVmeK8B7TvD5DQPiGQJAapO22JA.jpg"
             width="200" />
-          <p class="font-medium">
-            Tour Thái Lan trọn gói (Bangkok, Pattaya) - 5N4Đ
-          </p>
-          <p class="text-orange-500">
-            VND 6.990.000
-          </p>
+          <div class="p-2">
+            <p class="font-medium">
+              Tour Thái Lan trọn gói (Bangkok, Pattaya) - 5N4Đ
+            </p>
+            <p class="text-orange-500">
+              VND 6.990.000
+            </p>
+          </div>
         </div>
-        <div class="col-span-1">
+        <div class="col-span-1 bg-white shadow rounded">
           <img alt="Tour Bali" class="w-full h-auto mb-2 rounded-sm" height="200"
             src="https://storage.googleapis.com/a1aa/image/PKiFGSzKci60CtiHbhFhKidqnBRnU71rp0m46fwClHFmO22JA.jpg"
             width="200" />
-          <p class="font-medium">
-            Tour trọn gói Bali (Kintamani, Bali Swing, đền Tanah Lot, cổng...)
-          </p>
-          <p class="text-orange-500">
-            VND 10.990.000
-          </p>
+          <div class="p-2">
+            <p class="font-medium">
+              Tour trọn gói Bali (Kintamani, Bali Swing, đền Tanah Lot, cổng...)
+            </p>
+            <p class="text-orange-500">
+              VND 10.990.000
+            </p>
+          </div>
         </div>
-        <div class="col-span-1">
+        <div class="col-span-1 bg-white shadow rounded">
           <img alt="Tour Singapore" class="w-full h-auto mb-2 rounded-sm" height="200"
             src="https://storage.googleapis.com/a1aa/image/C5xkppftIF32Uaihl1tbg8Ldo1MNs9XOLhZL9QcZSG3nO22JA.jpg"
             width="200" />
-          <p class="font-medium">
-            Tour Singapore trọn gói (Gardens by the Bay, đảo ...)
-          </p>
-          <p class="text-orange-500">
-            VND 10.390.000
-          </p>
+          <div class="p-2">
+            <p class="font-medium">
+              Tour Singapore trọn gói (Gardens by the Bay, đảo ...)
+            </p>
+            <p class="text-orange-500">
+              VND 10.390.000
+            </p>
+          </div>
         </div>
-        <div class="col-span-1">
+        <div class="col-span-1 bg-white shadow rounded">
           <img alt="Tour Singapore và Malaysia" class="w-full h-auto mb-2 rounded-sm" height="200"
             src="https://storage.googleapis.com/a1aa/image/ff5vQLQAxSnRA0z67wxdH83WLDshIuBhO1puSm1UyCzRdstTA.jpg"
             width="200" />
-          <p class="font-medium">
-            Tour Singapore và Malaysia trọn gói (Gardens by the Bay, Tháp ...)
-          </p>
-          <p class="text-orange-500">
-            VND 12.390.000
-          </p>
+          <div class="p-2">
+            <p class="font-medium">
+              Tour Singapore và Malaysia trọn gói (Gardens by the Bay, Tháp ...)
+            </p>
+            <p class="text-orange-500">
+              VND 12.390.000
+            </p>
+          </div>
         </div>
       </div>
       <div class="flex justify-center mt-6">
@@ -398,7 +408,7 @@
         <div class="bg-white shadow rounded-lg overflow-hidden">
           <img alt="Sun World Ba Na Hills tại Đà Nẵng" class="w-full h-48 object-cover" height="200"
             src="@/assets/Images/rZpYfgjLXn2JGi2ueIdfe993X6uSSNRyX0yIDzzlYcChWz2OB.jpg" width="300" />
-          <div class="p-4">
+          <div class="p-2">
             <h2 class="text-lg font-bold text-gray-800">
               Sun World Ba Na Hills tại Đà Nẵng
             </h2>
@@ -410,7 +420,7 @@
         <div class="bg-white shadow rounded-lg overflow-hidden">
           <img alt="Vé Công viên nước Đà Nẵng Mikazuki Water Park 365" class="w-full h-48 object-cover" height="200"
             src="@/assets/Images/JGjioJOCBI6IORZUjhGEC5Wr01LYdScwT30sAu9yJdyZNb7E.jpg" width="300" />
-          <div class="p-4">
+          <div class="p-2">
             <h2 class="text-lg font-bold text-gray-800">
               Vé Công viên nước Đà Nẵng Mikazuki Water Park 365
             </h2>
@@ -422,7 +432,7 @@
         <div class="bg-white shadow rounded-lg overflow-hidden">
           <img alt="Vé công viên suối khoáng nóng Núi Thần Tài" class="w-full h-48 object-cover" height="200"
             src="@/assets/Images/eaI7ZI4HLiSACqE4paefaFPXesAwdKiPHLzb0vgNK000Wz2OB.jpg" width="300" />
-          <div class="p-4">
+          <div class="p-2">
             <h2 class="text-lg font-bold text-gray-800">
               Vé công viên suối khoáng nóng Núi Thần Tài
             </h2>
@@ -434,7 +444,7 @@
         <div class="bg-white shadow rounded-lg overflow-hidden">
           <img alt="Vé Đà Nẵng Downtown" class="w-full h-48 object-cover" height="200"
             src="@/assets/Images/cMfPdFNZGOWdCKz9dYsuhvrvDwKXEXH5m8bMZj5MPWw1a22JA.jpg" width="300" />
-          <div class="p-4">
+          <div class="p-2">
             <h2 class="text-lg font-bold text-gray-800">
               Vé Đà Nẵng Downtown
             </h2>
@@ -446,9 +456,9 @@
         <div class="bg-white shadow rounded-lg overflow-hidden">
           <img alt="Combo vé vui chơi siêu tiết kiệm từ Traveloka tại Đà Nẵng - Hội An" class="w-full h-48 object-cover"
             height="200" src="@/assets/Images/nbo4KTPzxv4lFFTRPWqMN5Kf7J4hhBE1ucb0rF1Jbgb1a22JA.jpg" width="300" />
-          <div class="p-4">
+          <div class="p-2">
             <h2 class="text-lg font-bold text-gray-800">
-              Combo vé vui chơi siêu tiết kiệm từ Traveloka tại Đà Nẵng - Hội An
+              Combo vé vui chơi siêu tiết kiệm từ - Hội An
             </h2>
             <p class="text-gray-500 line-through">
               VND 1.050.000
@@ -531,9 +541,9 @@
 </template>
 
 <script>
+document.title = "Trang chủ";
 export default {
   name: 'HomePage',
-
   methods: {
     handleSearch() {
       this.$router.push("/search?key=")

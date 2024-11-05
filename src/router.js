@@ -21,6 +21,7 @@ import Booking from "./Page/Booking/Booking.vue";
 import TourGuide from "./components/TourGuide/TourGuide.vue";
 import AddTourGuide from "./components/TourGuide/AddTourGuide/AddTourGuide.vue";
 import UpdateTourGuide from "./components/TourGuide/AddTourGuide/UpdateTourGuide/UpdateTourGuide.vue";
+import Search from "./[user]/Search.vue";
 const routes = [
   {
     path: "/register",
@@ -36,6 +37,11 @@ const routes = [
         path: "/",
         name: "Home",
         component: HomePage,
+      },
+      {
+        path: "/search",
+        name: "Search",
+        component: Search,
       },
       {
         path: "/detail/:id",

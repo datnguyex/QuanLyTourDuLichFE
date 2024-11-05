@@ -1,7 +1,9 @@
 <template>
     <div>
-        <div class="header_create-tour"><label> Thông tin cấu hình tour du lịch </label></div>
-        <div class="container">
+        <div class="header_create-tour">
+            <label> Thông tin cấu hình tour du lịch </label>
+        </div>
+        <div class="container p-0 my-8 rounded">
             <form class="form_tour" v-if="swicth == ''" @submit.prevent="handleSubmit">
                 <!-- image -->
                 <div class="form-group">
@@ -10,8 +12,8 @@
                         <div class="image_tours" v-if="imagePreviews.length">
                             <div class="image-item" v-for="(image, index) in imagePreviews" :key="index">
                                 <img class="image_tours-item" :src="image" alt="Image" width="100" />
-                                <button class="btn_removeImage" @click.prevent="removeImage(index)"><i
-                                        class="fas fa-trash"></i>
+                                <button class="btn_removeImage" @click.prevent="removeImage(index)">
+                                    <i class="fas fa-trash"></i>
                                 </button>
                             </div>
                             <img class="image_tours-item button" :src="imageDefault" alt="Image" width="100"
@@ -42,7 +44,7 @@
                 </div>
 
                 <!-- start date -->
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <div class="time_tour">
                         <div class="time_start">
                             <label> Ngày bắt đầu </label>
@@ -57,7 +59,7 @@
                             <div v-if="errorEndDate" class="error">{{ errorEndDate }}</div>
                         </div>
                     </div>
-                </div>
+                </div> -->
 
                 <!-- end date -->
                 <div class="form-group">
@@ -94,21 +96,26 @@
                             <div class="schedule-item_name">
                                 <input :placeholder="'Nhập vào tên lịch trình ' + (index + 1)" type="text"
                                     v-model="schedule.name_schedule" />
-                                <div v-if="errorNameSchedule[index]" class="error">{{ errorNameSchedule[index] }}</div>
+                                <div v-if="errorNameSchedule[index]" class="error">
+                                    {{ errorNameSchedule[index] }}
+                                </div>
                             </div>
                             <div class="schedule-item_time">
                                 <VueDatePicker v-model="schedule.time_schedule" placeholder="Chọn thời gian lịch trình">
                                 </VueDatePicker>
-                                <div v-if="errorDateTimeSchedule[index]" class="error">{{ errorDateTimeSchedule[index]
-                                    }}
+                                <div v-if="errorDateTimeSchedule[index]" class="error">
+                                    {{ errorDateTimeSchedule[index] }}
                                 </div>
                             </div>
-                            <button class="btn_removeSchedule" @click.prevent="removeSchedule(index)"><i
-                                    class="fas fa-trash"></i></button>
+                            <button class="btn_removeSchedule" @click.prevent="removeSchedule(index)">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </div>
                     </div>
                     <div v-if="errorSchedules" class="error">{{ errorSchedules }}</div>
-                    <button class="btn_addSchedule" @click.prevent="addSchedule">Thêm lịch trình +</button>
+                    <button class="btn_addSchedule" @click.prevent="addSchedule">
+                        Thêm lịch trình +
+                    </button>
                 </div>
 
                 <!-- desciption -->
@@ -134,6 +141,8 @@ import { ref } from "vue";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import moment from "moment";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 export default {
     name: "CreateTour",
@@ -144,7 +153,8 @@ export default {
         // Sử dụng ref để quản lý start và end date
         const start = ref(null);
         const end = ref(null);
-        const regex = /^(?!.*\s{2})(?!.*\u3000)(?=.*[\p{L}])(?!^\d+$)[\p{L}0-9\s]+$/u;
+        const regex =
+            /^(?!.*\s{2})(?!.*\u3000)(?=.*[\p{L}])(?!^\d+$)[\p{L}0-9\s]+$/u;
         // Function cập nhật giá trị start_date và end_date
         return {
             start,
@@ -154,12 +164,12 @@ export default {
     },
     watch: {
         // Theo dõi sự thay đổi của start và end date
-        start(val) {
-            this.start_date = moment(val).format("YYYY/MM/DD");
-        },
-        end(val) {
-            this.end_date = moment(val).format("YYYY/MM/DD");
-        },
+        // start(val) {
+        //     this.start_date = moment(val).format("YYYY/MM/DD");
+        // },
+        // end(val) {
+        //     this.end_date = moment(val).format("YYYY/MM/DD");
+        // },
         name: {
             handler(val) {
                 this.name = val;
@@ -215,24 +225,31 @@ export default {
             },
             deep: true,
         },
-        start_date: {
-            handler(val) {
-                this.start_date = val;
-                this.checkDate();
-            },
-            deep: true,
-        },
-        end_date: {
-            handler(val) {
-                this.end_date = val;
-                this.checkDate();
-            },
-            deep: true,
-        },
+        // start_date: {
+        //     handler(val) {
+        //         this.start_date = val;
+        //         this.checkDate();
+        //     },
+        //     deep: true,
+        // },
+        // end_date: {
+        //     handler(val) {
+        //         this.end_date = val;
+        //         this.checkDate();
+        //     },
+        //     deep: true,
+        // },
         location: {
             handler(val) {
                 this.location = val;
-                this.validateField("Location", "Địa chỉ", this.location, 20, 100, this.regex);
+                this.validateField(
+                    "Location",
+                    "Địa chỉ",
+                    this.location,
+                    20,
+                    100,
+                    this.regex
+                );
             },
             deep: true,
         },
@@ -290,12 +307,17 @@ export default {
             errorDateTimeSchedule: [],
             selectedFiles: [],
             imagePreviews: [],
-            schedules: [{ name_schedule: "", time_schedule: "" }],
-            imageDefault: "http://127.0.0.1:8000/images/default.png"
+            schedules: [],
+            imageDefault: "http://127.0.0.1:8000/images/default.png",
         };
     },
 
     methods: {
+        notifyError(message) {
+            toast.error(`${message} thất bại !`, {
+                autoClose: 1500,
+            }); // ToastOptions
+        },
         validateField(
             fieldNameError,
             fieldName,
@@ -307,7 +329,9 @@ export default {
             if (!fieldValue || fieldValue.trim() === "") {
                 // Kiểm tra nếu error là mảng
                 if (Array.isArray(this[`error${fieldNameError}`])) {
-                    this[`error${fieldNameError}`].push(`${fieldName} không được để trống`);
+                    this[`error${fieldNameError}`].push(
+                        `${fieldName} không được để trống`
+                    );
                 } else {
                     this[`error${fieldNameError}`] = `${fieldName} không được để trống`;
                 }
@@ -317,9 +341,13 @@ export default {
             if (fieldValue.length < minLength || fieldValue.length > maxLength) {
                 // Kiểm tra nếu error là mảng
                 if (Array.isArray(this[`error${fieldNameError}`])) {
-                    this[`error${fieldNameError}`].push(`${fieldName} phải có ít nhất ${minLength} ký tự hoặc ít hơn ${maxLength} ký tự`);
+                    this[`error${fieldNameError}`].push(
+                        `${fieldName} phải có ít nhất ${minLength} ký tự hoặc ít hơn ${maxLength} ký tự`
+                    );
                 } else {
-                    this[`error${fieldNameError}`] = `${fieldName} phải có ít nhất ${minLength} ký tự hoặc ít hơn ${maxLength} ký tự`;
+                    this[
+                        `error${fieldNameError}`
+                    ] = `${fieldName} phải có ít nhất ${minLength} ký tự hoặc ít hơn ${maxLength} ký tự`;
                 }
                 return false;
             }
@@ -342,9 +370,9 @@ export default {
             }
             if (regexPattern && !regexPattern.test(fieldValue)) {
                 if (Array.isArray(this[`error${fieldNameError}`])) {
-                    this[
-                        `error${fieldNameError}`
-                    ].push(`${fieldName} không được chứa ký tự đặc biệt`);
+                    this[`error${fieldNameError}`].push(
+                        `${fieldName} không được chứa ký tự đặc biệt`
+                    );
                 } else {
                     this[
                         `error${fieldNameError}`
@@ -368,12 +396,11 @@ export default {
             const files = event.target.files;
             if (files && files.length > 5) {
                 this.errorImage = "Vui lòng chọn nhiều nhất 5 hình ảnh.";
-                return
+                return;
             } else if (files && files.length < 3) {
                 this.errorImage = "Vui lòng chọn nhiều ít 3 hình ảnh.";
                 return;
-            }
-            else if (files && files.length > 0) {
+            } else if (files && files.length > 0) {
                 this.errorImage = null; // Reset lỗi nếu có
                 this.selectedFiles = Array.from(files);
                 this.imagePreviews = this.selectedFiles.map((file) =>
@@ -381,7 +408,7 @@ export default {
                 );
             } else {
                 this.errorImage = "Vui lòng chọn ít nhất một tệp hình ảnh.";
-                return
+                return;
             }
         },
 
@@ -403,7 +430,7 @@ export default {
             this.schedules.push({ name_schedule: "", time_schedule: "" });
         },
 
-        //Remove schedule 
+        //Remove schedule
         removeSchedule(index) {
             this.schedules.splice(index, 1);
         },
@@ -464,30 +491,93 @@ export default {
         },
 
         checkValidate(regex) {
+            console.log("Selected Files:", this.selectedFiles);
+            console.log("Name:", this.name);
+            console.log("Location:", this.location);
+            console.log("Description:", this.description);
+            console.log("Duration:", this.duration);
+            console.log("Price:", this.price);
+            console.log("Image:", this.image);
             // Check Validate of image
             this.image = this.selectedFiles.map((file) => file.name).join(", ");
             // Check error of variable
             // Validate fields
-            const isValidName = this.validateField("Name", "Tên tour", this.name, 20, 100, regex);
-            const isValidLocation = this.validateField("Location", "Địa chỉ", this.location, 20, 100, regex);
-            const isValidDescription = this.validateField("Description", "Mô tả", this.description, 10, 500, null);
-            const isValidDuration = this.validateField("Duration", "Thời gian dự kiến", this.duration, 1, 3, /^[0-9]+$/, (value) => {
-                return value <= 0 ? "Thời gian phải là số dương lớn hơn 0" : "";
-            });
-            const isValidPrice = this.validateField("Price", "Giá", this.price, 1, 10, /^[0-9]+$/, (value) => {
-                return value <= 0 ? "Giá phải là số dương lớn hơn 0" : "";
-            });
-            const isValidImage = this.validateField("Image", "Hình ảnh", this.image, 1, 500, /\.(jpg|svg|png)$/i);
+            const isValidName = this.validateField(
+                "Name",
+                "Tên tour",
+                this.name,
+                20,
+                100,
+                regex
+            );
+            console.log("isValidName:", isValidName);
+            const isValidLocation = this.validateField(
+                "Location",
+                "Địa chỉ",
+                this.location,
+                20,
+                100,
+                regex
+            );
+            console.log("isValidLocation:", isValidLocation);
+            const isValidDescription = this.validateField(
+                "Description",
+                "Mô tả",
+                this.description,
+                10,
+                500,
+                null
+            );
+            console.log("isValidDescription:", isValidDescription);
+            const isValidDuration = this.validateField(
+                "Duration",
+                "Thời gian dự kiến",
+                this.duration,
+                1,
+                3,
+                /^[0-9]+$/,
+                (value) => {
+                    return value <= 0 ? "Thời gian phải là số dương lớn hơn 0" : "";
+                }
+            );
+            console.log("isValidDuration:", isValidDuration);
+            const isValidPrice = this.validateField(
+                "Price",
+                "Giá",
+                this.price,
+                1,
+                10,
+                /^[0-9]+$/,
+                (value) => {
+                    return value <= 0 ? "Giá phải là số dương lớn hơn 0" : "";
+                }
+            );
+            console.log("isValidPrice:", isValidPrice);
+            const isValidImage = this.validateField(
+                "Image",
+                "Hình ảnh",
+                this.image,
+                1,
+                500,
+                /\.(jpg|svg|png)$/i
+            );
+            console.log("isValidImage:", isValidImage);
 
-            //Check Validate of Date 
-            const validDate = this.checkDate();
+            //Check Validate of Date
+            // const validDate = this.checkDate();
             // Check if any validation failed
-            if (!isValidName || !isValidLocation || !isValidDescription || !isValidDuration || !isValidPrice || !isValidImage || !validDate) {
+            if (
+                !isValidName ||
+                !isValidLocation ||
+                !isValidDescription ||
+                !isValidDuration ||
+                !isValidPrice ||
+                !isValidImage
+            ) {
                 return false; // Validation failed
             }
 
             return true; // Validation succeeded
-
         },
 
         validateSchedules() {
@@ -496,7 +586,7 @@ export default {
                 this.errorSchedules = "Vui lòng thêm lịch trình";
                 return false;
             } else {
-                this.errorSchedules = ""
+                this.errorSchedules = "";
             }
             let isValidNameSchedule = true;
             let isValidTimeSchedule = true;
@@ -507,48 +597,55 @@ export default {
             }
 
             this.schedules.forEach((schedule, index) => {
-                const isValid = this.validateField("NameSchedule", "Tên lịch trình", schedule.name_schedule, 10, 100, this.regex);
-                this.errorNameSchedule[index] = isValid ? "" : `Tên lịch trình ${index + 1} không hợp lệ`;
+                const isValid = this.validateField(
+                    "NameSchedule",
+                    "Tên lịch trình",
+                    schedule.name_schedule,
+                    10,
+                    100,
+                    this.regex
+                );
+                this.errorNameSchedule[index] = isValid
+                    ? ""
+                    : `Tên lịch trình ${index + 1} không hợp lệ`;
                 isValidNameSchedule = isValidNameSchedule && isValid;
                 const currentDate = schedule.time_schedule;
                 if (index < this.schedules.length - 1) {
                     const nextDate = this.schedules[index + 1].time_schedule;
                     if (nextDate < currentDate) {
-                        this.errorDateTimeSchedule[index] = `Thời gian lịch trình ${index + 1} không được bé hơn lịch trình ${index + 2}`;
+                        this.errorDateTimeSchedule[index] = `Thời gian lịch trình ${index + 1
+                            } không được bé hơn lịch trình ${index + 2}`;
                         isValidTimeSchedule = false;
                     }
                 }
                 // Validate with start_date and end_date
-                const startDate = moment(this.start).format('YYYY/MM/DD HH:mm');
-                const endDate = moment(this.end).format('YYYY/MM/DD HH:mm');
-                if (currentDate < startDate || currentDate > endDate) {
-                    if (this.start == null || this.end == null) {
-                        this.errorDateTimeSchedule[index] = 'Vui lòng chọn ngày bắt đầu và ngày kết thúc chuyến đi!';
-                    } else {
-                        this.errorDateTimeSchedule[index] = `Thời gian lịch trình ${index + 1} phải nằm trong khoảng từ ${this.start_date} đến ${this.end_date}`;
-                    }
-                    isValidTimeSchedule = false;
-                }
+                // const startDate = moment(this.start).format('YYYY/MM/DD HH:mm');
+                // const endDate = moment(this.end).format('YYYY/MM/DD HH:mm');
+                // if (currentDate < startDate || currentDate > endDate) {
+                //     if (this.start == null || this.end == null) {
+                //         this.errorDateTimeSchedule[index] = 'Vui lòng chọn ngày bắt đầu và ngày kết thúc chuyến đi!';
+                //     } else {
+                //         this.errorDateTimeSchedule[index] = `Thời gian lịch trình ${index + 1} phải nằm trong khoảng từ ${this.start_date} đến ${this.end_date}`;
+                //     }
+                //     isValidTimeSchedule = false;
+                // }
             });
             // this.errorNameSchedule = [];
             // this.errorDateTimeSchedule = [];
             return isValidNameSchedule && isValidTimeSchedule;
         },
+
         close() {
             this.$router.push({
-                path: '/minh-hiep/tours',
-                query: { message: 'errorCreate' }
+                path: "/minh-hiep/tours",
+                query: { message: "errorCreate" },
             });
-        }
-        ,
+        },
         async handleSubmit() {
-            //Check Validate of image
-            const checkVar = this.checkValidate();
-            if (!checkVar) return;
-            // Validate schedules before submission
-            const isValidSchedules = this.validateSchedules();
-            if (!isValidSchedules) {
-                console.log("Có lỗi trong lịch trình, không gửi dữ liệu.");
+            const checkValidate = this.checkValidate();
+            console.log(checkValidate);
+            if (!checkValidate) {
+                this.notifyError("Có lỗi xảy ra vui lòng kiểm tra lại dữ liệu");
                 return; // Validation failed
             }
 
@@ -581,12 +678,13 @@ export default {
                 );
                 this.swicth = response.data.swicth;
 
-                if (response.ok) {
+                if (response.status === 200) {
                     this.selectedFiles = [];
                     this.imagePreviews = [];
+                    console.log(response.data);
                     this.$router.push({
-                        path: '/minh-hiep/tours',
-                        query: { message: 'successCreate' }
+                        path: "/minh-hiep/tours",
+                        query: { message: "successCreate" },
                     });
                 }
             } catch (error) {

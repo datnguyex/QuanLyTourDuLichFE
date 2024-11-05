@@ -9,16 +9,17 @@
     <div class="row">
       <div class="col-md-12">
         <div class="groud_action">
-          <button class="btn_addTour" @click="pageCreate">Thêm tour du lịch</button>
+          <button class="text-white font-medium bg-blue-500 p-2 rounded hover:bg-blue-600" @click="pageCreate">Thêm tour
+            du lịch</button>
         </div>
         <div class="tour_list">
           <div class="tour_item" v-for="tour in tours" :key="tour.id">
             <div class="left-section">
               <img alt="Main tour image" height="120" :src="getImageUrl(tour.images[0]?.image_url)" width="120" />
               <div class="image-grid">
-                <img v-for="image in tour.images?.slice(0, 3)" :key="image.id" alt="Tour image" height="40"
+                <img v-for="image in tour.images?.slice(0, 2)" :key="image.id" alt="Tour image" height="40"
                   :src="getImageUrl(image?.image_url)" width="40" class="image-grid-item" />
-                <div class="view-more" v-if="tour.images.length > 3">
+                <div class="view-more image-grid-item" v-if="tour.images.length > 2">
                   Xem ảnh
                 </div>
               </div>
@@ -58,23 +59,23 @@
             </div>
 
             <div class="right-section">
-              <div class="price">{{ tour.price }} VND</div>
+              <div class="text-orange-500 font-bold">{{ tour.price }} VND</div>
               <!-- <div class="original-price">{{ tour.original_price }} VND</div>
                 <div class="bookings">{{ tour.bookings }} lượt đặt</div> -->
             </div>
 
-            <div class="buttons">
-              <button class="delete" @click="deleteTour(tour.id)">
+            <div class="buttons text-white font-medium">
+              <button class="bg-red-500 hover:bg-red-600" @click="deleteTour(tour.id)">
                 <i class="fas fa-trash-alt"></i>
                 Xóa Tour
               </button>
-              <button class="edit" @click="pageEdit(tour.id)">
+              <button class="bg-green-500 hover:bg-green-600" @click="pageEdit(tour.id)">
                 <i class="fas fa-edit"></i>
                 Sửa Tour
               </button>
-              <button class="details" @click="viewTourDetails(tour.id)">
+              <button class="bg-red-500 hover:bg-red-600" @click="viewTourDetails(tour.id)">
                 <i class="fas fa-info-circle"></i>
-                Chi
+                Chi tiết
               </button>
             </div>
           </div>
@@ -103,10 +104,31 @@
         </div>
       </div>
     </div>
+
+    <!-- Modal for confirmation -->
+    <div v-if="isModalVisible" @click="closeModal" class="modal fade show" style="display: block; z-index: 1050;">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content p-3">
+          <div class="modal-header">
+            <h5 class="modal-title text-3xl text-red-600"> Xóa Tour <i class="fa-solid fa-triangle-exclamation"></i>
+            </h5>
+          </div>
+          <div class="modal-body">
+            <p>Bạn có chắc chắn muốn xóa tour này không?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="closeModal">Đóng</button>
+            <button type="button" class="btn btn-danger" @click="confirmDelete"><i class="fas fa-trash-alt"></i>
+              Xóa</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+document.title = "Trang người bán";
 import axios from 'axios';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
@@ -120,6 +142,8 @@ export default {
       meta: {},
       links: {},
       sortBy: 'popular', // Giá trị mặc định
+      tourToDelete: null,
+      isModalVisible: false,
     };
   },
   methods: {
@@ -167,11 +191,43 @@ export default {
       }); // ToastOptions
     },
 
+    viewTourDetails() {
+      console.log();
+    },
+
     notifyError(message) {
       toast.error(`${message} thất bại !`, {
         autoClose: 1500,
       }); // ToastOptions
-    }
+    },
+
+    closeModal() {
+      this.isModalVisible = false; // Đóng modal
+    },
+
+    deleteTour(tourId) {
+      this.tourToDelete = tourId;
+      this.isModalVisible = true;
+    },
+
+    confirmDelete() {
+      if (this.tourToDelete) {
+        axios.delete(`http://127.0.0.1:8000/api/tours/${this.tourToDelete}`)
+          .then(() => {
+            this.notifySuccess("Xóa tour thành công");
+            this.fetchTours();
+          })
+          .catch(error => {
+            console.error("Failed to delete tour:", error);
+            this.notifyError("Xóa tour thất bại");
+          })
+          .finally(() => {
+            this.isModalVisible = false; // Hide the modal after operation
+            this.tourToDelete = null; // Reset the tour ID
+          });
+      }
+    },
+
   },
 
   mounted() {

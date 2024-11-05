@@ -3,7 +3,7 @@
     <div class="header_create-tour">
       <label>Chỉnh sửa tour du lịch</label>
     </div>
-    <div class="container">
+    <div class="container p-0 my-8 rounded">
       <form class="form_tour" v-if="swicth == ''" @submit.prevent="handleSubmit">
         <!-- image -->
         <div class="form-group">
@@ -44,7 +44,7 @@
         </div>
 
         <!-- start date -->
-        <div class="form-group">
+        <!-- <div class="form-group">
           <div class="time_tour">
             <div class="time_start">
               <label> Ngày bắt đầu </label>
@@ -59,7 +59,7 @@
               <div v-if="errorEndDate" class="error">{{ errorEndDate }}</div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <!-- end date -->
         <div class="form-group">
@@ -129,27 +129,31 @@
       </form>
     </div>
     <div class="footer_create-tour">
-      <button @click.prevent="showModal" class="save">Lưu</button> <!-- Updated to show modal -->
+      <button @click.prevent="showModal" class="save">Lưu</button>
+      <!-- Updated to show modal -->
       <button class="cancel" @click.prevent="close">Đóng</button>
     </div>
     <!-- Modal for confirmation -->
-    <div v-if="isModalVisible" @click="closeModal" class="modal fade show" style="display: block; z-index: 1050;">
+    <div v-if="isModalVisible" @click="closeModal" class="modal fade show" style="display: block; z-index: 1050">
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content p-3">
           <div class="modal-header">
-            <h5 class="modal-title">Xóa Tour</h5>
+            <h5 class="modal-title text-green-500 text-3xl">Lưu dữ liệu</h5>
           </div>
           <div class="modal-body">
-            <p>Bạn có chắc chắn muốn xóa tour này không?</p>
+            <p>Bạn có chắc chắn muốn lưu tour này không?</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" @click="closeModal">Đóng</button>
-            <button type="button" class="btn btn-success" @click="confirmSave">Lưu</button>
+            <button type="button" class="btn btn-secondary" @click="closeModal">
+              Đóng
+            </button>
+            <button type="button" class="btn btn-success" @click="confirmSave">
+              Lưu
+            </button>
           </div>
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -160,10 +164,10 @@ import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import moment from "moment";
 import { useRoute } from "vue-router";
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 export default {
   name: "UpdateTour",
@@ -225,7 +229,7 @@ export default {
       } catch (error) {
         console.log(error);
         if (error.response && error.response.status === 400) {
-          document.querySelector('.container').innerHTML = `
+          document.querySelector(".container").innerHTML = `
             <div class="error-message">
               <h2>Tour Not Found</h2>
               <p>We apologize, but the tour you are looking for does not exist.</p>
@@ -279,12 +283,13 @@ export default {
 
   watch: {
     // Theo dõi sự thay đổi của start và end date
-    start(val) {
-      this.start_date = moment(val).format("YYYY/MM/DD");
-    },
-    end(val) {
-      this.end_date = moment(val).format("YYYY/MM/DD");
-    },
+    // start(val) {
+    //   this.start_date = moment(val).format("YYYY/MM/DD");
+    // },
+    // end(val) {
+    //   this.end_date = moment(val).format("YYYY/MM/DD");
+    // },
+
     name: {
       handler(val) {
         this.name = val;
@@ -340,20 +345,20 @@ export default {
       },
       deep: true,
     },
-    start_date: {
-      handler(val) {
-        this.start_date = val;
-        this.checkDate();
-      },
-      deep: true,
-    },
-    end_date: {
-      handler(val) {
-        this.end_date = val;
-        this.checkDate();
-      },
-      deep: true,
-    },
+    // start_date: {
+    //   handler(val) {
+    //     this.start_date = val;
+    //     this.checkDate();
+    //   },
+    //   deep: true,
+    // },
+    // end_date: {
+    //   handler(val) {
+    //     this.end_date = val;
+    //     this.checkDate();
+    //   },
+    //   deep: true,
+    // },
     location: {
       handler(val) {
         this.location = val;
@@ -398,9 +403,8 @@ export default {
   },
 
   methods: {
-
     notifyError(message) {
-      toast.error(`${message} thất bại !`, {
+      toast.error(`${message}!`, {
         autoClose: 1500,
       }); // ToastOptions
     },
@@ -493,7 +497,8 @@ export default {
       if (files && files.length > 5) {
         this.errorImage = "Vui lòng chọn nhiều nhất 5 hình ảnh.";
         return;
-      } if (files && files.length < 3) {
+      }
+      if (files && files.length < 3) {
         this.errorImage = "Vui lòng chọn nhiều ít 3 hình ảnh.";
         return;
       } else if (files && files.length > 0) {
@@ -644,7 +649,7 @@ export default {
       );
 
       //Check Validate of Date
-      const validDate = this.checkDate();
+      // const validDate = this.checkDate();
       // Check if any validation failed
       if (
         !isValidName ||
@@ -652,8 +657,7 @@ export default {
         !isValidDescription ||
         !isValidDuration ||
         !isValidPrice ||
-        !isValidImage ||
-        !validDate
+        !isValidImage
       ) {
         return false; // Validation failed
       }
@@ -718,23 +722,24 @@ export default {
 
     close() {
       this.$router.push({
-        path: '/minh-hiep/tours',
-        query: { message: 'errorEdit' }
+        path: "/minh-hiep/tours",
+        query: { message: "errorEdit" },
       });
     },
 
     async handleSubmit() {
-      //Check Validate of image
-      const checkVar = this.checkValidate();
-      if (!checkVar) {
-        this.notifyError(".Có lỗi xảy ra vui lòng kiểm tra lại dữ liệu");
-        return;
+      if (this.schedules.length > 0) {
+        const checkVar = this.validateSchedules();
+        if (!checkVar) {
+          this.notifyError("Có lỗi xảy ra vui lòng kiểm tra lại dữ liệu");
+          return;
+        }
       }
 
       // Validate schedules before submission
-      const isValidSchedules = this.validateSchedules();
-      if (!isValidSchedules) {
-        this.notifyError(".Có lỗi xảy ra vui lòng kiểm tra lại dữ liệu");
+      const checkValidate = this.checkValidate();
+      if (!checkValidate) {
+        this.notifyError("Có lỗi xảy ra vui lòng kiểm tra lại dữ liệu");
         return; // Validation failed
       }
 
@@ -770,8 +775,8 @@ export default {
         );
         if (response.status == 200) {
           this.$router.push({
-            path: '/minh-hiep/tours',
-            query: { message: 'successEdit' }
+            path: "/minh-hiep/tours",
+            query: { message: "successEdit" },
           });
         }
       } catch (error) {
