@@ -36,20 +36,20 @@
                 <i class="fas fa-map-marker-alt"></i>
                 {{ tour.location }}
               </div>
-              <!-- <div class="features">
-                  <div v-if="tour.features.bike_rental">
-                    <i class="fas fa-bicycle"></i>
-                    Cho thuê xe đạp
-                  </div>
-                  <div v-if="tour.features.car_rental">
-                    <i class="fas fa-car"></i>
-                    Cho thuê xe hơi
-                  </div>
-                  <div v-if="tour.features.airport_transfer">
-                    <i class="fas fa-plane"></i>
-                    Đưa đón sân bay
-                  </div>
-                </div> -->
+              <div class="features">
+                <div>
+                  <i class="fas fa-bicycle"></i>
+                  Cho thuê xe đạp
+                </div>
+                <div>
+                  <i class="fas fa-car"></i>
+                  Cho thuê xe hơi
+                </div>
+                <div>
+                  <i class="fas fa-plane"></i>
+                  Đưa đón sân bay
+                </div>
+              </div>
               <div class="payment-info">
                 <i class="fas fa-check-circle"></i>
                 Không Thanh Toán Ngay
@@ -78,8 +78,8 @@
               </button>
             </div>
           </div>
-          <nav aria-label="Page navigation example" v-if="links">
-            <ul class="pagination">
+          <nav aria-label="Page navigation example mt-4" v-if="links">
+            <ul class="pagination mt-4">
               <li class="page-item" :class="{ disabled: !links.prev }">
                 <a class="p-1 page-link" href="#" @click.prevent="fetchTours(meta.current_page - 1)"
                   aria-label="Previous" :disabled="!links.prev">
@@ -108,7 +108,6 @@
 
 <script>
 import axios from 'axios';
-// import CryptoJS from 'crypto-js';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -126,7 +125,7 @@ export default {
   methods: {
     async fetchTours(page = 1) {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/tours/list?page=${page}&per_page=10`);
+        const response = await axios.get(`http://127.0.0.1:8000/api/tours/list?page=${page}&per_page=3`);
         if (response.data.tours.length === 0) {
           console.log("Không có tour nào để hiển thị.");
           return;
@@ -174,6 +173,7 @@ export default {
       }); // ToastOptions
     }
   },
+
   mounted() {
     //FetchData Tour
     this.fetchTours();

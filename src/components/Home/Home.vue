@@ -1,4 +1,83 @@
 <template>
+  <div class="relative">
+    <img alt="Cityscape at night with lights" class="w-full h-96 object-cover" height="600"
+      src="@/assets/Images/CeUH4ecYMTmxnUrXSAKjDzGGU69eNgmHqoXfiYd1Wi9Iqt2OB.jpg" width="1920" />
+    <div class="absolute inset-0 bg-black opacity-50">
+    </div>
+    <div class="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4">
+      <h1 class="text-4xl font-bold">
+        Trải nghiệm vui vẻ cho chuyến đi khó quên
+      </h1>
+      <div class="mt-4 flex items-center bg-white text-black rounded-full px-4 py-2">
+        <i class="fas fa-map-marker-alt text-blue-500">
+        </i>
+        <span class="ml-2">
+          Khám phá điểm đến kế tiếp của bạn
+        </span>
+        <i class="fas fa-chevron-down ml-2">
+        </i>
+      </div>
+      <div class="mt-4 flex items-center rounded-full px-4 py-2 w-1/2">
+        <input class="flex-grow px-4 py-2.5 rounded-l-full text-black focus:outline-none"
+          placeholder="Tìm kiếm địa điểm hoặc hoạt động" type="text" />
+        <button class="bg-blue-500 text-white px-4 py-2.5 rounded-r-full" @click="handleSearch">
+          Tìm kiếm
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white shadow-md rounded-t-lg mt-4 px-4 py-2 flex justify-around">
+    <div class="flex flex-col items-center">
+      <i class="fas fa-th-large text-2xl">
+      </i>
+      <span class="mt-1">
+        Tất cả các hoạt động
+      </span>
+    </div>
+    <div class="flex flex-col items-center">
+      <i class="fas fa-cogs text-2xl">
+      </i>
+      <span class="mt-1">
+        Điểm tham quan
+      </span>
+    </div>
+    <div class="flex flex-col items-center">
+      <i class="fas fa-bus text-2xl">
+      </i>
+      <span class="mt-1">
+        Tour
+      </span>
+    </div>
+    <div class="flex flex-col items-center">
+      <i class="fas fa-child text-2xl">
+      </i>
+      <span class="mt-1">
+        Sân chơi
+      </span>
+    </div>
+    <div class="flex flex-col items-center">
+      <i class="fas fa-suitcase text-2xl">
+      </i>
+      <span class="mt-1">
+        Cần thiết cho du lịch
+      </span>
+    </div>
+    <div class="flex flex-col items-center">
+      <i class="fas fa-spa text-2xl">
+      </i>
+      <span class="mt-1">
+        Spa &amp; Thư giãn
+      </span>
+    </div>
+    <div class="flex flex-col items-center">
+      <i class="fas fa-bullseye text-2xl">
+      </i>
+      <span class="mt-1">
+        Trò chơi &amp; Hoạt động
+      </span>
+    </div>
+  </div>
   <div class="container">
 
     <div class="p-8" id="app">
@@ -12,17 +91,17 @@
       </div>
       <div class="grid grid-cols-3 gap-4">
         <div class="col-span-1">
-          <img alt="Promotion 2: Imagine Dragons Concert" class="w-full h-auto rounded-lg shadow-md" height="200"
+          <img alt="Promotion 2: Imagine Dragons Concert" class="w-full h-auto rounded-lg shadow-md" height="150"
             src="@/assets/Images/EI5mPWVd9l4aA5aoYfCn1efAcSMII187QknrZvDhXX3ANXbnA.jpg" width="300" />
         </div>
         <div class="col-span-1">
           <img alt="Promotion 3: 11.11 Tiệc Sale Cuối Năm - Mã giảm đến 1,1 triệu"
-            class="w-full h-auto rounded-lg shadow-md" height="200"
+            class="w-full h-auto rounded-lg shadow-md" height="150"
             src="@/assets/Images/joRuHe34cjzZXKmw9v4xcWLgtMZLB3DslWehMOUSHvLhmrtTA.jpg" width="300" />
         </div>
         <div class="col-span-1">
           <img alt="Promotion 4: Cuối tuần đi chơi gần nhà - Giảm đến 300k" class="w-full h-auto rounded-lg shadow-md"
-            height="200" src="@/assets/Images/eIy3L5zfwpm0nEMcRo07fm3W8nfZ2uuPWwzXueCKIIprzctdC.jpg" width="300" />
+            height="150" src="@/assets/Images/eIy3L5zfwpm0nEMcRo07fm3W8nfZ2uuPWwzXueCKIIprzctdC.jpg" width="300" />
         </div>
       </div>
     </div>
@@ -454,7 +533,15 @@
 <script>
 export default {
   name: 'HomePage',
+
+  methods: {
+    handleSearch() {
+      this.$router.push("/search?key=")
+    }
+  }
 }
+
+
 </script>
 
 <style lang="scss" module>

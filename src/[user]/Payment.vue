@@ -242,6 +242,10 @@
 <script>
 import axios from "axios";
 import Cookies from "js-cookie";
+import { toast } from 'vue3-toastify';
+import 'vue3-toastify/dist/index.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 export default {
     name: "UserPayment",
     data() {
@@ -321,6 +325,7 @@ export default {
                 }
 
                 const data = await response.json();
+                this.$router.push('/minh-hiep/payment/success')
                 console.log(data);
             } catch (error) {
                 console.error("An error occurred:", error);
@@ -386,7 +391,7 @@ export default {
         },
 
         notifyError(message) {
-            toast.error(`${message} thất bại !`, {
+            toast.error(`${message}`, {
                 autoClose: 1500,
             }); // ToastOptions
         }
