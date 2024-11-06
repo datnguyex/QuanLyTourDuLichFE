@@ -7,7 +7,6 @@ import UpdateTour from "./[vendor]/tours/UpdateTour.vue";
 import DetailTour from "./[vendor]/tours/DetailTour.vue";
 // import UserRegister from './components/Register/Register.vue';
 // import UserLogin from './components/Login/Login.vue';
-import Success from "./[user]/Success.vue";
 import Payment from "./[user]/Payment.vue";
 // import Success from "./[user]/Success.vue";
 import UserDetails from "./components/UserDetails/UserDetails.vue";
