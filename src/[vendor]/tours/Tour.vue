@@ -1,30 +1,56 @@
 <template>
-  <!-- <h1>Danh sách tour</h1>
-    <select v-model="sortBy" @change="fetchTours">
-      <option value="popular">Phổ biến</option>
-      <option value="latest">Mới nhất</option>
-      <option value="promotion">Khuyến mãi</option>
-    </select> -->
   <div class="grid">
     <div class="row">
       <div class="col-md-12">
-        <div class="groud_action">
-          <button class="text-white font-medium bg-blue-500 p-2 rounded hover:bg-blue-600" @click="pageCreate">Thêm tour
-            du lịch</button>
+        <div class="groud_action gap-2">
+          <select
+            class="font-medium bg-white-500 p-2 rounded text-black-600 shadow-sm focus:outline-none"
+            v-model="sortBy"
+            @change="fetchTours"
+          >
+            <option class="border-b" value="popular">Phổ biến</option>
+            <option class="border-b" value="latest">Mới nhất</option>
+            <option class="border-b" value="promotion">Khuyến mãi</option>
+          </select>
+          <div
+            class="font-medium bg-white-500 p-2 rounded text-black-600 shadow-sm"
+          >
+            Số lượng: {{ this.count }}
+          </div>
+          <button
+            class="text-white font-medium bg-blue-500 p-2 rounded hover:bg-blue-600"
+            @click="pageCreate"
+          >
+            Thêm tour du lịch
+          </button>
         </div>
         <div class="tour_list">
           <div class="tour_item" v-for="tour in tours" :key="tour.id">
             <div class="left-section">
-              <img alt="Main tour image" height="120" :src="getImageUrl(tour.images[0]?.image_url)" width="120" />
+              <img
+                alt="Main tour image"
+                height="120"
+                :src="getImageUrl(tour.images[0]?.image_url)"
+                width="120"
+              />
               <div class="image-grid">
-                <img v-for="image in tour.images?.slice(0, 2)" :key="image.id" alt="Tour image" height="40"
-                  :src="getImageUrl(image?.image_url)" width="40" class="image-grid-item" />
-                <div class="view-more image-grid-item" v-if="tour.images.length > 2">
+                <img
+                  v-for="image in tour.images?.slice(0, 2)"
+                  :key="image.id"
+                  alt="Tour image"
+                  height="40"
+                  :src="getImageUrl(image?.image_url)"
+                  width="40"
+                  class="image-grid-item"
+                />
+                <div
+                  class="view-more image-grid-item"
+                  v-if="tour.images.length > 2"
+                >
                   Xem ảnh
                 </div>
               </div>
             </div>
-
 
             <div class="middle-section">
               <h2>{{ tour.name }}</h2>
@@ -65,36 +91,65 @@
             </div>
 
             <div class="buttons text-white font-medium">
-              <button class="bg-red-500 hover:bg-red-600" @click="deleteTour(tour.id)">
+              <button
+                class="bg-red-500 hover:bg-red-600"
+                @click="deleteTour(tour.id)"
+              >
                 <i class="fas fa-trash-alt"></i>
                 Xóa Tour
               </button>
-              <button class="bg-green-500 hover:bg-green-600" @click="pageEdit(tour.id)">
+              <button
+                class="bg-green-500 hover:bg-green-600"
+                @click="pageEdit(tour.id)"
+              >
                 <i class="fas fa-edit"></i>
                 Sửa Tour
               </button>
-              <button class="bg-red-500 hover:bg-red-600" @click="viewTourDetails(tour.id)">
+              <button
+                class="bg-red-500 hover:bg-red-600"
+                @click="viewTourDetails(tour.id)"
+              >
                 <i class="fas fa-info-circle"></i>
-                Chi tiết
+                Trạng thái
               </button>
             </div>
           </div>
+
           <nav aria-label="Page navigation example mt-4" v-if="links">
             <ul class="pagination mt-4">
               <li class="page-item" :class="{ disabled: !links.prev }">
-                <a class="p-1 page-link" href="#" @click.prevent="fetchTours(meta.current_page - 1)"
-                  aria-label="Previous" :disabled="!links.prev">
+                <a
+                  class="p-1 page-link"
+                  href="#"
+                  @click.prevent="fetchTours(meta.current_page - 1)"
+                  aria-label="Previous"
+                  :disabled="!links.prev"
+                >
                   <span aria-hidden="true">&laquo;</span>
                   <span class="sr-only">Previous</span>
                 </a>
               </li>
-              <li v-for="page in meta.last_page" :key="page" class="page-item"
-                :class="{ active: page === meta.current_page }">
-                <a class="p-1 px-2 page-link" href="#" @click.prevent="fetchTours(page)">{{ page }}</a>
+              <li
+                v-for="page in meta.last_page"
+                :key="page"
+                class="page-item"
+                :class="{ active: page === meta.current_page }"
+              >
+                <a
+                  class="p-1 px-2 page-link"
+                  href="#"
+                  @click.prevent="fetchTours(page)"
+                  >{{ page }}</a
+                >
               </li>
               <li class="page-item" :class="{ disabled: !links.next }">
-                <a class="p-1 page-link" href="#" @click.prevent="fetchTours(meta.current_page + 1)" aria-label="Next"
-                  :disabled="!links.next">
+                <a
+                  class="p-1 page-link"
+                  href="#"
+                  @click.prevent="fetchTours(meta.current_page + 1)"
+                  aria-label="Next"
+                  :disabled="!links.next"
+                >
                   <span aria-hidden="true">&raquo;</span>
                   <span class="sr-only">Next</span>
                 </a>
@@ -106,20 +161,29 @@
     </div>
 
     <!-- Modal for confirmation -->
-    <div v-if="isModalVisible" @click="closeModal" class="modal fade show" style="display: block; z-index: 1050;">
+    <div
+      v-if="isModalVisible"
+      @click="closeModal"
+      class="modal fade show"
+      style="display: block; z-index: 1050"
+    >
       <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content p-3">
           <div class="modal-header">
-            <h5 class="modal-title text-3xl text-red-600"> Xóa Tour <i class="fa-solid fa-triangle-exclamation"></i>
+            <h5 class="modal-title text-3xl text-red-600">
+              Xóa Tour <i class="fa-solid fa-triangle-exclamation"></i>
             </h5>
           </div>
           <div class="modal-body">
             <p>Bạn có chắc chắn muốn xóa tour này không?</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" @click="closeModal">Đóng</button>
-            <button type="button" class="btn btn-danger" @click="confirmDelete"><i class="fas fa-trash-alt"></i>
-              Xóa</button>
+            <button type="button" class="btn btn-secondary" @click="closeModal">
+              Đóng
+            </button>
+            <button type="button" class="btn btn-danger" @click="confirmDelete">
+              <i class="fas fa-trash-alt"></i> Xóa
+            </button>
           </div>
         </div>
       </div>
@@ -129,11 +193,11 @@
 
 <script>
 document.title = "Trang người bán";
-import axios from 'axios';
-import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import axios from "axios";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 export default {
   name: "TourList",
   data() {
@@ -141,15 +205,18 @@ export default {
       tours: [],
       meta: {},
       links: {},
-      sortBy: 'popular', // Giá trị mặc định
+      sortBy: "popular", // Giá trị mặc định
       tourToDelete: null,
       isModalVisible: false,
+      count: 0,
     };
   },
   methods: {
     async fetchTours(page = 1) {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/tours/list?page=${page}&per_page=3`);
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/tours/list?page=${page}&per_page=3`
+        );
         if (response.data.tours.length === 0) {
           console.log("Không có tour nào để hiển thị.");
           return;
@@ -167,12 +234,12 @@ export default {
         const response = await axios.get(`/api/tours/sort?sort=${this.sortBy}`);
         this.tours = response.data;
       } catch (error) {
-        console.error('Có lỗi xảy ra khi lấy danh sách tour:', error);
+        console.error("Có lỗi xảy ra khi lấy danh sách tour:", error);
       }
     },
 
     getImageUrl(urlImage) {
-      return `http://127.0.0.1:8000/images/${urlImage}`
+      return `http://127.0.0.1:8000/images/${urlImage}`;
     },
 
     pageCreate() {
@@ -212,12 +279,13 @@ export default {
 
     confirmDelete() {
       if (this.tourToDelete) {
-        axios.delete(`http://127.0.0.1:8000/api/tours/${this.tourToDelete}`)
+        axios
+          .delete(`http://127.0.0.1:8000/api/tours/${this.tourToDelete}`)
           .then(() => {
             this.notifySuccess("Xóa tour thành công");
             this.fetchTours();
           })
-          .catch(error => {
+          .catch((error) => {
             console.error("Failed to delete tour:", error);
             this.notifyError("Xóa tour thất bại");
           })
@@ -228,35 +296,47 @@ export default {
       }
     },
 
+    async countTour() {
+      try {
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/tours/total/count`
+        );
+        console.log(response);
+        this.count = response.data.count;
+      } catch (error) {
+        console.error("Failed to fetch tour data:", error);
+      }
+    },
   },
 
   mounted() {
     //FetchData Tour
     this.fetchTours();
+    this.countTour();
     const message = this.$route.query.message;
-
-    //Send Notification 
+    //Send Notification
     switch (message) {
       case "successEdit":
         this.notifySuccess("Sửa");
         break;
       case "errorEdit":
         this.notifyError("Sửa");
-        break
+        break;
       case "successCreate":
         this.notifySuccess("Thêm");
         break;
       case "errorCreate":
         this.notifyError("Thêm");
-        break
+        break;
     }
 
     //Replace url when success action
     setTimeout(() => {
-      this.$router.replace({ query: { ...this.$route.query, message: undefined } });
-    }, 3000)
-  }
-
+      this.$router.replace({
+        query: { ...this.$route.query, message: undefined },
+      });
+    }, 3000);
+  },
 };
 </script>
 
