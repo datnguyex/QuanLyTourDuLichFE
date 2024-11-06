@@ -7,6 +7,7 @@ import UpdateTour from "./[vendor]/tours/UpdateTour.vue";
 import DetailTour from "./[vendor]/tours/DetailTour.vue";
 // import UserRegister from './components/Register/Register.vue';
 // import UserLogin from './components/Login/Login.vue';
+import Success from "./[user]/Success.vue";
 import Payment from "./[user]/Payment.vue";
 import UserDetails from "./components/UserDetails/UserDetails.vue";
 import UserAdmin from "./components/UserAdmin/UserAdmin.vue";
@@ -16,10 +17,12 @@ import HeaderOnly from "./Layout/HeaderOnly/HeaderOnly.vue";
 import Detail from "./Page/Detail/Detail.vue";
 import Profile from "./Page/Profile/Profile.vue";
 import Storage from "./Page/Storage/Storage.vue";
-import Booking from "./Page/Booking/Booking.vue";
+import Booking from "./Page/Booking/Booking/Booking.vue";
 import TourGuide from "./components/TourGuide/TourGuide.vue";
 import AddTourGuide from "./components/TourGuide/AddTourGuide/AddTourGuide.vue";
 import UpdateTourGuide from "./components/TourGuide/AddTourGuide/UpdateTourGuide/UpdateTourGuide.vue";
+import BookingTicket from "./Page/Booking/BookingTicket/BookingTicket.vue";
+import BookingTour from "./Page/Booking/BookingTour/BookingTour.vue";
 const routes = [
   {
     path: "/register",
@@ -60,6 +63,16 @@ const routes = [
         path: "/updatetourguide/:id",
         name: "UpdateTourGuide",
         component: UpdateTourGuide,
+      },
+      {
+        path: "/bookingticket/:id",
+        name: "Bookingticket",
+        component: BookingTicket,
+      },
+      {
+        path: "/bookingtour/:id",
+        name: "BookingTour",
+        component: BookingTour,
       },
     ],
   },
@@ -110,11 +123,11 @@ const routes = [
     name: "Payment",
     component: Payment,
   },
-  // {
-  //   path: "/:user/payment/success",
-  //   name: "PaymentSuccess",
-  //   component: Success,
-  // },
+  {
+    path: "/:user/payment/success",
+    name: "PaymentSuccess",
+    component: Success,
+  },
   {
     path: "/:vendor/tours/create",
     name: "CreateTour",

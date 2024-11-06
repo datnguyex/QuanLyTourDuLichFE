@@ -150,6 +150,48 @@
       </div>
     </div>
 
+    <!-- tour Du lich moi nhat -->
+    <div class="p-8">
+      <h1 class="text-3xl font-bold mb-6">
+        Tour du lịch mới nhất
+      </h1>
+      <div class="grid grid-cols-5 gap-1">
+       
+        <div  v-for="(tour, index) in newesTour" :key="index"  @click="detailTour(tour.id)" class="bg-white rounded-lg shadow-md overflow-hidden relative">
+          <img 
+            :src="tour.images.length > 0 ? `http://localhost:8000/${tour.images[0].image_url}` : ''" 
+            :alt="tour.images.length > 0 ? tour.images[0].alt_text : 'Default alt text'" 
+            class="w-full h-68 object-cover" 
+            height="200" 
+            width="300" 
+          />
+          <!-- <div class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
+            Tiết kiệm 20%
+          </div> -->
+          <div class="p-2 flex flex-col justify-between">
+            <p class="text-gray-700">
+              {{ tour.name }}
+            </p>
+            <div class="w-full mt-8">
+              <!-- <p class="text-gray-700 line-through mt-2">
+                VND 2.490.000
+              </p> -->
+              <p class="text-orange-500 font-bold ">
+                <span>{{ formatPrice(tour.price)}} VND</span>
+              </p>
+            </div>
+          </div>
+        </div>
+       
+       
+        
+
+      </div>
+    </div>
+   <!-- ----- -->
+
+
+
     <!-- Vé Vui Chơi & Tour Section -->
 
     <div class="p-8">
@@ -529,19 +571,97 @@
 
   </div>
 </template>
-
 <script>
-export default {
-  name: 'HomePage',
+  import axios from 'axios';
+  import { onMounted, ref, inject } from 'vue';
+  import { useRouter } from 'vue-router'; 
+  import Swal from 'sweetalert2';
 
-  methods: {
-    handleSearch() {
-      this.$router.push("/search?key=")
+  export default {
+    name: 'HomePage',
+    setup() {
+      const router = useRouter();
+      const valueCurrentUser = inject('valueCurrentUser');
+      const newesTour = ref([]);
+      const displayErrors = ref(null);
+
+     
+      const handleSearch = () => {
+        router.push("/search?key=");
+      };
+
+   
+      const getNewesTour = async () => {
+        try {
+          const response = await axios.get('http://localhost:8000/api/displayNewstTour');
+          newesTour.value = response.data.data;
+          console.log('newesTour', newesTour.value);
+        } catch (error) {
+          console.error('Failed to retrieve tours:', error.response.data.message);
+          displayErrors.value = error.response.data.message;
+         
+        }
+      };
+
+    
+      const handleAddTourToFavorite = async (tour_id) => {
+        let userID = null;
+        if (valueCurrentUser.value && valueCurrentUser.value.id) {
+          userID = valueCurrentUser.value.id;
+        }
+
+        try {
+          const response = await axios.post('http://localhost:8000/api/addTourToFavorite', {
+            'user_id': userID,
+            'tour_id': tour_id,
+          });
+
+          if (response.data.message === "Tour added to favorites list successfully.") {
+            Swal.fire({
+              title: 'Thành công!',
+              text: 'Đã thêm vào danh sách yêu thích',
+              icon: 'success',
+              confirmButtonText: 'OK'
+            });
+          }
+
+        } catch (error) {
+          if (error.response) {
+            console.error('Failed to add tour to favorites:', error.response);
+            alert(error.response.data.error);
+          } else {
+            console.error('Error:', error.message);
+          }
+        }
+      };
+
+     
+      const detailTour = (id) => {
+        router.push({ name: 'Detail', params: { id } });
+      };
+
+      const logValue = () => {
+        console.log('valueCurrentUser', valueCurrentUser);
+      };
+      const formatPrice = (price) => {
+            return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        }
+
+      onMounted(() => {
+        getNewesTour();
+      });
+
+      return {
+        newesTour,
+        displayErrors,
+        handleAddTourToFavorite,
+        logValue,
+        detailTour,
+        formatPrice,
+        handleSearch
+      };
     }
-  }
-}
-
-
+  };
 </script>
 
 <style lang="scss" module>

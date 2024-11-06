@@ -87,6 +87,7 @@
   const detailTour = (id) => {
       router.push({ name: 'Detail', params: { id } });
     };
+    
   const logValue = () => {
     console.log('valueCurrentUser',valueCurrentUser);
   }

@@ -1,104 +1,137 @@
 <template>
-    <!-- <button @click="logValue">Click</button>
-    <b-container class="bv-example-row">
-     <b-row class="text-center">
-    <b-col cols="4">2 of 3</b-col>
-    <b-col>3 of 3</b-col>
-  </b-row>
-  <div v-if="valueTour">{{valueTour.name}}</div>
-  <div v-if="valueTour">{{valueTour.description}}</div>
-  <div v-if="valueTour">{{valueTour.duration}}</div>
-  <button @click="bookTour(valueTour.id)">BookTour</button>
-</b-container> -->
-<div v-if="errorValue">{{ errorValue}}</div>
-    <div v-if="!errorValue" :class="$style.wrapper">
-           <!-- <button @click="logValue">Click</button> -->
-        <h1 v-if="valueTour" :class="$style.tourName">{{valueTour.name}}</h1>
-        <div :class="$style.wrapTag">
-            <div :class="$style.tag1">
-                Bán chạy
-            </div>
-            <div :class="$style.tag1">
-               Tiếng hoa/Tiếng Anh
-            </div>
-            <div :class="$style.tag1">
-              Tour ghép
-            </div>
-            <div :class="$style.tag1">
-               Gặp hướng dẫn
-            </div>
-            <div :class="$style.tag1">
-              Thời lương: <span v-if="valueTour">{{valueTour.duration}}</span>
-            </div>
-            <div :class="$style.tag1">
-              Địa điểm: <span v-if="valueTour">{{valueTour.location}}</span>
-            </div>
-        </div> 
-        <div :class="$style.wrapImg">
-            <div :class="$style.imgLeft">
-                <img 
-                     :class="$style.item"
-                     v-if="valueTour" 
-                     :src="`http://localhost:8000/${valueTour.images[0].image_url}`" 
-                     :alt="valueTour.images[0].alt_text" 
-                    />
-            </div>
-            <div :class="$style.imgRight">
-                <div :class="$style.imgItemRight">
-                    <div :class="$style.imgItem">
-                         <img 
-                            :class="$style.item"
-                            v-if="valueTour" 
-                            :src="`http://localhost:8000/${valueTour.images[1].image_url}`" 
-                            :alt="valueTour.images[1].alt_text" 
-                             />
-                    </div>
-                    <div :class="$style.imgItem">
-                        <img 
-                             :class="$style.item"
-                            v-if="valueTour" 
-                            :src="`http://localhost:8000/${valueTour.images[2].image_url}`" 
-                            :alt="valueTour.images[2].alt_text" 
-                             />
-                    </div>
-                </div>
-                <div :class="$style.imgItemRight">
-                    <div :class="$style.imgItem">
-                        <img 
-                             :class="$style.item"
-                            v-if="valueTour" 
-                            :src="`http://localhost:8000/${valueTour.images[3].image_url}`" 
-                            :alt="valueTour.images[3].alt_text" 
-                             />
-                    </div>
-                    <div :class="$style.imgItem">
-                        <img 
-                             :class="$style.item"
-                            v-if="valueTour" 
-                            :src="`http://localhost:8000/${valueTour.images[4].image_url}`" 
-                            :alt="valueTour.images[3].alt_text" 
-                             />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div :class="$style.wapcontent">
-            <div :class="$style.descripContent">
-                <p v-if="valueTour">{{valueTour.description}}</p>
-            </div>
-            <div :class="$style.priceContent">
-                <p v-if="valueTour">{{ formatPrice(valueTour.price) }} đ</p>
-                <button @click="bookTour(valueTour.id)">BookTour</button>
-            </div>
-        </div>
-        <!-- <button @click="logValue">Logdata</button> -->
+    <!-- /// -->
+    <div class="max-w-6xl mx-auto p-4" id="app">
+   <div class="bg-blue-700 text-white p-4 rounded-lg">
+    <div class="text-sm mb-2">
+     <!-- <a class="text-white" href="#">
+      Xperience
+     </a>
+     /
+     <a class="text-white" href="#">
+      Việt Nam
+     </a>
+     /
+     <a class="text-white" href="#">
+      Tỉnh Kiên Giang
+     </a>
+     /
+     <a class="text-white" href="#">
+      Phú Quốc
+     </a>
+     /
+     <a class="text-white" href="#">
+      xã Hòn Thơm
+     </a> -->
+     
+     <a class="text-lime-400" href="#">
+        <div v-if="valueTour">{{valueTour.name}}</div>
+     </a>
     </div>
+    <h1 class="text-3xl font-bold mb-2">
+        <div v-if="valueTour">{{valueTour.name}}</div>
+    </h1>
+    <div class="flex items-center mb-4">
+     <i class="fas fa-map-marker-alt mr-2">
+     </i>
+     <span>
+      Gam Ghi island, Hòn Thơm, Phu Quoc, Kien Giang, Vietnam
+     </span>
+     <a class="text-lime-400 ml-2" href="#">
+      Xem bản đồ
+     </a>
+    </div>
+    <div class="flex items-center mb-4">
+     <i class="fas fa-calendar-alt mr-2">
+     </i>   
+     <span>
+      Thời gian tour |   <span v-if="valueTour">{{valueTour.duration}}</span>
+     </span>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+     <div class="relative">
+      <img 
+         class="w-full h-full object-cover rounded-lg" height="400"  width="600"
+        v-if="valueTour && valueTour.images && valueTour.images.length > 0" 
+        :src="`http://localhost:8000/${valueTour.images[0].image_url}`" 
+        :alt="valueTour.images[0].alt_text" 
+        />
+     </div>
+     <div class="grid grid-cols-2 gap-4">
+        <img 
+         class="w-full h-full object-cover rounded-lg" height="300"  width="200"
+        v-if="valueTour && valueTour.images && valueTour.images.length > 0" 
+        :src="`http://localhost:8000/${valueTour.images[1].image_url}`" 
+        :alt="valueTour.images[1].alt_text" 
+        />
+        <img 
+         class="w-full h-full object-cover rounded-lg" height="400"  width="600"
+        v-if="valueTour && valueTour.images && valueTour.images.length > 0" 
+        :src="`http://localhost:8000/${valueTour.images[2].image_url}`" 
+        :alt="valueTour.images[2].alt_text" 
+        />
+        <img 
+         class="w-full h-full object-cover rounded-lg" height="400"  width="600"
+        v-if="valueTour && valueTour.images && valueTour.images.length > 0" 
+        :src="`http://localhost:8000/${valueTour.images[3].image_url}`" 
+        :alt="valueTour.images[3].alt_text" 
+        />
+      <div class="relative">
+        <img 
+         class="w-full h-full object-cover rounded-lg" height="400"  width="600"
+        v-if="valueTour && valueTour.images && valueTour.images.length > 0" 
+        :src="`http://localhost:8000/${valueTour.images[4].image_url}`" 
+        :alt="valueTour.images[4].alt_text" 
+        />
+      </div>
+     </div>
+    </div>
+    <div class="flex items-center justify-between mt-4">
+     <div class="flex items-center">
+      <div class="bg-blue-800 text-white rounded-full px-3 py-1 text-lg font-bold">
+       8.8
+      </div>
+      <div class="ml-2">
+       <div class="text-lg font-bold">
+        Tốt
+       </div>
+       <div class="text-sm">
+        Từ 49 đánh giá
+       </div>
+      </div>
+     </div>
+     <div class="flex items-center">
+      <i class="fas fa-map-marker-alt text-blue-800 mr-2">
+      </i>
+      <a class="text-blue-800 text-lg" href="#">
+       Xem bản đồ
+      </a>
+     </div>
+     <div class="text-lg">
+        <div v-if="valueTour">{{valueTour.name}}</div>
+     </div>
+    </div>
+   </div>
+   <div class="bg-white p-4 rounded-lg mt-4 flex items-center justify-between">
+    <div class="text-red-600 text-2xl font-bold">
+        <div>
+            <p v-if="valueTour">{{ formatPrice(valueTour.price) }} VND</p>
+        </div>
+    </div>
+    <!-- <div class="text-gray-500 line-through">
+     650.000 VND
+    </div> -->
+    <button @click="bookTour(tourID)" class="bg-orange-500 text-white px-4 py-2 rounded-lg">
+        Đặt vé
+    </button>
+   </div>
+  </div>
 </template>
 <script>
 
 import { ref,onMounted } from 'vue';
 import { useRouter,useRoute } from 'vue-router';
 import axios from 'axios';
+
 
 export default {
     name: 'DetailComponent', 
@@ -109,6 +142,7 @@ export default {
         const valueTour = ref(null);
         const errorValue = ref(null);
         const router = useRouter();
+        
         // const getImage = ($urlImage) => {
         //     return `http://localhost:8000/images/${$urlImage}`
         // }
@@ -130,7 +164,7 @@ export default {
         };
 
         const bookTour = (id) => {
-            router.push({ name: 'Booking', params: { id } });
+            router.push({ name: 'Bookingticket', params: { id } });
         }
         onMounted(() => {
             tourID.value = route.params.id;
