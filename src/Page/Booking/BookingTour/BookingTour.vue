@@ -9,6 +9,9 @@
                 <h2 class="text-xl font-semibold mb-4">
                   Thông tin liên hệ
                 </h2>
+                <div v-if="errorValue" class="alert alert-danger mt-3">
+            <p>Error: {{ errorValue }}</p>
+        </div>
                 <button @click="logValue" type="button">Log value</button>
                 <div class="bg-gray-100 p-4 rounded-lg mb-6">
                   <div class="flex justify-between items-center mb-4">
@@ -75,7 +78,14 @@
                 </h2>
                 <div class="bg-white p-4 rounded-lg shadow-md">
                   <div class="flex items-center mb-4">
-                    <img alt="Tour image" class="w-16 h-16 rounded mr-4" height="60" src="https://storage.googleapis.com/a1aa/image/iCkMJehxpkWqKCKhiuYBKYfaTqJ0IzVO0rqX2ytzRTnB6MuTA.jpg" width="60"/>
+                    <img
+          class="w-16 h-16 rounded mr-4"
+          height="60"
+          width="60"
+          v-if="valueTour && valueTour.images && valueTour.images.length > 0"
+          :src="`http://localhost:8000/${valueTour.images[0].image_url}`"
+          :alt="valueTour.images[0].alt_text"
+        />
                     <div>
                       <p v-if="valueTour" class="font-medium">
                           {{ valueTour.name }}

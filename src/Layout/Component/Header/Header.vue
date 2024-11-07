@@ -38,6 +38,7 @@
               <!-- <i class="fas fa-chevron-down"></i></span> -->
               <button v-if="valueCurrentUser" @click="setLogout" class="text-blue-500">Đăng xuất</button>
               <button v-else @click="setLogin" class="text-blue-500">Đăng nhập</button>
+              <button v-if="!valueCurrentUser" @click="setRegister" class="text-blue-500">Đăng ký</button>
             </div>
           </div>
 

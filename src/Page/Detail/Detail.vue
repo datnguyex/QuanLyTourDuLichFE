@@ -1,6 +1,9 @@
 <template>
     <!-- /// -->
     <div class="max-w-6xl mx-auto p-4" id="app">
+        <div v-if="errorValue" class="alert alert-danger mt-3">
+            <p>Error: {{ errorValue }}</p>
+        </div>
    <div class="bg-blue-700 text-white p-4 rounded-lg">
     <div class="text-sm mb-2">
      <!-- <a class="text-white" href="#">

@@ -36,7 +36,9 @@
             <button class="px-4 py-2 border rounded-lg">&gt;</button>
           </div>
         </div>
-
+        <div v-if="errorValue" class="alert alert-danger mt-3">
+            <p>Error: {{ errorValue }}</p>
+        </div>
         <!-- Selected Date -->
         <div class="bg-blue-100 p-4 rounded-lg mb-4">
           <span>Ngày tham quan đã chọn</span>
@@ -191,6 +193,7 @@ export default {
       updateTotalPrice,
       formatPrice,
       bookTour,
+      errorValue,
     };
   },
 };
