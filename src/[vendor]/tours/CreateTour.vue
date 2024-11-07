@@ -717,6 +717,7 @@ export default {
       });
     },
     async handleSubmit() {
+      // console.log("file" + this.selectedFiles[0]);
       const checkValidate = this.checkValidate();
       console.log(checkValidate);
       if (!checkValidate) {

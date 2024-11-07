@@ -67,7 +67,7 @@
       <span class="mt-1"> Trò chơi &amp; Hoạt động </span>
     </div>
   </div>
-  <div class="container">
+  <div class="container mt-8">
     <div class="p-8" id="app">
       <div class="text-center">
         <h1 class="text-3xl font-bold mb-2">Khuyến mãi Xperience hiện hành</h1>
@@ -167,8 +167,8 @@
 
     <!-- tour Du lich moi nhat -->
     <div v-if="displayErrors" class="alert alert-danger mt-3">
-            <p>Error: {{ displayErrors }}</p>
-        </div>
+      <p>Error: {{ displayErrors }}</p>
+    </div>
     <div class="p-8">
       <h1 class="text-3xl font-bold mb-6">Tour du lịch mới nhất</h1>
       <div class="grid grid-cols-5 gap-1">
@@ -181,7 +181,7 @@
           <img
             :src="
               tour.images.length > 0
-                ? `http://localhost:8000/${tour.images[0].image_url}`
+                ? `http://127.0.0.1:8000/images/${tour.images[0].image_url}`
                 : ''
             "
             :alt="

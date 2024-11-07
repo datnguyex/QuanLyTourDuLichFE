@@ -268,7 +268,7 @@
                     >Tổng giá tiền</span
                   >
                   <span class="font-semibold text-gray-800 text-lg">{{
-                    this.price
+                    formatVND(this.price)
                   }}</span>
                 </div>
                 <button
@@ -386,17 +386,11 @@ export default {
     },
 
     async payment_card() {
-      // let id = this.user ?? "";
-      // console.log(id);
-      console.log(this.selectPayment);
-      console.log(this.tour_id);
-      console.log(this.price);
-      console.log(this.urlCheckout);
-      console.log(this.booking.number_of_people);
+      let id = this.user ? this.user.id : null;
       try {
         const formData = new FormData();
         formData.append("urlCheckout", this.urlCheckout);
-        formData.append("user_id", 1);
+        formData.append("user_id", id);
         formData.append("tour_id", this.tour_id);
         formData.append("total_price", this.price);
         formData.append("status", "pending");
@@ -478,6 +472,9 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    formatVND(amount) {
+      return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     },
 
     notifyError(message) {

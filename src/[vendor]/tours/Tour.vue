@@ -85,7 +85,9 @@
             </div>
 
             <div class="right-section">
-              <div class="text-orange-500 font-bold">{{ tour.price }} VND</div>
+              <div class="text-orange-500 font-bold">
+                {{ formatVND(tour.price) }} VND
+              </div>
               <!-- <div class="original-price">{{ tour.original_price }} VND</div>
                 <div class="bookings">{{ tour.bookings }} lượt đặt</div> -->
             </div>
@@ -227,6 +229,10 @@ export default {
       } catch (error) {
         console.error("Failed to fetch tour data:", error);
       }
+    },
+
+    formatVND(amount) {
+      return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     },
 
     async fetchToursSort() {
