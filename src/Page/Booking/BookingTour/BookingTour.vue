@@ -28,45 +28,47 @@
                        {{ errorNameContact }}
                     </p>
                 </div>
-                  <div class="mb-4">
-                    <label class="block text-gray-700 mb-1">
-                      Email*
-                    </label>
-                    <input v-model="emailContact" class="w-full p-2 border rounded" placeholder="VD: email@example.com" type="text"/>
-                    <p v-if="errorEmailContact" class="text-sm text-red-500 mt-1">
-                       {{ errorEmailContact }}
-                    </p>
-                </div>
-              
-                <div class="flex items-center mt-2">
-                    <input 
-                        value='self'
-                        :disabled="!emailContact || !nameContact" 
-                        class="mr-2" 
-                        id="self" 
-                        name="booking" 
-                        type="radio" 
-                        v-model="type_customer"
-                    />
-                    <label class="text-gray-700" for="self">
-                        Tôi là khách tham quan
-                    </label>
+                <div class="mb-4">
+                  <label class="block text-gray-700 mb-1"> Email* </label>
+                  <input
+                    v-model="emailContact"
+                    class="w-full p-2 border rounded"
+                    placeholder="VD: email@example.com"
+                    type="text"
+                  />
+                  <p v-if="errorEmailContact" class="text-sm text-red-500 mt-1">
+                    {{ errorEmailContact }}
+                  </p>
                 </div>
 
+                <div class="flex items-center mt-2">
+                  <input
+                    value="self"
+                    :disabled="!emailContact || !nameContact"
+                    class="mr-2"
+                    id="self"
+                    name="booking"
+                    type="radio"
+                    v-model="type_customer"
+                  />
+                  <label class="text-gray-700" for="self">
+                    Tôi là khách tham quan
+                  </label>
+                </div>
 
                 <div class="flex items-center mt-2">
-                    <input 
-                        value='other'
-                        :disabled="!emailContact || !nameContact" 
-                        class="mr-2" 
-                        id="other" 
-                        name="booking" 
-                        type="radio" 
-                        v-model="type_customer"
-                    />
-                    <label class="text-gray-700" for="other">
-                        Tôi đặt cho người khác
-                    </label>
+                  <input
+                    value="other"
+                    :disabled="!emailContact || !nameContact"
+                    class="mr-2"
+                    id="other"
+                    name="booking"
+                    type="radio"
+                    v-model="type_customer"
+                  />
+                  <label class="text-gray-700" for="other">
+                    Tôi đặt cho người khác
+                  </label>
                 </div>
 
                 </div>
@@ -212,160 +214,176 @@
                 </div>
               </div>
             </div>
-            <button class="mt-6 w-full bg-orange-500 text-white py-2 rounded-lg font-medium" type="submit">
-              Tiếp tục
-            </button>
           </div>
+          <button
+            class="mt-6 w-full bg-orange-500 text-white py-2 rounded-lg font-medium"
+            type="submit"
+          >
+            Tiếp tục
+          </button>
         </div>
       </div>
-    </form>
-  </template>
-  
-  
-  <script>
-  import { ref, computed, onMounted,watch } from 'vue';
-  import { useRouter, useRoute } from 'vue-router';
-  import axios from 'axios';
-  import { useStore } from 'vuex';
-  
-  export default {
-    name: 'BookingTour',
-    setup() {
-      const tourID = ref(null);
-      const route = useRoute();
-      const valueTour = ref(null);
-      const errorValue = ref(null);
-      const router = useRouter();
-      const store = useStore();
-      const emailContact = ref(null);
-      const nameContact = ref(null);
-      const emailCustomer = ref(null);
-      const nameCustomer = ref(null);
-      const type_customer = ref('other')
-      const errorEmailContact = ref(null);   
-      const errorNameContact = ref(null);   
-      const errorEmailCustomer = ref(null);  
-      const errorNameCustomer = ref(null);   
+  </form>
+</template>
 
-      const getDetailTour = async () => {
-        try {
-          const response = await axios.get('http://localhost:8000/api/TourDetail', {
+<script>
+import { ref, computed, onMounted, watch } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import axios from "axios";
+import { useStore } from "vuex";
+import Cookies from "js-cookie";
+
+export default {
+  name: "BookingTour",
+  setup() {
+    const tourID = ref(null);
+    const route = useRoute();
+    const valueTour = ref(null);
+    const errorValue = ref(null);
+    const router = useRouter();
+    const store = useStore();
+    const emailContact = ref(null);
+    const nameContact = ref(null);
+    const emailCustomer = ref(null);
+    const nameCustomer = ref(null);
+    const type_customer = ref("other");
+    const errorEmailContact = ref(null);
+    const errorNameContact = ref(null);
+    const errorEmailCustomer = ref(null);
+    const errorNameCustomer = ref(null);
+
+    const getDetailTour = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/TourDetail",
+          {
             params: {
               tour_id: tourID.value,
             },
-          });
-          valueTour.value = response.data.data;
-        } catch (error) {
-          console.error('Failed to retrieve tours:', error.response?.data?.error);
-          errorValue.value = error.response?.data?.error;
+          }
+        );
+        valueTour.value = response.data.data;
+      } catch (error) {
+        console.error("Failed to retrieve tours:", error.response?.data?.error);
+        errorValue.value = error.response?.data?.error;
+      }
+    };
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      try {
+        const response = await axios.post(
+          "http://localhost:8000/api/bookTour",
+          {
+            tour_id: tourID.value,
+            nameContact: nameContact.value,
+            emailContact: emailContact.value,
+            nameCustomer: nameCustomer.value,
+            emailCustomer: emailCustomer.value,
+            totalPrice: totalPrice.value,
+            type_customer: type_customer.value,
+            number_of_adult: numAdults.value,
+            number_of_childrent: numChildren.value,
+          }
+        );
+
+        if (response?.data?.message === "Booking the tour successfully") {
+          console.log("rs", response.data);
+          Cookies.set("bookingId", response.data.booking.id);
+
+          // this.$router.push("/minh-hiep/payment");
+          window.location.href = "http://localhost:3000/minh-hiep/payment";
+        } else {
+          console.error("Unexpected response structure:", response);
         }
-      };
-      const handleSubmit = async (e) => {
-  e.preventDefault();  
-  try {
-      const response = await axios.post('http://localhost:8000/api/bookTour', {
-          tour_id: tourID.value,
-          nameContact: nameContact.value,
-          emailContact: emailContact.value,
-          nameCustomer: nameCustomer.value,
-          emailCustomer: emailCustomer.value,
-          totalPrice: totalPrice.value,
-          type_customer: type_customer.value,
-          number_of_adult: numAdults.value,
-          number_of_childrent: numChildren.value,
-      });
-
-      if (response?.data?.message === 'Booking the tour successfully') {
-          console.log('rs',response.data);
-          alert('Booking the tour successfully');
-      } else {
-          console.error('Unexpected response structure:', response);
+      } catch (error) {
+        console.error("Registration failed:", error.response.data);
+        if (error.response && error.response.data) {
+          const errors = error.response.data.errors;
+          errorEmailContact.value = errors.emailContact
+            ? errors.emailContact[0]
+            : "";
+          errorNameContact.value = errors.nameContact
+            ? errors.nameContact[0]
+            : "";
+          errorEmailCustomer.value = errors.emailCustomer
+            ? errors.emailCustomer[0]
+            : "";
+          errorNameCustomer.value = errors.nameCustomer
+            ? errors.nameCustomer[0]
+            : "";
+        }
       }
-  } catch (error) {
-    console.error('Registration failed:', error.response.data);
-    if (error.response && error.response.data) {
-        const errors = error.response.data.errors;
-        errorEmailContact.value = errors.emailContact ? errors.emailContact[0] : '';
-        errorNameContact.value = errors.nameContact ? errors.nameContact[0] : '';
-        errorEmailCustomer.value = errors.emailCustomer ? errors.emailCustomer[0] : '';
-        errorNameCustomer.value = errors.nameCustomer ? errors.nameCustomer[0] : '';
-    }
-}
-}
+    };
 
-    
-      const totalPrice = computed(() => store.getters.getTotalPrice);
-      const numAdults = computed(() => store.getters.getNumAdults);
-      const numChildren= computed(() => store.getters.getNumChildren);
+    const totalPrice = computed(() => store.getters.getTotalPrice);
+    const numAdults = computed(() => store.getters.getNumAdults);
+    const numChildren = computed(() => store.getters.getNumChildren);
 
-      
-      const formatPrice = (price) => {
-        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-      };
-  
-     
-      const bookTour = (id) => {
-        router.push({ name: 'BookingTour', params: { id } });
-      };
-  
-      const logValue = () => {
-        console.log('emailContact',emailContact);
-        console.log('nameContact',nameContact);
-        console.log('emailCustomer',emailCustomer);
-        console.log('nameCustomer',nameCustomer);
-        console.log('totalPrice',totalPrice);
-        console.log('numAdults',numAdults);
-        console.log('numChildren',numChildren);
-        console.log('type_customer',type_customer)
-      }
+    const formatPrice = (price) => {
+      return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
 
-      onMounted(() => {
-        tourID.value = route.params.id;
-        getDetailTour();
-      });
-      const updateCustomerInfo = () => {
-      if (type_customer.value === 'self') {
+    const bookTour = (id) => {
+      router.push({ name: "BookingTour", params: { id } });
+    };
+
+    const logValue = () => {
+      console.log("emailContact", emailContact);
+      console.log("nameContact", nameContact);
+      console.log("emailCustomer", emailCustomer);
+      console.log("nameCustomer", nameCustomer);
+      console.log("totalPrice", totalPrice);
+      console.log("numAdults", numAdults);
+      console.log("numChildren", numChildren);
+      console.log("type_customer", type_customer);
+    };
+
+    onMounted(() => {
+      tourID.value = route.params.id;
+      getDetailTour();
+    });
+    const updateCustomerInfo = () => {
+      if (type_customer.value === "self") {
         emailCustomer.value = emailContact.value;
         nameCustomer.value = nameContact.value;
-      } else if (type_customer.value === 'other') {
+      } else if (type_customer.value === "other") {
         emailCustomer.value = null;
         nameCustomer.value = null;
       }
     };
-      watch(type_customer, () => {
+    watch(type_customer, () => {
       updateCustomerInfo();
     });
 
-      const setType = (item) => {
-    if (item === 'other') {
-        type_customer.value = 'other';
-    } else if (item === 'self') {
-        type_customer.value = 'self';
-    }
+    const setType = (item) => {
+      if (item === "other") {
+        type_customer.value = "other";
+      } else if (item === "self") {
+        type_customer.value = "self";
+      }
+    };
+
+    return {
+      type_customer,
+      totalPrice,
+      valueTour,
+      bookTour,
+      formatPrice,
+      errorValue,
+      numAdults,
+      numChildren,
+      logValue,
+      handleSubmit,
+      emailContact,
+      nameContact,
+      emailCustomer,
+      nameCustomer,
+      setType,
+      errorEmailContact,
+      errorNameContact,
+      errorEmailCustomer,
+      errorNameCustomer,
+    };
+  },
 };
-  
-      return {
-        type_customer,
-        totalPrice,
-        valueTour,
-        bookTour,
-        formatPrice,
-        errorValue,
-        numAdults,
-        numChildren,
-        logValue,
-        handleSubmit,
-        emailContact,
-        nameContact,
-        emailCustomer,
-        nameCustomer,
-        setType,
-        errorEmailContact,
-        errorNameContact,
-        errorEmailCustomer,
-        errorNameCustomer,
-      };
-    },
-  };
-  </script>
-  
+</script>

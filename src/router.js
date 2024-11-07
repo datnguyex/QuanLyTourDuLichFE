@@ -7,8 +7,8 @@ import UpdateTour from "./[vendor]/tours/UpdateTour.vue";
 import DetailTour from "./[vendor]/tours/DetailTour.vue";
 // import UserRegister from './components/Register/Register.vue';
 // import UserLogin from './components/Login/Login.vue';
-import Success from "./[user]/Success.vue";
 import Payment from "./[user]/Payment.vue";
+import Success from "./[user]/Success.vue";
 import UserDetails from "./components/UserDetails/UserDetails.vue";
 import UserAdmin from "./components/UserAdmin/UserAdmin.vue";
 import HomePage from "./components/Home/Home.vue";
@@ -23,6 +23,7 @@ import AddTourGuide from "./components/TourGuide/AddTourGuide/AddTourGuide.vue";
 import UpdateTourGuide from "./components/TourGuide/AddTourGuide/UpdateTourGuide/UpdateTourGuide.vue";
 import BookingTicket from "./Page/Booking/BookingTicket/BookingTicket.vue";
 import BookingTour from "./Page/Booking/BookingTour/BookingTour.vue";
+import Search from "./[user]/Search.vue";
 const routes = [
   {
     path: "/register",
@@ -38,6 +39,11 @@ const routes = [
         path: "/",
         name: "Home",
         component: HomePage,
+      },
+      {
+        path: "/search",
+        name: "Search",
+        component: Search,
       },
       {
         path: "/detail/:id",

@@ -3,7 +3,6 @@
     <div class="bg-white shadow-sm">
       <div class=" pb-3 border-b">
         <div class="flex items-center justify-between px-4 py-3">
-
           <div class="flex items-center space-x-4">
             <div class="flex items-center space-x-1">
               <span class="text-2xl font-bold text-gray-800">Storel</span>
@@ -38,6 +37,8 @@
               <!-- <i class="fas fa-chevron-down"></i></span> -->
               <button v-if="valueCurrentUser" @click="setLogout" class="text-blue-500">Đăng xuất</button>
               <button v-else @click="setLogin" class="text-blue-500">Đăng nhập</button>
+              <span>|</span>
+
               <button v-if="!valueCurrentUser" @click="setRegister" class="text-blue-500">Đăng ký</button>
             </div>
           </div>
@@ -80,7 +81,7 @@
 
 <script>
 import { inject } from 'vue';
-
+document.title = "Trang chủ";
 export default {
   name: 'HeaderComponent',
   methods: {

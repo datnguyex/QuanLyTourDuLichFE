@@ -1,26 +1,52 @@
 <template>
-  <!-- <h1>Danh sách tour</h1>
-    <select v-model="sortBy" @change="fetchTours">
-      <option value="popular">Phổ biến</option>
-      <option value="latest">Mới nhất</option>
-      <option value="promotion">Khuyến mãi</option>
-    </select> -->
   <div class="grid">
     <div class="row">
       <div class="col-md-12">
-        <div class="groud_action">
-          <button class="btn_addTour" @click="pageCreate">
+        <div class="groud_action gap-2">
+          <select
+            class="font-medium bg-white-500 p-2 rounded text-black-600 shadow-sm focus:outline-none"
+            v-model="sortBy"
+            @change="fetchTours"
+          >
+            <option class="border-b" value="popular">Phổ biến</option>
+            <option class="border-b" value="latest">Mới nhất</option>
+            <option class="border-b" value="promotion">Khuyến mãi</option>
+          </select>
+          <div
+            class="font-medium bg-white-500 p-2 rounded text-black-600 shadow-sm"
+          >
+            Số lượng: {{ this.count }}
+          </div>
+          <button
+            class="text-white font-medium bg-blue-500 p-2 rounded hover:bg-blue-600"
+            @click="pageCreate"
+          >
             Thêm tour du lịch
           </button>
         </div>
         <div class="tour_list">
           <div class="tour_item" v-for="tour in tours" :key="tour.id">
             <div class="left-section">
-              <img alt="Main tour image" height="120" :src="getImageUrl(tour.images[0]?.image_url)" width="120" />
+              <img
+                alt="Main tour image"
+                height="120"
+                :src="getImageUrl(tour.images[0]?.image_url)"
+                width="120"
+              />
               <div class="image-grid">
-                <img v-for="image in tour.images.slice(0, 3)" :key="image.id" alt="Tour image" height="40"
-                  :src="getImageUrl(image?.image_url)" width="40" class="image-grid-item" />
-                <div class="view-more" v-if="tour.images.length > 3">
+                <img
+                  v-for="image in tour.images?.slice(0, 2)"
+                  :key="image.id"
+                  alt="Tour image"
+                  height="40"
+                  :src="getImageUrl(image?.image_url)"
+                  width="40"
+                  class="image-grid-item"
+                />
+                <div
+                  class="view-more image-grid-item"
+                  v-if="tour.images.length > 2"
+                >
                   Xem ảnh
                 </div>
               </div>
@@ -29,33 +55,28 @@
             <div class="middle-section">
               <h2>{{ tour.name }}</h2>
               <div class="rating">
-                <!-- <i v-for="star in Math.floor(tour.rating)" class="fas fa-star"></i> -->
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <i class="fas fa-star"></i>
-                <!-- <i v-if="tour.rating % 1 !== 0" class="fas fa-star-half-alt"></i> -->
-                <i class="fas fa-star-half-alt"></i>
-                <!-- <span>({{ tour.reviews }} Đánh giá)</span> -->
+                <!-- <i v-for="star in Math.floor(tour.rating)" class="fas fa-star"></i>
+                  <i v-if="tour.rating % 1 !== 0" class="fas fa-star-half-alt"></i>
+                  <span>({{ tour.reviews }} Đánh giá)</span> -->
               </div>
               <div class="location">
                 <i class="fas fa-map-marker-alt"></i>
                 {{ tour.location }}
               </div>
-              <!-- <div class="features">
-                  <div v-if="tour.features.bike_rental">
-                    <i class="fas fa-bicycle"></i>
-                    Cho thuê xe đạp
-                  </div>
-                  <div v-if="tour.features.car_rental">
-                    <i class="fas fa-car"></i>
-                    Cho thuê xe hơi
-                  </div>
-                  <div v-if="tour.features.airport_transfer">
-                    <i class="fas fa-plane"></i>
-                    Đưa đón sân bay
-                  </div>
-                </div> -->
+              <div class="features">
+                <div>
+                  <i class="fas fa-bicycle"></i>
+                  Cho thuê xe đạp
+                </div>
+                <div>
+                  <i class="fas fa-car"></i>
+                  Cho thuê xe hơi
+                </div>
+                <div>
+                  <i class="fas fa-plane"></i>
+                  Đưa đón sân bay
+                </div>
+              </div>
               <div class="payment-info">
                 <i class="fas fa-check-circle"></i>
                 Không Thanh Toán Ngay
@@ -64,42 +85,71 @@
             </div>
 
             <div class="right-section">
-              <div class="price">{{ tour.price }} VND</div>
+              <div class="text-orange-500 font-bold">{{ tour.price }} VND</div>
               <!-- <div class="original-price">{{ tour.original_price }} VND</div>
                 <div class="bookings">{{ tour.bookings }} lượt đặt</div> -->
             </div>
 
-            <div class="buttons">
-              <button class="delete" @click="deleteTour(tour.id)">
+            <div class="buttons text-white font-medium">
+              <button
+                class="bg-red-500 hover:bg-red-600"
+                @click="deleteTour(tour.id)"
+              >
                 <i class="fas fa-trash-alt"></i>
                 Xóa Tour
               </button>
-              <button class="edit" @click="pageEdit(tour.id)">
+              <button
+                class="bg-green-500 hover:bg-green-600"
+                @click="pageEdit(tour.id)"
+              >
                 <i class="fas fa-edit"></i>
                 Sửa Tour
               </button>
-              <button class="details" @click="viewTourDetails(tour.id)">
+              <button
+                class="bg-red-500 hover:bg-red-600"
+                @click="viewTourDetails(tour.id)"
+              >
                 <i class="fas fa-info-circle"></i>
-                Chi
+                Trạng thái
               </button>
             </div>
           </div>
-          <nav aria-label="Page navigation example" v-if="links">
-            <ul class="pagination">
+
+          <nav aria-label="Page navigation example mt-4" v-if="links">
+            <ul class="pagination mt-4">
               <li class="page-item" :class="{ disabled: !links.prev }">
-                <a class="p-1 page-link" href="#" @click.prevent="fetchTours(meta.current_page - 1)"
-                  aria-label="Previous" :disabled="!links.prev">
+                <a
+                  class="p-1 page-link"
+                  href="#"
+                  @click.prevent="fetchTours(meta.current_page - 1)"
+                  aria-label="Previous"
+                  :disabled="!links.prev"
+                >
                   <span aria-hidden="true">&laquo;</span>
                   <span class="sr-only">Previous</span>
                 </a>
               </li>
-              <li v-for="page in meta.last_page" :key="page" class="page-item"
-                :class="{ active: page === meta.current_page }">
-                <a class="p-1 px-2 page-link" href="#" @click.prevent="fetchTours(page)">{{ page }}</a>
+              <li
+                v-for="page in meta.last_page"
+                :key="page"
+                class="page-item"
+                :class="{ active: page === meta.current_page }"
+              >
+                <a
+                  class="p-1 px-2 page-link"
+                  href="#"
+                  @click.prevent="fetchTours(page)"
+                  >{{ page }}</a
+                >
               </li>
               <li class="page-item" :class="{ disabled: !links.next }">
-                <a class="p-1 page-link" href="#" @click.prevent="fetchTours(meta.current_page + 1)" aria-label="Next"
-                  :disabled="!links.next">
+                <a
+                  class="p-1 page-link"
+                  href="#"
+                  @click.prevent="fetchTours(meta.current_page + 1)"
+                  aria-label="Next"
+                  :disabled="!links.next"
+                >
                   <span aria-hidden="true">&raquo;</span>
                   <span class="sr-only">Next</span>
                 </a>
@@ -109,25 +159,32 @@
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Modal for confirmation -->
-  <div v-if="isModalVisible" @click="closeModal" class="modal fade show" style="display: block; z-index: 1050">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content p-3">
-        <div class="modal-header">
-          <h5 class="modal-title">Xóa Tour</h5>
-        </div>
-        <div class="modal-body">
-          <p>Bạn có chắc chắn muốn xóa tour này không?</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" @click="closeModal">
-            Đóng
-          </button>
-          <button type="button" class="btn btn-danger" @click="confirmDelete">
-            Xóa
-          </button>
+    <!-- Modal for confirmation -->
+    <div
+      v-if="isModalVisible"
+      @click="closeModal"
+      class="modal fade show"
+      style="display: block; z-index: 1050"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content p-3">
+          <div class="modal-header">
+            <h5 class="modal-title text-3xl text-red-600">
+              Xóa Tour <i class="fa-solid fa-triangle-exclamation"></i>
+            </h5>
+          </div>
+          <div class="modal-body">
+            <p>Bạn có chắc chắn muốn xóa tour này không?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="closeModal">
+              Đóng
+            </button>
+            <button type="button" class="btn btn-danger" @click="confirmDelete">
+              <i class="fas fa-trash-alt"></i> Xóa
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -135,8 +192,8 @@
 </template>
 
 <script>
+document.title = "Trang người bán";
 import axios from "axios";
-// import CryptoJS from 'crypto-js';
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -151,6 +208,7 @@ export default {
       sortBy: "popular", // Giá trị mặc định
       tourToDelete: null,
       isModalVisible: false,
+      count: 0,
     };
   },
   methods: {
@@ -166,7 +224,6 @@ export default {
         this.tours = response.data.tours;
         this.meta = response.data.meta;
         this.links = response.data.links;
-        console.log(this.tours);
       } catch (error) {
         console.error("Failed to fetch tour data:", error);
       }
@@ -184,11 +241,14 @@ export default {
     getImageUrl(urlImage) {
       return `http://127.0.0.1:8000/images/${urlImage}`;
     },
+
     pageCreate() {
       window.location.href = "http://localhost:3000/minh-hiep/tours/create";
     },
 
     pageEdit($id) {
+      // const secretKey = 'your-secret-key'; // Đặt secret key của bạn ở đây
+      // const hashedId = this.hashId($id, secretKey);
       window.location.href = `http://localhost:3000/minh-hiep/tours/edit/${$id}`;
     },
 
@@ -198,19 +258,23 @@ export default {
       }); // ToastOptions
     },
 
+    viewTourDetails() {
+      console.log();
+    },
+
     notifyError(message) {
       toast.error(`${message} thất bại !`, {
         autoClose: 1500,
       }); // ToastOptions
     },
 
+    closeModal() {
+      this.isModalVisible = false; // Đóng modal
+    },
+
     deleteTour(tourId) {
       this.tourToDelete = tourId;
       this.isModalVisible = true;
-    },
-
-    closeModal() {
-      this.isModalVisible = false; // Đóng modal
     },
 
     confirmDelete() {
@@ -231,12 +295,25 @@ export default {
           });
       }
     },
+
+    async countTour() {
+      try {
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/tours/total/count`
+        );
+        console.log(response);
+        this.count = response.data.count;
+      } catch (error) {
+        console.error("Failed to fetch tour data:", error);
+      }
+    },
   },
+
   mounted() {
     //FetchData Tour
     this.fetchTours();
+    this.countTour();
     const message = this.$route.query.message;
-
     //Send Notification
     switch (message) {
       case "successEdit":

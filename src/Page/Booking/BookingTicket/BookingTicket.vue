@@ -26,13 +26,27 @@
             Xem lịch
           </button>
           <div class="flex space-x-2">
-            <button class="px-4 py-2 border rounded-lg">Thứ 4<br />6 thg 11</button>
-            <button class="px-4 py-2 border rounded-lg">Thứ 5<br />7 thg 11</button>
-            <button class="px-4 py-2 border rounded-lg">Thứ 6<br />8 thg 11</button>
-            <button class="px-4 py-2 border rounded-lg">Thứ 7<br />9 thg 11</button>
-            <button class="px-4 py-2 border rounded-lg">CN<br />10 thg 11</button>
-            <button class="px-4 py-2 border rounded-lg">Thứ 2<br />11 thg 11</button>
-            <button class="px-4 py-2 border rounded-lg">Thứ 3<br />12 thg 11</button>
+            <button class="px-4 py-2 border rounded-lg">
+              Thứ 4<br />6 thg 11
+            </button>
+            <button class="px-4 py-2 border rounded-lg">
+              Thứ 5<br />7 thg 11
+            </button>
+            <button class="px-4 py-2 border rounded-lg">
+              Thứ 6<br />8 thg 11
+            </button>
+            <button class="px-4 py-2 border rounded-lg">
+              Thứ 7<br />9 thg 11
+            </button>
+            <button class="px-4 py-2 border rounded-lg">
+              CN<br />10 thg 11
+            </button>
+            <button class="px-4 py-2 border rounded-lg">
+              Thứ 2<br />11 thg 11
+            </button>
+            <button class="px-4 py-2 border rounded-lg">
+              Thứ 3<br />12 thg 11
+            </button>
             <button class="px-4 py-2 border rounded-lg">&gt;</button>
           </div>
         </div>
@@ -53,18 +67,28 @@
               <span class="text-gray-500">10 tuổi trở lên</span>
             </div>
             <div class="flex items-center">
-              <button @click="minusTour('adult')" class="px-2 py-1 border rounded-lg">-</button>
+              <button
+                @click="minusTour('adult')"
+                class="px-2 py-1 border rounded-lg"
+              >
+                -
+              </button>
               <input
                 class="w-12 text-center border mx-2 rounded-lg"
                 type="text"
                 v-model="numAdults"
                 readonly
               />
-              <button @click="plusTour('adult')" class="px-2 py-1 border rounded-lg">+</button>
+              <button
+                @click="plusTour('adult')"
+                class="px-2 py-1 border rounded-lg"
+              >
+                +
+              </button>
             </div>
           </div>
           <div class="text-right text-lg font-bold text-gray-700">
-            <p v-if="valueTour">{{ formatPrice(valueTour.price) }} VND</p>
+            <p v-if="valueTour">{{ formatPrice(valueTour?.price) }} VND</p>
           </div>
         </div>
 
@@ -75,18 +99,30 @@
               <span class="text-gray-500">5 – 9 tuổi</span>
             </div>
             <div class="flex items-center">
-              <button @click="minusTour('child')" class="px-2 py-1 border rounded-lg">-</button>
+              <button
+                @click="minusTour('child')"
+                class="px-2 py-1 border rounded-lg"
+              >
+                -
+              </button>
               <input
                 class="w-12 text-center border mx-2 rounded-lg"
                 type="text"
                 v-model="numChildren"
                 readonly
               />
-              <button @click="plusTour('child')" class="px-2 py-1 border rounded-lg">+</button>
+              <button
+                @click="plusTour('child')"
+                class="px-2 py-1 border rounded-lg"
+              >
+                +
+              </button>
             </div>
           </div>
           <div class="text-right text-lg font-bold text-gray-700">
-            <p v-if="valueTour">{{ formatPrice(valueTour.price_children) }} VND</p>
+            <p v-if="valueTour">
+              {{ formatPrice(valueTour?.price_children || "100000") }} VND
+            </p>
           </div>
         </div>
 
@@ -98,20 +134,25 @@
               <p v-if="totalPrice">{{ formatPrice(totalPrice) }} VND</p>
             </div>
           </div>
-          <button @click="bookTour(tourID)" class="w-full py-2 bg-orange-500 text-white rounded-lg">Đặt ngay</button>
+          <button
+            @click="bookTour(tourID)"
+            class="w-full py-2 bg-orange-500 text-white rounded-lg"
+          >
+            Đặt ngay
+          </button>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { ref, onMounted } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-import axios from 'axios';
-import { useStore } from 'vuex';
+import { ref, onMounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import axios from "axios";
+import { useStore } from "vuex";
 
 export default {
-  name: 'BookingTicketComponent',
+  name: "BookingTicketComponent",
   setup() {
     const tourID = ref(null);
     const route = useRoute();
@@ -127,43 +168,46 @@ export default {
     // Lấy thông tin chi tiết tour
     const getDetailTour = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/TourDetail', {
-          params: {
-            tour_id: tourID.value,
-          },
-        });
+        const response = await axios.get(
+          "http://localhost:8000/api/TourDetail",
+          {
+            params: {
+              tour_id: tourID.value,
+            },
+          }
+        );
         valueTour.value = response.data.data;
         updateTotalPrice();
       } catch (error) {
-        console.error('Failed to retrieve tours:', error.response.data.error);
+        console.error("Failed to retrieve tours:", error.response.data.error);
         errorValue.value = error.response.data.error;
       }
     };
 
-   
     const updateTotalPrice = () => {
       if (valueTour.value) {
-        totalPrice.value = 
-          numAdults.value * valueTour.value.price + numChildren.value * valueTour.value.price_children;
-          store.commit('setNumAdults', numAdults.value);
-          store.commit('setNumChildren', numChildren.value);
-          store.commit('setTotalPrice', totalPrice.value);
+        totalPrice.value =
+          numAdults.value * valueTour.value.price +
+          numChildren.value * valueTour.value.price_children;
+        store.commit("setNumAdults", numAdults.value);
+        store.commit("setNumChildren", numChildren.value);
+        store.commit("setTotalPrice", totalPrice.value);
       }
     };
 
     const plusTour = (type) => {
-      if (type === 'adult') {
+      if (type === "adult") {
         numAdults.value++;
-      } else if (type === 'child') {
+      } else if (type === "child") {
         numChildren.value++;
       }
       updateTotalPrice();
     };
 
     const minusTour = (type) => {
-      if (type === 'adult' && numAdults.value > 0) {
+      if (type === "adult" && numAdults.value > 0) {
         numAdults.value--;
-      } else if (type === 'child' && numChildren.value > 0) {
+      } else if (type === "child" && numChildren.value > 0) {
         numChildren.value--;
       }
       updateTotalPrice();
@@ -174,13 +218,12 @@ export default {
       getDetailTour();
     });
 
-   
     const formatPrice = (price) => {
-      return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+      return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
 
     const bookTour = (id) => {
-      router.push({ name: 'BookingTour', params: { id } });
+      router.push({ name: "BookingTour", params: { id } });
     };
 
     return {
