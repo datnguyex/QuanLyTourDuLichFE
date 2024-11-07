@@ -9,6 +9,9 @@
                 <h2 class="text-xl font-semibold mb-4">
                   Thông tin liên hệ
                 </h2>
+                <div v-if="errorValue" class="alert alert-danger mt-3">
+            <p>Error: {{ errorValue }}</p>
+        </div>
                 <button @click="logValue" type="button">Log value</button>
                 <div class="bg-gray-100 p-4 rounded-lg mb-6">
                   <div class="flex justify-between items-center mb-4">
@@ -236,6 +239,7 @@
       const errorNameContact = ref(null);   
       const errorEmailCustomer = ref(null);  
       const errorNameCustomer = ref(null);   
+    
 
       const getDetailTour = async () => {
         try {

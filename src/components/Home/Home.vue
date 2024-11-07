@@ -166,6 +166,9 @@
     </div>
 
     <!-- tour Du lich moi nhat -->
+    <div v-if="displayErrors" class="alert alert-danger mt-3">
+            <p>Error: {{ displayErrors }}</p>
+        </div>
     <div class="p-8">
       <h1 class="text-3xl font-bold mb-6">Tour du lịch mới nhất</h1>
       <div class="grid grid-cols-5 gap-1">

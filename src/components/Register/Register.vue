@@ -10,6 +10,7 @@
             <input v-model="username" :class="$style.inputEmail" type="text" placeholder="Example: @gmail.com">
           </div>
           <label v-if="errorUsername" :class="$style.errorInput">{{ errorUsername }}</label>
+          <label v-if="errorEmail" :class="$style.errorInput">{{ errorEmail }}</label>
           <div :class="$style.parentInput">
             <input v-model="password" :class="$style.inputEmail" type="password" placeholder="Password">
           </div>
@@ -84,6 +85,7 @@ export default {
     const errorUsername = ref('');
     const errorPassword = ref('');
     const errorRole = ref('');
+    const errorEmail = ref('');
     const swicth = ref('');
 
     const logUsername = () => {
@@ -114,6 +116,7 @@ export default {
           errorUsername.value = errors.username ? errors.username[0] : "";
           errorPassword.value = errors.password ? errors.password[0] : "";
           errorRole.value = errors.role ? errors.role[0] : "";
+          errorEmail.value = errors.mail ? errors.mail[0] : "";
         }
       }
     };

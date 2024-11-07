@@ -1,7 +1,6 @@
 <template>
     <div class="container mt-4">
-        <h2>Tour Guides</h2>
-        <button class="btn btn-success mb-3" @click="goToAddTourGuide">Add Tour Guide</button>
+        <button class="mt-4 btn btn-success mb-3" @click="goToAddTourGuide">Add Tour Guide</button>
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -20,7 +19,7 @@
                     <td>{{ guide.name }}</td>
                     <td>{{ guide.email }}</td>
                     <td>{{ guide.phone }}</td>
-                    <td>{{ guide.experience }}</td>
+                    <td>{{ guide.experience }} Year</td>
                     <td>
                         <button class="btn btn-primary btn-sm" @click="goToUpdateTourGuide(guide.id)">Edit</button>
                         <button class="btn btn-danger btn-sm" @click="deleteTourGuide(guide.id)">Delete</button>
