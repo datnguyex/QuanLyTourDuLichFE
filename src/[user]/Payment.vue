@@ -386,11 +386,17 @@ export default {
     },
 
     async payment_card() {
+      // let id = this.user ?? "";
+      // console.log(id);
+      console.log(this.selectPayment);
+      console.log(this.tour_id);
+      console.log(this.price);
+      console.log(this.urlCheckout);
+      console.log(this.booking.number_of_people);
       try {
-        let id = this.user ?? "";
         const formData = new FormData();
         formData.append("urlCheckout", this.urlCheckout);
-        formData.append("user_id", id);
+        formData.append("user_id", 1);
         formData.append("tour_id", this.tour_id);
         formData.append("total_price", this.price);
         formData.append("status", "pending");
@@ -404,12 +410,14 @@ export default {
         });
 
         if (!response.ok) {
+          console.log(response);
           throw new Error("Network response was not ok");
         }
 
         const data = await response.json();
-        this.$router.push("/minh-hiep/payment/success");
         console.log(data);
+        Cookies.remove("bookingId");
+        this.$router.push("/minh-hiep/payment/success");
       } catch (error) {
         console.error("An error occurred:", error);
       }
@@ -464,6 +472,7 @@ export default {
         this.booking = data.booking;
         this.price = data.price;
         this.tour_id = data.tour_id;
+        console.log(this.tour_id);
 
         console.log(this.price);
       } catch (error) {

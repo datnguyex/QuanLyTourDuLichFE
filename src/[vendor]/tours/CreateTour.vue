@@ -121,7 +121,7 @@
               <input placeholder="Nhập vào giá" type="text" v-model="price" />
               <div v-if="errorPrice" class="error">{{ errorPrice }}</div>
             </div>
-            <div class="status">
+            <!-- <div class="status">
               <label> Trạng thái </label>
               <select v-model="availability">
                 <option>Chọn trạng thái</option>
@@ -129,7 +129,7 @@
               <div v-if="errorAvailability" class="error">
                 {{ errorAvailability }}
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
 

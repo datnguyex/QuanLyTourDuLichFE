@@ -176,7 +176,7 @@
           v-for="(tour, index) in newesTour"
           :key="index"
           @click="detailTour(tour.id)"
-          class="bg-white rounded-lg shadow-md overflow-hidden relative"
+          class="bg-white rounded-lg shadow-md overflow-hidden relative cursor-pointer hover:bg-white-300"
         >
           <img
             :src="
