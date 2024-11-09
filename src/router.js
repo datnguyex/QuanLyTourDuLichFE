@@ -43,6 +43,11 @@ const routes = [
         component: Detail,
       },
       {
+        path: "/UserDetails",
+        name: "UserDetails",
+        component: UserDetails,
+      },
+      {
         path: "/booking/:id",
         name: "Booking",
         component: Booking,
@@ -79,11 +84,7 @@ const routes = [
         name: "Storage",
         component: Storage,
       },
-      {
-        path: "/UserDetails",
-        name: "UserDetails",
-        component: UserDetails,
-      },
+     
       {
         path: "/UserAdmin",
         name: "UserAdmin",

@@ -2,15 +2,15 @@
   <div class="container mt-5">
     <h1 class="mb-4">Danh sách người dùng</h1>
 
-    <!-- Hiển thị thông báo thành công nếu có -->
+    
     <div v-if="successMessage" class="alert alert-success" role="alert">
       {{ successMessage }}
     </div>
 
-    <!-- Nút thêm người dùng -->
+    <!-- Nút thêm -->
     <button @click="showAddModal = true" class="btn btn-success mb-3">Thêm User</button>
 
-    <!-- Modal thêm người dùng -->
+    <!-- Thêm người dùng -->
     <div class="modal fade" :class="{ show: showAddModal }" tabindex="-1" role="dialog" style="display: block;" v-if="showAddModal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -55,7 +55,7 @@
       </div>
     </div>
 
-    <!-- Modal sửa người dùng -->
+    <!-- Sửa người dùng -->
     <div class="modal fade" :class="{ show: showEditModal }" tabindex="-1" role="dialog" style="display: block;" v-if="showEditModal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -94,7 +94,7 @@
         </div>
       </div>
     </div>
- <!-- Modal xác nhận xóa người dùng -->
+ <!-- xác nhận xóa người dùng -->
  <div class="modal fade" :class="{ show: showDeleteModal }" tabindex="-1" role="dialog" style="display: block;" v-if="showDeleteModal">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -111,7 +111,7 @@
         </div>
       </div>
     </div>
-    <!-- Bảng hiển thị danh sách người dùng -->
+
     <table class="custom-table">
   <thead>
     <tr>
@@ -225,7 +225,7 @@ export default {
     return false;
   }
 
-  this[`error${fieldNameError}`] = ""; // Xóa lỗi nếu hợp lệ
+  this[`error${fieldNameError}`] = ""; 
   return true;
 },
 
@@ -311,7 +311,7 @@ export default {
 </script>
 
 <style>
-/* Thi?t l?p modal Bootstrap */
+
 .modal {
   display: none;
 }
