@@ -20,6 +20,24 @@
             class="text-white font-medium bg-blue-500 p-2 rounded hover:bg-blue-600"
             @click="pageCreate"
           >
+        <div class="groud_action gap-2">
+          <select
+            class="font-medium bg-white-500 p-2 rounded text-black-600 shadow-sm focus:outline-none"
+            v-model="sortBy"
+            @change="fetchTours"
+          >
+            <option selected class="border-b" value="latest">Mới nhất</option>
+            <option class="border-b" value="price">Giá thành</option>
+          </select>
+          <div
+            class="font-medium bg-white-500 p-2 rounded text-black-600 shadow-sm"
+          >
+            Số lượng: {{ this.count }}
+          </div>
+          <button
+            class="text-white font-medium bg-blue-500 p-2 rounded hover:bg-blue-600"
+            @click="pageCreate"
+          >
             Thêm tour du lịch
           </button>
         </div>
@@ -32,7 +50,26 @@
                 :src="getImageUrl(tour.images[0]?.image_url)"
                 width="120"
               />
+              <img
+                alt="Main tour image"
+                height="120"
+                :src="getImageUrl(tour.images[0]?.image_url)"
+                width="120"
+              />
               <div class="image-grid">
+                <img
+                  v-for="image in tour.images?.slice(0, 2)"
+                  :key="image.id"
+                  alt="Tour image"
+                  height="40"
+                  :src="getImageUrl(image?.image_url)"
+                  width="40"
+                  class="image-grid-item"
+                />
+                <div
+                  class="view-more image-grid-item"
+                  v-if="tour.images.length > 2"
+                >
                 <img
                   v-for="image in tour.images?.slice(0, 2)"
                   :key="image.id"
@@ -57,10 +94,27 @@
                 <!-- <i v-for="star in Math.floor(tour.rating)" class="fas fa-star"></i>
                   <i v-if="tour.rating % 1 !== 0" class="fas fa-star-half-alt"></i>
                   <span>({{ tour.reviews }} Đánh giá)</span> -->
+                <!-- <i v-for="star in Math.floor(tour.rating)" class="fas fa-star"></i>
+                  <i v-if="tour.rating % 1 !== 0" class="fas fa-star-half-alt"></i>
+                  <span>({{ tour.reviews }} Đánh giá)</span> -->
               </div>
               <div class="location">
                 <i class="fas fa-map-marker-alt"></i>
                 {{ tour.location }}
+              </div>
+              <div class="features">
+                <div>
+                  <i class="fas fa-bicycle"></i>
+                  Cho thuê xe đạp
+                </div>
+                <div>
+                  <i class="fas fa-car"></i>
+                  Cho thuê xe hơi
+                </div>
+                <div>
+                  <i class="fas fa-plane"></i>
+                  Đưa đón sân bay
+                </div>
               </div>
               <div class="features">
                 <div>
@@ -87,6 +141,9 @@
               <div class="text-orange-500 font-bold">
                 {{ formatVND(tour.price) }} VND
               </div>
+              <div class="text-orange-500 font-bold">
+                {{ formatVND(tour.price) }} VND
+              </div>
               <!-- <div class="original-price">{{ tour.original_price }} VND</div>
                 <div class="bookings">{{ tour.bookings }} lượt đặt</div> -->
             </div>
@@ -96,9 +153,18 @@
                 class="bg-red-500 hover:bg-red-600"
                 @click="deleteTour(tour.id)"
               >
+            <div class="buttons text-white font-medium">
+              <button
+                class="bg-red-500 hover:bg-red-600"
+                @click="deleteTour(tour.id)"
+              >
                 <i class="fas fa-trash-alt"></i>
                 Xóa Tour
               </button>
+              <button
+                class="bg-green-500 hover:bg-green-600"
+                @click="pageEdit(tour.id)"
+              >
               <button
                 class="bg-green-500 hover:bg-green-600"
                 @click="pageEdit(tour.id)"
@@ -118,7 +184,17 @@
 
           <nav aria-label="Page navigation example mt-4" v-if="links">
             <ul class="pagination mt-4">
+
+          <nav aria-label="Page navigation example mt-4" v-if="links">
+            <ul class="pagination mt-4">
               <li class="page-item" :class="{ disabled: !links.prev }">
+                <a
+                  class="p-1 page-link"
+                  href="#"
+                  @click.prevent="fetchTours(meta.current_page - 1)"
+                  aria-label="Previous"
+                  :disabled="!links.prev"
+                >
                 <a
                   class="p-1 page-link"
                   href="#"
@@ -142,8 +218,27 @@
                   @click.prevent="fetchTours(page)"
                   >{{ page }}</a
                 >
+              <li
+                v-for="page in meta.last_page"
+                :key="page"
+                class="page-item"
+                :class="{ active: page === meta.current_page }"
+              >
+                <a
+                  class="p-1 px-2 page-link"
+                  href="#"
+                  @click.prevent="fetchTours(page)"
+                  >{{ page }}</a
+                >
               </li>
               <li class="page-item" :class="{ disabled: !links.next }">
+                <a
+                  class="p-1 page-link"
+                  href="#"
+                  @click.prevent="fetchTours(meta.current_page + 1)"
+                  aria-label="Next"
+                  :disabled="!links.next"
+                >
                 <a
                   class="p-1 page-link"
                   href="#"
@@ -160,7 +255,35 @@
         </div>
       </div>
     </div>
+        </div>
+      </div>
+    </div>
 
+    <!-- Modal for confirmation -->
+    <div
+      v-if="isModalVisible"
+      @click="closeModal"
+      class="modal fade show"
+      style="display: block; z-index: 1050"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content p-3">
+          <div class="modal-header">
+            <h5 class="modal-title text-3xl text-red-600">
+              Xóa Tour <i class="fa-solid fa-triangle-exclamation"></i>
+            </h5>
+          </div>
+          <div class="modal-body">
+            <p>Bạn có chắc chắn muốn xóa tour này không?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" @click="closeModal">
+              Đóng
+            </button>
+            <button type="button" class="btn btn-danger" @click="confirmDelete">
+              <i class="fas fa-trash-alt"></i> Xóa
+            </button>
+          </div>
     <!-- Modal for confirmation -->
     <div
       v-if="isModalVisible"
@@ -194,6 +317,7 @@
 
 <script>
 document.title = "Trang người bán";
+document.title = "Trang người bán";
 import axios from "axios";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
@@ -207,8 +331,10 @@ export default {
       meta: {},
       links: {},
       sortBy: "latest", // Giá trị mặc định
+      sortBy: "latest", // Giá trị mặc định
       tourToDelete: null,
       isModalVisible: false,
+      count: 0,
       count: 0,
     };
   },
@@ -216,6 +342,7 @@ export default {
     async fetchTours(page = 1) {
       try {
         const response = await axios.get(
+          `http://127.0.0.1:8000/api/tours/list?page=${page}&per_page=3&sort=${this.sortBy}`
           `http://127.0.0.1:8000/api/tours/list?page=${page}&per_page=3&sort=${this.sortBy}`
         );
         if (response.data.tours.length === 0) {
@@ -228,6 +355,10 @@ export default {
       } catch (error) {
         console.error("Failed to fetch tour data:", error);
       }
+    },
+
+    formatVND(amount) {
+      return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     },
 
     formatVND(amount) {
@@ -247,11 +378,14 @@ export default {
       return `http://127.0.0.1:8000/images/${urlImage}`;
     },
 
+
     pageCreate() {
       window.location.href = "http://localhost:3000/minh-hiep/tours/create";
     },
 
     pageEdit($id) {
+      // const secretKey = 'your-secret-key'; // Đặt secret key của bạn ở đây
+      // const hashedId = this.hashId($id, secretKey);
       // const secretKey = 'your-secret-key'; // Đặt secret key của bạn ở đây
       // const hashedId = this.hashId($id, secretKey);
       window.location.href = `http://localhost:3000/minh-hiep/tours/edit/${$id}`;
@@ -267,10 +401,18 @@ export default {
       console.log();
     },
 
+    viewTourDetails() {
+      console.log();
+    },
+
     notifyError(message) {
       toast.error(`${message} thất bại !`, {
         autoClose: 1500,
       }); // ToastOptions
+    },
+
+    closeModal() {
+      this.isModalVisible = false; // Đóng modal
     },
 
     closeModal() {
@@ -318,9 +460,11 @@ export default {
     },
   },
 
+
   mounted() {
     //FetchData Tour
     this.fetchTours();
+    this.countTour();
     this.countTour();
     const message = this.$route.query.message;
     //Send Notification

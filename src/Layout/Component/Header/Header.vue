@@ -2,8 +2,13 @@
   <div :class="$style.wrapper">
     <div class="bg-white shadow-sm">
       <div class="pb-3 border-b">
+      <div class="pb-3 border-b">
         <div class="flex items-center justify-between px-4 py-3">
           <div class="flex items-center space-x-4">
+            <div
+              @click="homePage"
+              class="flex items-center space-x-1 cursor-pointer"
+            >
             <div
               @click="homePage"
               class="flex items-center space-x-1 cursor-pointer"
@@ -32,6 +37,14 @@
               <span class="text-gray-800"
                 >VI | VND <i class="fas fa-chevron-down"></i
               ></span>
+              <img
+                alt="Vietnam flag"
+                class="w-5 h-5"
+                src="https://storage.googleapis.com/a1aa/image/Gk1qI5bKGcoNOR3EPAXEGN3mX6XPN09tnbBZ9ytZDbghwa7E.jpg"
+              />
+              <span class="text-gray-800"
+                >VI | VND <i class="fas fa-chevron-down"></i
+              ></span>
             </div>
             <a class="text-gray-800 flex items-center space-x-1" href="#"
               ><i class="fas fa-percent text-green-500"></i
@@ -47,7 +60,15 @@
               <img
                 alt="User avatar"
                 class="w-5 h-5 rounded-full"
+              <img
+                alt="User avatar"
+                class="w-5 h-5 rounded-full"
                 src="https://storage.googleapis.com/a1aa/image/WZNnADVMnkqlKVQ5vH3H483t1j2I9eIbX5axZ5u0ejqFCrtTA.jpg"
+                v-if="valueCurrentUser"
+              />
+              <span v-if="valueCurrentUser" class="text-blue-500"
+                >{{ valueCurrentUser.name }} |
+              </span>
                 v-if="valueCurrentUser"
               />
               <span v-if="valueCurrentUser" class="text-blue-500"
@@ -84,7 +105,16 @@
           <a class="text-gray-600 hover:text-gray-800" href="#"
             >Đưa đón sân bay</a
           >
+          <a class="text-gray-600 hover:text-gray-800" href="#"
+            >Đưa đón sân bay</a
+          >
           <a class="text-gray-600 hover:text-gray-800" href="#">Cho thuê xe</a>
+          <a class="text-gray-600 hover:text-gray-800" href="#"
+            >Hoạt động &amp; Vui chơi</a
+          >
+          <a class="text-gray-600 hover:text-gray-800" href="#"
+            >More <i class="fas fa-chevron-down"></i
+          ></a>
           <a class="text-gray-600 hover:text-gray-800" href="#"
             >Hoạt động &amp; Vui chơi</a
           >
@@ -124,6 +154,11 @@ export default {
     homePage() {
       this.$router.push("/");
     },
+      this.$router.push("/minh-hiep/tours");
+    },
+    homePage() {
+      this.$router.push("/");
+    },
   },
 
   setup() {
@@ -146,6 +181,8 @@ export default {
     const setLogout = () => {
       document.cookie =
         "tokenLogin=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
+      document.cookie =
+        "tokenLogin=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;";
       handleDisplayLogin(false);
       setCurrentUser(null);
     };
@@ -162,5 +199,6 @@ export default {
 </script>
 
 <style lang="scss" module>
+@import "./Header.module.scss";
 @import "./Header.module.scss";
 </style>
