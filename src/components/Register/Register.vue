@@ -3,36 +3,79 @@
     <form v-if="swicth == ''" @submit.prevent="handleSubmit">
       <div :class="$style.wrapper">
         <div :class="$style.parent">
-          <Icons @click="handleDisplayRegister(false)" :class="$style.iconClose" :iconName="'iconX'" />
+          <Icons
+            @click="handleDisplayRegister(false)"
+            :class="$style.iconClose"
+            :iconName="'iconX'"
+          />
           <h1 :class="$style.title">Register</h1>
           <div :class="$style.subtitle">Email/Mobile Number</div>
           <div :class="$style.parentInput">
-            <input v-model="username" :class="$style.inputEmail" type="text" placeholder="Example: @gmail.com">
+            <input
+              v-model="username"
+              :class="$style.inputEmail"
+              type="text"
+              placeholder="Example: @gmail.com"
+            />
           </div>
-          <label v-if="errorUsername" :class="$style.errorInput">{{ errorUsername }}</label>
+          <label v-if="errorUsername" :class="$style.errorInput">{{
+            errorUsername
+          }}</label>
           <div :class="$style.parentInput">
-            <input v-model="password" :class="$style.inputEmail" type="password" placeholder="Password">
+            <input
+              v-model="password"
+              :class="$style.inputEmail"
+              type="password"
+              placeholder="Password"
+            />
           </div>
-          <label v-if="errorPassword" :class="$style.errorInput">{{ errorPassword }}</label>
+          <label v-if="errorPassword" :class="$style.errorInput">{{
+            errorPassword
+          }}</label>
           <div :class="$style.parentRole">
             <div :class="$style.parentContent">
-              <input :class="$style.contentInput" v-model="role" value="1" type="radio" id="customer" name="role">
-              <label :class="$style.contentLabel" for="customer">Customer</label>
+              <input
+                :class="$style.contentInput"
+                v-model="role"
+                value="1"
+                type="radio"
+                id="customer"
+                name="role"
+              />
+              <label :class="$style.contentLabel" for="customer"
+                >Customer</label
+              >
             </div>
             <div :class="$style.parentContent">
-              <input :class="$style.contentInput" v-model="role" value="2" type="radio" id="suppliers" name="role">
-              <label :class="$style.contentLabel" for="suppliers">Suppliers</label>
+              <input
+                :class="$style.contentInput"
+                v-model="role"
+                value="2"
+                type="radio"
+                id="suppliers"
+                name="role"
+              />
+              <label :class="$style.contentLabel" for="suppliers"
+                >Suppliers</label
+              >
             </div>
-            <div :class="$style.parentContent">
-              <input :class="$style.contentInput" v-model="role" value="3" type="radio" id="admin" name="role">
+            <!-- <div class="none" :class="$style.parentContent">
+              <input
+                :class="$style.contentInput"
+                v-model="role"
+                value="3"
+                type="radio"
+                id="admin"
+                name="role"
+              />
               <label :class="$style.contentLabel" for="admin">Admin</label>
-            </div>
+            </div> -->
           </div>
           <div v-if="errorRole" :class="$style.errorRole">{{ errorRole }}</div>
           <button :class="$style.btnLogin">Sign up</button>
           <div :class="$style.wrapTitleChoose">
             <div :class="$style.lineLeft"></div>
-            <div :class="$style.lineContent"> Or login/register with</div>
+            <div :class="$style.lineContent">Or login/register with</div>
             <div :class="$style.lineRight"></div>
           </div>
           <div :class="$style.social">
@@ -49,19 +92,28 @@
       </div>
     </form>
 
-    <SendConfirmation :handleDisplayRegister="handleDisplayRegister" :username="username" :setSwicth="setSwicth"
-      v-if="swicth == 'send code'"></SendConfirmation>
-    <MoreInfomation :handleDisplayRegister="handleDisplayRegister" :username="username" :role="role"
-      :password="password" v-if="swicth == 'more infomation'"></MoreInfomation>
+    <SendConfirmation
+      :handleDisplayRegister="handleDisplayRegister"
+      :username="username"
+      :setSwicth="setSwicth"
+      v-if="swicth == 'send code'"
+    ></SendConfirmation>
+    <MoreInfomation
+      :handleDisplayRegister="handleDisplayRegister"
+      :username="username"
+      :role="role"
+      :password="password"
+      v-if="swicth == 'more infomation'"
+    ></MoreInfomation>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue';
-import axios from 'axios';
-import SendConfirmation from '../SendConfirmation/SendConfirmation.vue';
-import MoreInfomation from '../moreInfomation/moreInfomation.vue';
-import Icons from '../Icons/Icons.vue';
+import { ref } from "vue";
+import axios from "axios";
+import SendConfirmation from "../SendConfirmation/SendConfirmation.vue";
+import MoreInfomation from "../moreInfomation/moreInfomation.vue";
+import Icons from "../Icons/Icons.vue";
 
 export default {
   components: {
@@ -73,25 +125,25 @@ export default {
     handleDisplayRegister: {
       type: Function,
       required: true,
-    }
+    },
   },
-  name: 'UserRegister',
+  name: "UserRegister",
 
   setup() {
-    const username = ref('');
-    const password = ref('');
-    const role = ref('');
-    const errorUsername = ref('');
-    const errorPassword = ref('');
-    const errorRole = ref('');
-    const swicth = ref('');
+    const username = ref("");
+    const password = ref("");
+    const role = ref("");
+    const errorUsername = ref("");
+    const errorPassword = ref("");
+    const errorRole = ref("");
+    const swicth = ref("");
 
     const logUsername = () => {
-      console.log('username:', username.value);
-      console.log('password:', password.value);
-      console.log('errorPassword:', errorPassword.value);
-      console.log('errorUsername:', errorUsername.value);
-      console.log('role:', role.value);
+      console.log("username:", username.value);
+      console.log("password:", password.value);
+      console.log("errorPassword:", errorPassword.value);
+      console.log("errorUsername:", errorUsername.value);
+      console.log("role:", role.value);
     };
 
     const setSwicth = (item) => {
@@ -100,15 +152,18 @@ export default {
 
     const handleSubmit = async () => {
       try {
-        const response = await axios.post('http://localhost:8000/api/mainInformation', {
-          username: username.value,
-          password: password.value,
-          role: role.value,
-        });
-        console.log('Registration successful:', response.data);
+        const response = await axios.post(
+          "http://localhost:8000/api/mainInformation",
+          {
+            username: username.value,
+            password: password.value,
+            role: role.value,
+          }
+        );
+        console.log("Registration successful:", response.data);
         swicth.value = response.data.swicth;
       } catch (error) {
-        console.error('Registration failed:', error.response.data);
+        console.error("Registration failed:", error.response.data);
         if (error.response && error.response.data) {
           const errors = error.response.data.errors || {};
           errorUsername.value = errors.username ? errors.username[0] : "";
@@ -130,10 +185,10 @@ export default {
       setSwicth,
       handleSubmit,
     };
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" module>
-@import './Register.module.scss';
+@import "./Register.module.scss";
 </style>

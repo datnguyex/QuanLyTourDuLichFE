@@ -262,7 +262,7 @@ export default {
           this.duration,
           1,
           3,
-          /^[0-9]+$/,
+          /^\s*[0-9]+\s*$/,
           (value) => {
             return value <= 0 ? "Thời gian phải là số dương lớn hơn 0" : "";
           }
@@ -282,7 +282,7 @@ export default {
           this.price,
           1,
           10,
-          /^[0-9]+$/,
+          /^\s*[0-9]+\s*$/,
           (value) => {
             return value <= 10000 ? "Giá phải là số dương lớn hơn 10000" : "";
           }
@@ -464,11 +464,11 @@ export default {
     },
     handleFileUpload(event) {
       const files = event.target.files;
-      if (files && files.length > 5) {
-        this.errorImage = "Vui lòng chọn nhiều nhất 5 hình ảnh.";
+      if (files && files.length > 10) {
+        this.errorImage = "Vui lòng chọn nhiều nhất 10 hình ảnh.";
         return;
-      } else if (files && files.length < 3) {
-        this.errorImage = "Vui lòng chọn nhiều ít 3 hình ảnh.";
+      } else if (files && files.length < 5) {
+        this.errorImage = "Vui lòng chọn ít nhất 5 hình ảnh.";
         return;
       } else if (files && files.length > 0) {
         this.errorImage = null; // Reset lỗi nếu có
@@ -597,7 +597,7 @@ export default {
         this.duration,
         1,
         3,
-        /^[0-9]+$/,
+        /^\s*[0-9]+\s*$/,
         (value) => {
           return value <= 0 ? "Thời gian phải là số dương lớn hơn 0" : "";
         }
@@ -615,7 +615,7 @@ export default {
         this.price,
         1,
         10,
-        /^[0-9]+$/,
+        /^\s*[0-9]+\s*$/,
         (value) => {
           return value <= 10000 ? "Giá phải là số dương lớn hơn 10000" : "";
         }
@@ -729,8 +729,8 @@ export default {
       const formData = new FormData();
       formData.append("name", this.name);
       formData.append("description", this.description);
-      formData.append("duration", this.duration);
-      formData.append("price", this.price);
+      formData.append("duration", this.duration.trim());
+      formData.append("price", this.price.trim());
       formData.append("start_date", this.start_date);
       formData.append("end_date", this.end_date);
       formData.append("location", this.location);

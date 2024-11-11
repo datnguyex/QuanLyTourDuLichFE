@@ -15,9 +15,10 @@
             <span>|</span>
             <div
               class="cursor-pointer items-center hover:text-blue-500 text-lg"
+              v-if="valueCurrentUser"
               @click="handleIntoPageVendor"
             >
-              Trang người bán
+              Trang quản lý
             </div>
           </div>
 
@@ -65,7 +66,11 @@
                 Đăng nhập
               </button>
               <span>|</span>
-              <button @click="setRegister" class="text-blue-500">
+              <button
+                v-if="valueCurrentUser == null"
+                @click="setRegister"
+                class="text-blue-500"
+              >
                 Đăng ký
               </button>
             </div>
@@ -107,10 +112,11 @@
 </template>
 
 <script>
-import { inject } from "vue";
+import { inject, onMounted, ref } from "vue";
 document.title = "Trang chủ";
 export default {
   name: "HeaderComponent",
+
   methods: {
     handleIntoPageVendor() {
       this.$router.push("/minh-hiep/tours");
@@ -119,14 +125,15 @@ export default {
       this.$router.push("/");
     },
   },
+
   setup() {
     const valueCurrentUser = inject("valueCurrentUser");
+
     const setCurrentUser = inject("setCurrentUser");
     const handleDisplayLogin = inject("handleDisplayLogin");
     const handleDisplayRegister = inject("handleDisplayRegister");
-
     const showCurrentUser = () => {
-      console.log("Current User Value:", valueCurrentUser.value);
+      console.log("Current User Value:", valueCurrentUser.value.role);
     };
 
     const setLogin = () => {

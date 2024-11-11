@@ -7,7 +7,7 @@
           height="200"
           width="300"
           v-if="valueTour && valueTour.images && valueTour.images.length > 0"
-          :src="`http://localhost:8000/${valueTour.images[0].image_url}`"
+          :src="`http://127.0.0.1:8000/images/${valueTour.images[0].image_url}`"
           :alt="valueTour.images[0].alt_text"
         />
         <h2 v-if="valueTour" class="text-lg font-bold mb-2">
@@ -51,7 +51,7 @@
           </div>
         </div>
         <div v-if="errorValue" class="alert alert-danger mt-3">
-            <p>Error: {{ errorValue }}</p>
+          <p>Error: {{ errorValue }}</p>
         </div>
         <!-- Selected Date -->
         <div class="bg-blue-100 p-4 rounded-lg mb-4">

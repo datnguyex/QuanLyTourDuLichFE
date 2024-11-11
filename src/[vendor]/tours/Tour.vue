@@ -108,10 +108,10 @@
               </button>
               <button
                 class="bg-red-500 hover:bg-red-600"
-                @click="viewTourDetails(tour.id)"
+                @click="detailTour(tour.id)"
               >
                 <i class="fas fa-info-circle"></i>
-                Trạng thái
+                CHi tiết
               </button>
             </div>
           </div>
@@ -311,6 +311,10 @@ export default {
       } catch (error) {
         console.error("Failed to fetch tour data:", error);
       }
+    },
+
+    detailTour(id) {
+      this.$router.push({ name: "Detail", params: { id } });
     },
   },
 

@@ -80,6 +80,21 @@ const routes = [
         name: "BookingTour",
         component: BookingTour,
       },
+      {
+        path: "/:user/payment",
+        name: "Payment",
+        component: Payment,
+      },
+      {
+        path: "/:user/payment/success",
+        name: "PaymentSuccess",
+        component: Success,
+      },
+      {
+        path: "/UserAdmin",
+        name: "UserAdmin",
+        component: UserAdmin,
+      },
     ],
   },
   {
@@ -102,11 +117,7 @@ const routes = [
         name: "UserDetails",
         component: UserDetails,
       },
-      {
-        path: "/UserAdmin",
-        name: "UserAdmin",
-        component: UserAdmin,
-      },
+
       {
         path: "/HomePage",
         name: "HomePage",
@@ -123,16 +134,6 @@ const routes = [
         component: DetailTour,
       },
     ],
-  },
-  {
-    path: "/:user/payment",
-    name: "Payment",
-    component: Payment,
-  },
-  {
-    path: "/:user/payment/success",
-    name: "PaymentSuccess",
-    component: Success,
   },
   {
     path: "/:vendor/tours/create",

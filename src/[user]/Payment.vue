@@ -356,12 +356,13 @@ export default {
       }
     },
     async payment_momo() {
+      let id = this.user ? this.user.id : null;
       try {
         const formData = new FormData();
         formData.append("urlCheckout", this.urlCheckout);
-        formData.append("user_id", this.user.id || null);
+        formData.append("user_id", id);
         formData.append("tour_id", this.tour_id);
-        formData.append("total_price", this.price * 100);
+        formData.append("total_price", this.price);
         formData.append("status", "pending");
         formData.append("notes", "");
         formData.append("transaction_id", "");
@@ -386,7 +387,8 @@ export default {
     },
 
     async payment_card() {
-      let id = this.user ? this.user.id : null;
+      let id = this.user ? this.user.id : 0;
+      console.log(id);
       try {
         const formData = new FormData();
         formData.append("urlCheckout", this.urlCheckout);
@@ -398,18 +400,20 @@ export default {
         formData.append("transaction_id", "");
         formData.append("payment_method", this.selectPayment);
         formData.append("number_of_tickers", this.booking.number_of_people);
-        const response = await fetch("http://127.0.0.1:8000/api/payments", {
-          method: "POST",
-          body: formData,
-        });
+        const response = await axios.post(
+          "http://127.0.0.1:8000/api/payments",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
 
-        if (!response.ok) {
+        if (response.status !== 200) {
           console.log(response);
           throw new Error("Network response was not ok");
         }
-
-        const data = await response.json();
-        console.log(data);
         Cookies.remove("bookingId");
         this.$router.push("/minh-hiep/payment/success");
       } catch (error) {

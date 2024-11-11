@@ -25,7 +25,9 @@
         <input
           class="flex-grow px-4 py-2.5 rounded-l-full text-black focus:outline-none"
           placeholder="Tìm kiếm địa điểm hoặc hoạt động"
+          value=""
           type="text"
+          v-model="key"
         />
         <button
           class="bg-blue-500 text-white px-4 py-2.5 rounded-r-full"
@@ -37,7 +39,9 @@
     </div>
   </div>
 
-  <div class="bg-white shadow-md rounded-t-lg px-4 py-2 flex justify-around">
+  <div
+    class="bg-white border-b shadow-sm rounded-t-lg px-4 py-2 flex justify-around"
+  >
     <div class="flex flex-col items-center">
       <i class="fas fa-th-large text-2xl"> </i>
       <span class="mt-1"> Tất cả các hoạt động </span>
@@ -67,7 +71,8 @@
       <span class="mt-1"> Trò chơi &amp; Hoạt động </span>
     </div>
   </div>
-  <div class="container mt-8">
+
+  <div class="container bg-white">
     <div class="p-8" id="app">
       <div class="text-center">
         <h1 class="text-3xl font-bold mb-2">Khuyến mãi Xperience hiện hành</h1>
@@ -173,8 +178,8 @@
       <h1 class="text-3xl font-bold mb-6">Tour du lịch mới nhất</h1>
       <div class="grid grid-cols-5 gap-1">
         <div
-          v-for="(tour, index) in newesTour"
-          :key="index"
+          v-for="tour in newesTour"
+          :key="tour.id"
           @click="detailTour(tour.id)"
           class="bg-white rounded-lg shadow-md overflow-hidden relative cursor-pointer hover:bg-white-300"
         >
@@ -241,12 +246,25 @@
         </button>
       </div>
       <div class="grid grid-cols-5 gap-1">
-        <div class="bg-white rounded-lg shadow-md overflow-hidden relative">
+        <div
+          v-for="tour in tours"
+          :key="tour.id"
+          class="bg-white rounded-lg shadow-md overflow-hidden relative"
+        >
           <img
-            alt="Two people underwater with Seawalker helmets"
+            :src="
+              tour.images.length > 0
+                ? `http://127.0.0.1:8000/images/${tour.images[0].image_url}`
+                : ''
+            "
+            :alt="
+              tour.images.length > 0
+                ? tour.images[0].alt_text
+                : 'Default alt text'
+            "
+            @click="detailTour(tour.id)"
             class="w-full h-68 object-cover"
             height="200"
-            src="@/assets/Images/hdJ96A9WbF7tE11zK5Z2wHzPOUUpmCSWZrndrD4ev8Ks612JA.jpg"
             width="300"
           />
           <div
@@ -255,94 +273,14 @@
             Tiết kiệm 20%
           </div>
           <div class="p-2 flex flex-col justify-between">
-            <p class="text-gray-700">Đi bộ dưới biển</p>
+            <p class="text-gray-700">{{ tour?.name }}</p>
             <div class="w-full mt-8">
-              <p class="text-gray-700 line-through mt-2">VND 2.490.000</p>
-              <p class="text-orange-500 font-bold">VND 1.990.000</p>
-            </div>
-          </div>
-        </div>
-        <div class="bg-white rounded-lg shadow-md overflow-hidden relative">
-          <img
-            alt="Two people underwater with Seawalker helmets"
-            class="w-full h-68 object-cover"
-            height="200"
-            src="@/assets/Images/XMZDaoAUsL4vFpGglAk4y8CHQgWg2xQMMmY7wlLDsqRV9a7E.jpg"
-            width="300"
-          />
-          <div
-            class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded"
-          >
-            Tiết kiệm 20%
-          </div>
-          <div class="p-2 flex flex-col justify-between">
-            <p class="text-gray-700">Đi bộ dưới biển</p>
-            <div class="w-full mt-8">
-              <p class="text-gray-700 line-through mt-2">VND 2.490.000</p>
-              <p class="text-orange-500 font-bold">VND 1.990.000</p>
-            </div>
-          </div>
-        </div>
-        <div class="bg-white rounded-lg shadow-md overflow-hidden relative">
-          <img
-            alt="Two people underwater with Seawalker helmets"
-            class="w-full h-68 object-cover"
-            height="200"
-            src="@/assets/Images/O7UImgYhkDKVNFQYCVsVpH2PyqwUwgGmjWCOsZZ9dm9U9a7E.jpg"
-            width="300"
-          />
-          <div
-            class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded"
-          >
-            Tiết kiệm 20%
-          </div>
-          <div class="p-2 flex flex-col justify-between">
-            <p class="text-gray-700">Đi bộ dưới biển</p>
-            <div class="w-full mt-8">
-              <p class="text-gray-700 line-through mt-2">VND 2.490.000</p>
-              <p class="text-orange-500 font-bold">VND 1.990.000</p>
-            </div>
-          </div>
-        </div>
-        <div class="bg-white rounded-lg shadow-md overflow-hidden relative">
-          <img
-            alt="Two people underwater with Seawalker helmets"
-            class="w-full h-68 object-cover"
-            height="200"
-            src="@/assets/Images/uOE1VyDUVxLOMdfyTIlcsfm762C5Tv3XEq8MLrk6PIOZ1rtTA.jpg"
-            width="300"
-          />
-          <div
-            class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded"
-          >
-            Tiết kiệm 20%
-          </div>
-          <div class="p-2 flex flex-col justify-between">
-            <p class="text-gray-700">Đi bộ dưới biển</p>
-            <div class="w-full mt-8">
-              <p class="text-gray-700 line-through mt-2">VND 2.490.000</p>
-              <p class="text-orange-500 font-bold">VND 1.990.000</p>
-            </div>
-          </div>
-        </div>
-        <div class="bg-white rounded-lg shadow-md overflow-hidden relative">
-          <img
-            alt="Two people underwater with Seawalker helmets"
-            class="w-full h-68 object-cover"
-            height="200"
-            src="@/assets/Images/WN5da64mkLKwGhEKUyesajffQbd0Ic7itcnmmPYCtQEsqYbnA.jpg"
-            width="300"
-          />
-          <div
-            class="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded"
-          >
-            Tiết kiệm 20%
-          </div>
-          <div class="p-2 flex flex-col justify-between">
-            <p class="text-gray-700">Đi bộ dưới biển</p>
-            <div class="w-full mt-8">
-              <p class="text-gray-700 line-through mt-2">VND 2.490.000</p>
-              <p class="text-orange-500 font-bold">VND 1.990.000</p>
+              <p class="text-gray-700 line-through mt-2">
+                {{ formatVND(tour?.price) }}
+              </p>
+              <p class="text-orange-500 font-bold">
+                {{ formatVND(tour?.price) }} VND
+              </p>
             </div>
           </div>
         </div>
@@ -630,15 +568,12 @@ export default {
     const newesTour = ref([]);
     const displayErrors = ref(null);
 
-    const handleSearch = () => {
-      router.push("/search?key=");
-    };
-
     const getNewesTour = async () => {
       try {
         const response = await axios.get(
           "http://localhost:8000/api/displayNewstTour"
         );
+        console.log(response);
         newesTour.value = response.data.data;
         console.log("newesTour", newesTour.value);
       } catch (error) {
@@ -704,8 +639,58 @@ export default {
       logValue,
       detailTour,
       formatPrice,
-      handleSearch,
     };
+  },
+  data() {
+    return {
+      tours: null,
+      meta: null,
+      links: null,
+      sortBy: "latest",
+      key: "",
+    };
+  },
+
+  methods: {
+    async fetchTours(page = 1) {
+      try {
+        const response = await axios.get(
+          `http://127.0.0.1:8000/api/tours/list?page=${page}&per_page=5&sort=${this.sortBy}`
+        );
+        if (response.data.tours.length === 0) {
+          console.log("Không có tour nào để hiển thị.");
+          return;
+        }
+        this.tours = response.data.tours;
+        this.meta = response.data.meta;
+        this.links = response.data.links;
+      } catch (error) {
+        console.error("Failed to fetch tour data:", error);
+      }
+    },
+
+    handleSearch() {
+      if (!this.key) {
+        return;
+      }
+      this.$router.push({
+        path: "/search",
+        query: {
+          key: this.key,
+        },
+      });
+    },
+
+    formatVND(amount) {
+      return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    },
+
+    search() {
+      this.$router;
+    },
+  },
+  mounted() {
+    this.fetchTours();
   },
 };
 </script>
