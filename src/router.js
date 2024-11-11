@@ -25,6 +25,8 @@ import BookingTicket from "./Page/Booking/BookingTicket/BookingTicket.vue";
 import BookingTour from "./Page/Booking/BookingTour/BookingTour.vue";
 import Search from "./[user]/Search.vue";
 import Success from "./[user]/Success.vue";
+import CustomerSupport from './components/CustomerSupport/CustomerSupport.vue';
+import ContactUs from './components/CustomerSupport/ContactUs.vue';
 const routes = [
   {
     path: "/register",
@@ -50,6 +52,11 @@ const routes = [
         path: "/detail/:id",
         name: "Detail",
         component: Detail,
+      },
+      {
+        path: "/UserDetails",
+        name: "UserDetails",
+        component: UserDetails,
       },
       {
         path: "/booking/:id",
@@ -98,15 +105,21 @@ const routes = [
         name: "Storage",
         component: Storage,
       },
-      {
-        path: "/UserDetails",
-        name: "UserDetails",
-        component: UserDetails,
-      },
+     
       {
         path: "/UserAdmin",
         name: "UserAdmin",
         component: UserAdmin,
+      },
+      {
+        path: "/CustomerSupport",
+        name: "CustomerSupport",
+        component: CustomerSupport,
+      },
+      {
+        path: "/CustomerSupport/ContactUs",
+        name: "ContactUs",
+        component: ContactUs,
       },
       {
         path: "/HomePage",

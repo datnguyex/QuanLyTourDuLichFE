@@ -39,6 +39,9 @@
             <a class="text-gray-800 flex items-center space-x-1" href="#"
               ><span>Hỗ trợ <i class="fas fa-chevron-down"></i></span
             ></a>
+            <a class="text-gray-800 flex items-center space-x-1" href="#"><i
+                class="fas fa-percent text-green-500"></i><span>Khuyến mãi</span></a>
+            <a class="text-gray-800 flex items-center space-x-1" href="http://localhost:3000/CustomerSupport"><span>Hỗ trợ khách hàng</span></a>
             <a class="text-gray-800" href="#">Hợp tác với chúng tôi</a>
             <a class="text-gray-800" href="#">Đã Lưu</a>
             <a class="text-gray-800" href="#">Đặt chỗ của tôi</a>
