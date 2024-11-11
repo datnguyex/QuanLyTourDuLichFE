@@ -1,9 +1,3 @@
-.container {
-  width: 80%;
-  margin: 50px auto;
-  background-color: #fff;
-  border-radius: 8px;
-}
 .form_tour {
   width: 100%;
   padding: 20px;
@@ -240,7 +234,8 @@
 }
 .left-section img {
   width: 184px;
-  height: 100%x;
+  max-height: 100px;
+
   object-fit: cover;
   margin-bottom: 2px;
   border: 1px solid #ccc;
@@ -259,8 +254,8 @@
 }
 .left-section .image-grid .view-more {
   position: relative;
-  width: 48px;
-  height: 48px;
+  width: 60px;
+  height: 40px;
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
   display: flex;
@@ -268,7 +263,13 @@
   justify-content: center;
   border-radius: 4px;
   font-size: 12px;
+  cursor: pointer;
 }
+
+.view-more:hover {
+  filter: brightness(80%);
+}
+
 .middle-section {
   margin-left: 20px;
   flex-grow: 1;
