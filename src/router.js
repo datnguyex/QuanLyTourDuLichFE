@@ -27,6 +27,8 @@ import Search from "./[user]/Search.vue";
 import Success from "./[user]/Success.vue";
 import CustomerSupport from './components/CustomerSupport/CustomerSupport.vue';
 import ContactUs from './components/CustomerSupport/ContactUs.vue';
+import Statistical from './components/Statistical/Statistical.vue';
+Statistical
 const routes = [
   {
     path: "/register",
@@ -110,6 +112,11 @@ const routes = [
         path: "/UserAdmin",
         name: "UserAdmin",
         component: UserAdmin,
+      },
+      {
+        path: "/Statistical",
+        name: "Statistical",
+        component: Statistical,
       },
       {
         path: "/CustomerSupport",

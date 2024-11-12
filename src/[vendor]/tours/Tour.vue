@@ -8,8 +8,9 @@
             v-model="sortBy"
             @change="fetchTours"
           >
-            <option selected class="border-b" value="latest">Mới nhất</option>
-            <option class="border-b" value="price">Giá thành</option>
+            <option class="border-b" value="popular">Phổ biến</option>
+            <option class="border-b" value="latest">Mới nhất</option>
+            <option class="border-b" value="promotion">Khuyến mãi</option>
           </select>
           <div
             class="font-medium bg-white-500 p-2 rounded text-black-600 shadow-sm"
@@ -206,7 +207,7 @@ export default {
       tours: [],
       meta: {},
       links: {},
-      sortBy: "latest", // Giá trị mặc định
+      sortBy: "popular", // Giá trị mặc định
       tourToDelete: null,
       isModalVisible: false,
       count: 0,
@@ -216,7 +217,7 @@ export default {
     async fetchTours(page = 1) {
       try {
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/tours/list?page=${page}&per_page=3&sort=${this.sortBy}`
+          `http://127.0.0.1:8000/api/tours/list?page=${page}&per_page=3`
         );
         if (response.data.tours.length === 0) {
           console.log("Không có tour nào để hiển thị.");
