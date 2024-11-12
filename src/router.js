@@ -24,9 +24,11 @@ import UpdateTourGuide from "./components/TourGuide/AddTourGuide/UpdateTourGuide
 import BookingTicket from "./Page/Booking/BookingTicket/BookingTicket.vue";
 import BookingTour from "./Page/Booking/BookingTour/BookingTour.vue";
 import Search from "./[user]/Search.vue";
+import ChatBot from "./components/ChatBot/ChatBot.vue";
+// import { Components } from "bootstrap-vue-3";
 const routes = [
   {
-    path: "/register",
+    path: "/register",  
     name: "Register",
     component: UserRegister,
   },
@@ -80,6 +82,11 @@ const routes = [
         name: "BookingTour",
         component: BookingTour,
       },
+      {
+        path: "/chatbot",
+        name: "ChatBot",
+        component: ChatBot, 
+      }
     ],
   },
   {

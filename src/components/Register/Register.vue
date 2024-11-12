@@ -54,6 +54,11 @@
     <MoreInfomation :handleDisplayRegister="handleDisplayRegister" :username="username" :role="role"
       :password="password" v-if="swicth == 'more infomation'"></MoreInfomation>
   </div>
+    <!-- <script>
+        document.getElementById('headerColorPicker').addEventListener('input', function() {
+            document.querySelector('.bg-blue-500').style.backgroundColor = this.value;
+        });
+    </script> -->
 </template>
 
 <script>
